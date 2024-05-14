@@ -1,0 +1,210 @@
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: relative;
+  height: 50px;
+  /* Adjust if your navbar height is different */
+}
+
+.carousel {
+  position: relative;
+  width: 100vw;
+  /* Full width of the viewport */
+  height: calc(100vh - 50px);
+  /* Full height of the viewport minus the navbar height */
+  overflow: hidden;
+}
+
+.slide {
+  display: none;
+  /* Only one slide visible at a time */
+  width: 100%;
+  height: 100%;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* This will cover the slide area, might crop some parts of the image */
+}
+
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  /* Centers vertically */
+  transform: translateY(-50%);
+  /* Offset the height of the button to truly center it */
+  width: auto;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  z-index: 1000;
+}
+
+.prev {
+  left: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.next {
+  right: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-overlay {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  /* Adjust text color based on your design preference */
+}
+
+.carousel-text {
+  margin-bottom: 10px;
+  /* Space between the text and the button */
+  font-size: 24px;
+  /* Adjust font size as needed */
+}
+
+.join-btn {
+  padding: 10px 20px;
+  font-size: 18px;
+  color: white;
+  background-color: #007BFF;
+  /* Adjust button color as needed */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.join-btn:hover {
+  background-color: #0056b3;
+  /* Darker shade for hover effect */
+}
+
+.updates-section {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.updates-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.update {
+  display: flex;
+  align-items: center; /* Aligns items vertically in the middle */
+  justify-content: center; /* Centers the flex items horizontally inside the update */
+  margin-bottom: 20px; /* Space between each update */
+  background-color: #f9f9f9; /* Light background for each update */
+  padding: 20px;
+  max-width: 800px; /* Maximum width of each update block */
+  margin-left: auto; /* Auto margin for horizontal centering */
+  margin-right: auto; /* Auto margin for horizontal centering */
+}
+
+.update img {
+  width: 150px; /* Set a fixed width for images */
+  height: 100px; /* Set a fixed height for images */
+  object-fit: cover; /* Ensures images cover the area, might crop them */
+  margin-right: 20px; /* Space between image and text */
+}
+
+.update-text {
+  flex: 1; /* Allows the text block to fill the remaining space */
+  text-align: left; /* Aligns text to the left within the text block */
+}
+
+.update-text h3 {
+  margin-top: 0;
+  margin-bottom: 5px; /* Smaller margin for the title */
+}
+
+.update-text p {
+  margin: 0;
+}
+
+footer {
+  width: 100%;
+  padding: 20px 0;
+  background-color: #333; /* Dark background for the footer */
+  color: white;
+  text-align: center; /* Centers all the content */
+}
+
+.footer-content {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-media-links a {
+  margin: 0 10px; /* Spacing between icons */
+}
+
+.footer-logo img {
+  margin: 20px 0; /* Space above and below the logo */
+  width: 120px; /* Fixed width for the logo */
+  height: auto;
+}
+
+.footer-links a {
+  margin: 0 10px; /* Spacing between text links */
+  color: white; /* Ensures text links are white */
+  text-decoration: none; /* Removes underline from links */
+}
+
+.footer-links a:hover {
+  text-decoration: underline; /* Adds underline on hover for better user interaction */
+}
