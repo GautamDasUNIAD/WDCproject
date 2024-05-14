@@ -208,3 +208,21 @@ footer {
 .footer-links a:hover {
   text-decoration: underline; /* Adds underline on hover for better user interaction */
 }
+
+#scrollToTopBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed positioning */
+  bottom: 20px; /* Position from the bottom */
+  right: 20px; /* Position from the right */
+  z-index: 1000; /* High z-index to stay on top of other content */
+  background-color: #333; /* Dark background */
+  color: white; /* White text color */
+  border: none; /* No border */
+  cursor: pointer; /* Pointer cursor on hover */
+  padding: 10px;
+  border-radius: 5px; /* Rounded corners */
+}
+
+#scrollToTopBtn:hover {
+  background-color: #555; /* Slightly lighter on hover */
+}
