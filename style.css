@@ -191,6 +191,7 @@ footer {
 
 .social-media-links a {
   margin: 0 10px; /* Spacing between icons */
+  color: white;
 }
 
 .footer-logo img {
@@ -225,4 +226,41 @@ footer {
 
 #scrollToTopBtn:hover {
   background-color: #555; /* Slightly lighter on hover */
+}
+
+.map-section {
+  position: relative;
+  width: 100vw;
+  /* Full width of the viewport */
+  height: calc(100vh - 50px);
+  /* Full height of the viewport minus the navbar height */
+  overflow: hidden;
+}
+
+.map-section h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.map-section h2 {
+  margin-left: 10%;
+}
+
+.map-section p {
+  margin-left: 10%;
+}
+
+.map i {
+  position: absolute;
+  color: rgb(250, 64, 23);
+  cursor: pointer;
+  font-size: 2vw;
+}
+
+.map {
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 45%;
 }

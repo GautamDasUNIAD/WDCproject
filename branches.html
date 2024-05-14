@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branches</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <ul>
+        <li><a href="/home">LOGO</a></li>
+        <li><a href="/events">Events</a></li>
+        <li><a class="active" href="/branches">Branches</a></li>
+        <li style="float:centre"><a href="/search">Search</a></li>
+        <li style="float:right"><a href="/search">Login</a></li>
+        <li style="float:right"><a href="/search">Signup</a></li>
+    </ul>
+
+    <div class="map-section">
+        <h1>Our Locations</h1>
+        <div class="map">
+            <img src="map.png" style="width: 100%;" alt="">
+            <i class="fa-solid fa-location-dot" style="top: 71%; left: 86%;" onclick="changeDetails('Adelaide')"></i>
+            <i class="fa-solid fa-location-dot" style="top: 69%; left: 90%;" onclick="changeDetails('Sydney')"></i>
+            <i class="fa-solid fa-location-dot" style="top: 72%; left: 96.3%;" onclick="changeDetails('Auckland')"></i>
+            <i class="fa-solid fa-location-dot" style="top: 30%; left: 19%;" onclick="changeDetails('Miami')"></i>
+            <i class="fa-solid fa-location-dot" style="top: 21%; left: 23%;" onclick="changeDetails('New York')"></i>
+            <i class="fa-solid fa-location-dot" style="top: 26%; left: 8.5%;" onclick="changeDetails('Vancouver')"></i>
+            <i class="fa-solid fa-location-dot" style="top: 22%; left: 44%;" onclick="changeDetails('Madrid')"></i>
+            <i class="fa-solid fa-location-dot" style="top: 33%; left: 73%;" onclick="changeDetails('Kolkata')"></i>
+            <i class="fa-solid fa-location-dot" style="top: 22%; left: 80.5%;" onclick="changeDetails('Beijing')"></i>
+        </div>
+        <h2>{{ Location }}</h2>
+        <p>{{ Description }}</p>
+    </div>
+
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-media-links">
+                <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="footer-logo">
+                <img src="logo.png" alt="Company Logo">
+            </div>
+            <div class="footer-links">
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
+
+    <script src="script.js"></script>
+
+</body>
+
+
+
+</html>
