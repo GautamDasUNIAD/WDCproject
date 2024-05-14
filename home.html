@@ -11,14 +11,21 @@
 </head>
 
 <body>
-    <ul>
-        <li><a class="active" href="/home">LOGO</a></li>
-        <li><a href="/events">Events</a></li>
-        <li><a href="/branches">Branches</a></li>
-        <li style="float:centre"><a href="/search">Search</a></li>
-        <li style="float:right"><a href="/search">Login</a></li>
-        <li style="float:right"><a href="/search">Signup</a></li>
-    </ul>
+    <nav>
+        <ul>
+            <li><a class="active" href="/home">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
+        </ul>
+        <form class="search-form" action="/search" method="GET">
+            <input type="text" name="q" placeholder="Search...">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+        <ul>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
+        </ul>
+    </nav>
 
     <div class="carousel">
         <div class="slides">
@@ -50,6 +57,11 @@
             </div>
         </div>
         <!-- Add more updates as needed -->
+
+        <div class="center-container">
+            <button type="button" class="join-btn">Read More</button>
+        </div>
+
     </div>
     <footer>
         <div class="footer-content">

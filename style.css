@@ -27,6 +27,7 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: sans-serif;
 }
 
 ul {
@@ -122,6 +123,13 @@ ul {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-family: sans-serif;
+}
+
+.center-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .join-btn:hover {
@@ -263,4 +271,44 @@ footer {
   margin-left: auto;
   margin-right: auto;
   width: 45%;
+}
+
+nav {
+  background-color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+
+.search-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  max-width: 400px; /* Adjust the max width as needed */
+}
+
+.search-form input[type="text"] {
+  padding: 6px;
+  font-size: 17px;
+  border: none;
+  margin-right: 0px;
+  width: 200px; /* Adjust the width as needed */
+}
+
+.search-form button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 0px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.search-form button:hover {
+  background: #ccc;
 }
