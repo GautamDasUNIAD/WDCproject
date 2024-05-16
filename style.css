@@ -140,6 +140,119 @@ ul {
   margin-bottom: 20px;
 }
 
+.sidebar {
+  float: left;
+  width: 20%;
+  background-color: rgba(211,211,211,0.5);
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;  /* Add margin at the bottom */
+  height: auto;  /* Ensure it doesn't stretch beyond its content */
+  overflow: auto;  /* Handles overflowing content */
+}
+.view-buttons {
+  display: flex;
+  border: 1px solid #ccc; /* Gray border around the buttons */
+  border-radius: 5px; /* Rounded corners for the whole button group */
+  overflow: hidden; /* Keeps the child elements' borders inside the parent's curve */
+}
+
+.view-button {
+  flex: 1; /* Each button takes equal width */
+  padding: 10px 20px; /* Padding inside the buttons */
+  border: none; /* No border for the button to avoid double borders */
+  background-color: #f9f9f9; /* Light gray background */
+  color: #333; /* Dark text color for contrast */
+  text-align: center; /* Center text inside the button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.view-button:hover, .view-button.active {
+  background-color: #ddd; /* Darker background on hover and for active button */
+}
+
+.view-button:not(:last-child) {
+  border-right: 1px solid #ccc; /* Separates the buttons visually */
+}
+.sidebar h3 {
+  text-decoration: underline;
+}
+.sidebar ul {
+  float: left;
+  background-color: transparent;
+  height: 200px;
+  width: 100px;
+}
+
+.events-section {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.events-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.events-update {
+  display: flex;
+  align-items: center; /* Aligns items vertically in the middle */
+  justify-content: center; /* Centers the flex items horizontally inside the update */
+  margin-bottom: 20px; /* Space between each update */
+  background-color: #f9f9f9; /* Light background for each update */
+  max-width: 800px; /* Maximum width of each update block */
+  margin-left: auto; /* Auto margin for horizontal centering */
+  margin-right: auto; /* Auto margin for horizontal centering */
+  border: 1px solid black;
+  min-height: 50px;
+}
+
+.vote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black; /* Explicit full border */
+  width: 10%;
+  height: 100%;
+}
+.events-update-text {
+  flex: 1; /* Allows the text block to fill the remaining space */
+  text-align: left; /* Aligns text to the left within the text block */
+}
+
+.events-update-text h3 {
+  margin-top: 0;
+  margin-bottom: 5px; /* Smaller margin for the title */
+}
+.events-update-text, .attendance {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 5px; /* Ensures spacing between elements inside the event block */
+}
+
+.events-update-text p {
+  margin: 0;
+}
+
+
+
+main {
+  float: right;
+  width: 75%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.calendar {
+  margin-bottom: 20px;
+}
+
+.event-details p {
+  margin: 10px 0;
+}
+
 .update {
   display: flex;
   align-items: center; /* Aligns items vertically in the middle */
