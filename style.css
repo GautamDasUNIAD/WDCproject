@@ -239,10 +239,8 @@ footer {
 .map-section {
   position: relative;
   width: 100vw;
-  /* Full width of the viewport */
-  height: calc(100vh - 50px);
-  /* Full height of the viewport minus the navbar height */
   overflow: hidden;
+  min-height: 100%;
 }
 
 .map-section h1 {
@@ -261,8 +259,13 @@ footer {
 .map i {
   position: absolute;
   color: rgb(250, 64, 23);
+  transition: 0.2s ease;
   cursor: pointer;
   font-size: 2vw;
+}
+
+.map i:hover {
+  color: rgb(201, 53, 19);
 }
 
 .map {
@@ -271,6 +274,14 @@ footer {
   margin-left: auto;
   margin-right: auto;
   width: 45%;
+}
+
+.branches-welcome {
+  margin-left: auto;
+  margin-right: auto;
+  word-wrap: break-word;
+  width: 40%;
+  text-align: center;
 }
 
 nav {
