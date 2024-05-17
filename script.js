@@ -19,7 +19,6 @@ function showSlides(n) {
 document.querySelector('.prev').addEventListener('click', () => plusSlides(-1));
 document.querySelector('.next').addEventListener('click', () => plusSlides(1));
 
-
 // Get the button
 var mybutton = document.getElementById("scrollToTopBtn");
 
@@ -36,15 +35,8 @@ function scrollFunction() {
     }
 }
 
-
-// Smooth Scrolling
-mybutton.onclick = function topFunction() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+// When the user clicks on the button, scroll to the top of the document
+mybutton.onclick = function() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 };
-
-//Instant Scrolling
-// // When the user clicks on the button, scroll to the top of the document
-// mybutton.onclick = function() {
-//     document.body.scrollTop = 0; // For Safari
-//     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-// };
