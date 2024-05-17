@@ -69,27 +69,39 @@
                             let cell = row.insertCell();
                             cell.colSpan = 7;
                             cell.textContent = monthNames[month] + " " + year;
+                            cell.style.width = "calc(100% / 7)";
+                            cell.style.height = "20px";
+                            cell.style.border  = "1px solid black";
+
 
                             let headerDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
                             row = tbl.insertRow();
                             for (let day of headerDays) {
                                 cell = row.insertCell();
                                 cell.textContent = day;
+                                cell.style.width = "calc(100% / 7)";
+                                cell.style.height = "30px";
+                                cell.style.border  = "1px solid black";
                             }
 
                             let date = 1;
                             for (let i = 0; i < 6; i++) {
                                 let row = tbl.insertRow();
                                 for (let j = 0; j < 7; j++) {
+                                    let cell = row.insertCell();
+                                    cell.style.width = "calc(100% / 7)";
+                                    cell.style.height = "30px";
+                                    cell.style.border  = "1px solid black";
+
                                     if (i === 0 && j < firstDay) {
-                                        row.insertCell();
+                                        cell.style.backgroundColor = "#f0f0f0";
                                     } else if (date > daysInMonth) {
+                                        cell.style.backgroundColor = "#f0f0f0";
                                         break;
                                     } else {
-                                        let cell = row.insertCell();
                                         cell.textContent = date;
                                         if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-                                            cell.style.backgroundColor = "#ffcccb"; // Highlight today's date
+                                            cell.style.backgroundColor = "#ffcccb";
                                         }
                                         date++;
                                     }
@@ -100,6 +112,7 @@
 
                         document.getElementById('calendar').appendChild(createCalendar(currentMonth, currentYear));
                     });
+
                 </script>
 
                 </div>
