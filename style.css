@@ -387,8 +387,8 @@ textarea {
   padding: 20px;
   box-sizing: border-box;
   margin-bottom: 20px;  /* Add margin at the bottom */
-  height: 427.5px;  /* Ensure it doesn't stretch beyond its content */
-  overflow: auto;  /* Handles overflowing content */
+  height: 427.5;  /* Ensure it doesn't stretch beyond its content */
+  overflow-y: auto;  /* Handles overflowing content */
   box-sizing: border-box;
 
 }
@@ -651,7 +651,7 @@ main {
   justify-content: left; /* Centers the flex items horizontally inside the update */
   margin-bottom: 20px; /* Space between each update */
   background-color: #f9f9f9; /* Light background for each update */
-  max-width: 60%; /* Maximum width of each update block */
+  max-width: 75%; /* Maximum width of each update block */
   margin-left: auto; /* Auto margin for horizontal centering */
   margin-right: auto; /* Auto margin for horizontal centering */
   border: 1px solid black;
@@ -711,4 +711,6 @@ footer {
 #scrollToTopBtn:hover {
   background-color: #555; /* Slightly lighter on hover */
 }
+
+
 
