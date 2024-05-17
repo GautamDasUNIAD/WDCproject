@@ -387,7 +387,7 @@ textarea {
   padding: 20px;
   box-sizing: border-box;
   margin-bottom: 20px;  /* Add margin at the bottom */
-  height: 427.5;  /* Ensure it doesn't stretch beyond its content */
+  height: 427.5px;  /* Ensure it doesn't stretch beyond its content */
   overflow-y: auto;  /* Handles overflowing content */
   box-sizing: border-box;
 
