@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>events</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+    <ul>
+        <li><a class="active" href="/home">LOGO</a></li>
+        <li><a href="/events">Events</a></li>
+        <li><a href="/branches">Branches</a></li>
+        <li style="float:centre"><a href="/search">Search</a></li>
+        <li style="float:right"><a href="/search">Login</a></li>
+        <li style="float:right"><a href="/search">Signup</a></li>
+    </ul>
+
+    <div class="sidebar">
+        <p><a class="active" href="/home">Home </a> / <a href="/events">Events</a> </p>
+        <div class="view-buttons">
+            <button type="button" class="view-button active" onclick="showListView()">List View</button>
+            <button type="button" class="view-button" onclick="window.location.href='calendar.html'">Calendar View</button>
+        </div>
+        <h3>Sort by Branch:</h3>
+        <ul>
+            <li><input type="checkbox" id="Adelaide"><label for="Adelaide">Adelaide</label></li>
+            <li><input type="checkbox" id="Brisbane"><label for="Brisbane">Brisbane</label></li>
+            <li><input type="checkbox" id="Sydney"><label for="Sydney">Sydney</label></li>
+            <li><input type="checkbox" id="Melbourne"><label for="Melbourne">Melbourne</label></li>
+            <li><input type="checkbox" id="Canberra"><label for="Canberra">Canberra</label></li>
+            <li><input type="checkbox" id="Perth"><label for="Perth">Perth</label></li>
+            <li><input type="checkbox" id="Darwin"><label for="Darwin">Darwin</label></li>
+            <li><input type="checkbox" id="Regional"><label for="Regional">Regional</label></li>
+        </ul>
+    </div>
+
+    <div class="events-section">
+        <h2>Key Events</h2>
+        <div class="events-update">
+            <div class="vote">
+                <div class="upvote">
+                    <button type="button" class="vote-button" onclick="upvote()">+</button>
+                </div>
+                <hr>
+                <div class="downvote">
+                <button type="button" class="vote-button" onclick="downvote()">-</button>
+            </div>
+            </div>
+            <div class="update-text">
+                <h3>Date & Title</h3>
+                <p>Description of the update...</p>
+            </div>
+        </div>
+        <div class="events-update">
+            <div class="vote">
+                <div class="upvote">
+                    <button type="button" class="vote-button" onclick="showCalendarView()">+</button>
+                </div>
+                <hr>
+                <div class="downvote">
+                <button type="button" class="vote-button" onclick="downvote()">-</button>
+            </div>
+            </div>
+            <div class="update-text">
+                <h3>Date & Title</h3>
+                <p>Description of the update...</p>
+            </div>
+        </div>
+        <div class="events-update">
+            <div class="vote">
+                <div class="upvote">
+                    <button type="button" class="vote-button" onclick="upvote()">+</button>
+                </div>
+                <hr>
+                <div class="downvote">
+                <button type="button" class="vote-button" onclick="downvote()">-</button>
+            </div>
+            </div>
+            <div class="update-text">
+                <h3>Date & Title</h3>
+                <p>Description of the update...</p>
+            </div>
+        </div>
+        <div class="button-container">
+            <button type="button" class="read-more-button">Read More</button>
+        </div>
+    </div>
+<!--
+        <div class="events-update">
+            <img src="update.jpg" alt="Update 1">
+            <div class="update-text">
+                <h3>Date & Title</h3>
+                <p>Description of the update...</p>
+            </div>
+        </div>
+        </div>
+
+        <div class="update">
+            <img src="update.jpg" alt="Update 2">
+            <div class="update-text">
+                <h3>Date & Title</h3>
+                <p>Description of the update...</p>
+            </div>
+        </div>
+    </div>
+    -->
+    <!--
+    <main>
+        <div class="calendar" id="calendar">
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                const today = new Date();
+                let currentMonth = today.getMonth();
+                let currentYear = today.getFullYear();
+
+                function createCalendar(month, year) {
+                    let firstDay = new Date(year, month).getDay();
+                    let daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+                    let tbl = document.createElement("table");
+                    let thead = tbl.createTHead();
+                    let row = thead.insertRow();
+                    let cell = row.insertCell();
+                    cell.colSpan = 7;
+                    cell.textContent = monthNames[month] + " " + year;
+
+                    let headerDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+                    row = tbl.insertRow();
+                    for (let day of headerDays) {
+                        cell = row.insertCell();
+                        cell.textContent = day;
+                    }
+
+                    let date = 1;
+                    for (let i = 0; i < 6; i++) {
+                        let row = tbl.insertRow();
+                        for (let j = 0; j < 7; j++) {
+                            if (i === 0 && j < firstDay) {
+                                row.insertCell();
+                            } else if (date > daysInMonth) {
+                                break;
+                            } else {
+                                let cell = row.insertCell();
+                                cell.textContent = date;
+                                if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                                    cell.style.backgroundColor = "#ffcccb"; // Highlight today's date
+                                }
+                                date++;
+                            }
+                        }
+                    }
+                    return tbl;
+                }
+
+                document.getElementById('calendar').appendChild(createCalendar(currentMonth, currentYear));
+            });
+        </script>
+
+        </div>
+
+    </main>
+    -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-media-links">
+                <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="footer-logo">
+                <img src="logo.png" alt="Company Logo">
+            </div>
+            <div class="footer-links">
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
+
+    <script src="script.js"></script>
+
+
+
+</body>
+
+</html>
