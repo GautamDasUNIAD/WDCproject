@@ -224,6 +224,15 @@ ul {
   width: 10%;
   height: 70px;
 }
+.vote2 {
+  display: flex;
+  flex-direction: column; /* Display buttons vertically */
+  align-items: center; /* Center buttons horizontally */
+  justify-content: center; /* Center buttons vertically */
+  width: 10%;
+  height: 70px;
+}
+
 .events-update-text {
   flex: 1; /* Allows the text block to fill the remaining space */
   text-align: left; /* Aligns text to the left within the text block */
@@ -244,13 +253,6 @@ ul {
 }
 
 
-
-main {
-  float: right;
-  width: 75%;
-  padding: 20px;
-  box-sizing: border-box;
-}
 
 .calendar {
   margin-bottom: 20px;
@@ -334,7 +336,7 @@ main {
 .calendar-div {
   display: flex;
   align-items: left; /* Aligns items vertically in the middle */
-  justify-content: left; /* Centers the flex items horizontally inside the update */
+  justify-content: center; /* Centers the flex items horizontally inside the update */
   margin-bottom: 20px; /* Space between each update */
   background-color: #f9f9f9; /* Light background for each update */
   max-width: 60%; /* Maximum width of each update block */
@@ -346,6 +348,7 @@ main {
 }
 .calendar-events {
   display: flex;
+  flex-direction: column;
   align-items: left; /* Aligns items vertically in the middle */
   justify-content: left; /* Centers the flex items horizontally inside the update */
   margin-bottom: 20px; /* Space between each update */
@@ -363,10 +366,98 @@ main {
   box-sizing: border-box;
 }
 
+.calendar table {
+  width: 100%; /* Full width to spread out the calendar */
+  border-collapse: collapse; /* Ensures borders between cells are merged */
+  margin: 0 auto; /* Centering the table */
+}
+
+.calendar thead tr {
+  background-color: #f9f9f9; /* Light grey background for the header */
+}
+
+.calendar th, .calendar td {
+  border: 1px solid #ddd; /* Light grey border for each cell */
+  padding: 15px; /* Spacious padding within cells */
+  text-align: center; /* Centering text in cells */
+  vertical-align: middle; /* Aligning text vertically */
+}
+
+.calendar th {
+  height: 50px; /* Fixed height for header cells */
+  text-transform: uppercase; /* Capitalize header texts */
+  font-weight: bold; /* Make header texts bold */
+}
+
+.calendar td {
+  cursor: pointer; /* Pointer cursor on date cells to indicate interactivity */
+  background-color: #FAFAFA; /* Very light grey background for date cells */
+}
+
+.calendar td:hover {
+  background-color: #f0f0f0; /* Slightly darker on hover for feedback */
+}
+
+.calendar td.active-day {
+  background-color: #007BFF; /* Blue background for the current day */
+  color: white; /* White text against blue background */
+  font-weight: bold; /* Bold text for emphasis */
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between; /* Space out navigation and month label */
+  align-items: center;
+  padding: 10px 0; /* Padding above and below the header */
+}
+
+.calendar-header button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.calendar-header button:hover {
+  background-color: #0056b3; /* Darker blue for hover effect */
+}
+
 .split-div{
   display: flex;
   align-items: left;
   justify-content: space-around;
+}
+.single-event{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: top;
+  padding-left: 0.5em;
+}
+.event-heading{
+  display: flex;
+  align-items: left;
+  justify-content: left;
+
+}
+.event-text{
+  display: flex;
+  align-items: left;
+  justify-content: left;
+}
+
+.title{
+  margin:0;
+  font-size: 1.5em;
+  align-self: center;
+  padding-left: 0.5em;
+}
+
+.text{
+  margin:0;
 }
 
 
