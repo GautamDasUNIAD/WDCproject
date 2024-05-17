@@ -291,10 +291,8 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
-  /* position: fixed;
-  top: 0;
-  width: 98%;
-  z-index: 1000; Adjust as needed */
+  /* width: 100%; */
+  /* z-index: 1000; Adjust as needed */
 }
 
 
@@ -365,7 +363,7 @@ nav {
 }
 
 .breadcrumbs{
-  padding: 10px
+  padding: 20px
 }
 
 .aboutus{
@@ -1230,3 +1228,72 @@ footer {
 #scrollToTopBtn:hover {
   background-color: #555; /* Slightly lighter on hover */
 }
+
+.accessibility-button {
+  position: fixed;
+  right: 0;
+  top: 100px; /* Adjust the distance from the bottom */
+  background-color: #4481c2; /* Button background color */
+  color: white; /* Button text color */
+  width: 40px; /* Button width */
+  height: 40px; /* Button height */
+  /* border-radius: 50%; Round button shape */
+  border-left: 2px solid black; /* Border on the right side */
+  border-top: 2px solid black; /* Border on the top side */
+  border-bottom: 2px solid black; /* Border on the bottom side */
+  box-sizing: border-box; /* Include border in button size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px; /* Icon size */
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.accessibility-menu {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.accessibility-menu button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accessibility-menu button:hover {
+  background-color: #f0f0f0;
+}
+.button2 {
+  display: inline-block;
+  background-color: #007bff; /* Blue background color */
+  color: white; /* White text color */
+  text-decoration: none; /* Remove default underline */
+  border-radius: 2px;
+  margin-right: 10px; /* Add margin between buttons */
+  margin-top: 2px; /* Negative margin at the top */
+
+
+}
+
+.button3 {
+  display: inline-block;
+  background-color: rgb(255, 98, 0); /* Blue background color */
+  color: white; /* White text color */
+  text-decoration: none; /* Remove default underline */
+  border-radius: 2px;
+  margin-top: 2px; /* Negative margin at the top */
+}
+
+
+
