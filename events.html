@@ -10,34 +10,42 @@
 
 </head>
 <body>
-    <ul>
-        <li><a class="active" href="/home">LOGO</a></li>
-        <li><a href="/events">Events</a></li>
-        <li><a href="/branches">Branches</a></li>
-        <li style="float:centre"><a href="/search">Search</a></li>
-        <li style="float:right"><a href="/search">Login</a></li>
-        <li style="float:right"><a href="/search">Signup</a></li>
-    </ul>
-
-    <div class="sidebar">
-        <p><a class="active" href="/home">Home </a> / <a href="/events">Events</a> </p>
-        <div class="view-buttons">
-            <button type="button" class="view-button active" onclick="showListView()">List View</button>
-            <button type="button" class="view-button" onclick="window.location.href='calendar.html'">Calendar View</button>
-        </div>
-        <h3>Sort by Branch:</h3>
+    <nav>
         <ul>
-            <li><input type="checkbox" id="Adelaide"><label for="Adelaide">Adelaide</label></li>
-            <li><input type="checkbox" id="Brisbane"><label for="Brisbane">Brisbane</label></li>
-            <li><input type="checkbox" id="Sydney"><label for="Sydney">Sydney</label></li>
-            <li><input type="checkbox" id="Melbourne"><label for="Melbourne">Melbourne</label></li>
-            <li><input type="checkbox" id="Canberra"><label for="Canberra">Canberra</label></li>
-            <li><input type="checkbox" id="Perth"><label for="Perth">Perth</label></li>
-            <li><input type="checkbox" id="Darwin"><label for="Darwin">Darwin</label></li>
-            <li><input type="checkbox" id="Regional"><label for="Regional">Regional</label></li>
+            <li><a class="active" href="/home">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
         </ul>
-    </div>
+        <form class="search-form" action="/search" method="GET">
+            <input type="text" name="q" placeholder="Search...">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+        <ul>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
+        </ul>
+    </nav>
 
+    <div class="main-container">
+        <div class="sidebar">
+            <p><a class="active" href="/home">Home </a> / <a href="/events">Events</a></p>
+            <div class="view-buttons">
+                <button type="button" class="view-button active" onclick="showListView()">List View</button>
+                <button type="button" class="view-button" onclick="window.location.href='calendar.html'">Calendar View</button>
+            </div>
+            <h3>Sort by Branch:</h3>
+            <ul>
+                <li><input type="checkbox" id="Adelaide"><label for="Adelaide">Adelaide</label></li>
+                <li><input type="checkbox" id="Brisbane"><label for="Brisbane">Brisbane</label></li>
+                <li><input type="checkbox" id="Sydney"><label for="Sydney">Sydney</label></li>
+                <li><input type="checkbox" id="Melbourne"><label for="Melbourne">Melbourne</label></li>
+                <li><input type="checkbox" id="Canberra"><label for="Canberra">Canberra</label></li>
+                <li><input type="checkbox" id="Perth"><label for="Perth">Perth</label></li>
+                <li><input type="checkbox" id="Darwin"><label for="Darwin">Darwin</label></li>
+                <li><input type="checkbox" id="Regional"><label for="Regional">Regional</label></li>
+            </ul>
+        </div>
+    </div>
     <div class="events-section">
         <h2>Key Events</h2>
         <div class="events-update">

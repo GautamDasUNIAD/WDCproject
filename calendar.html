@@ -10,14 +10,21 @@
 
 </head>
 <body>
-    <ul>
-        <li><a class="active" href="/home">LOGO</a></li>
-        <li><a href="/events">Events</a></li>
-        <li><a href="/branches">Branches</a></li>
-        <li style="float:centre"><a href="/search">Search</a></li>
-        <li style="float:right"><a href="/search">Login</a></li>
-        <li style="float:right"><a href="/search">Signup</a></li>
-    </ul>
+    <nav>
+        <ul>
+            <li><a class="active" href="/home">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
+        </ul>
+        <form class="search-form" action="/search" method="GET">
+            <input type="text" name="q" placeholder="Search...">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+        <ul>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
+        </ul>
+    </nav>
 
     <div class="sidebar">
         <p><a class="active" href="/home">Home </a> / <a href="/events">Events</a> </p>
