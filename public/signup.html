@@ -30,7 +30,7 @@
     <h1 style="text-align: center;">Join us!</h1>
     <br>
     <div class="login-container">
-        <form action="/home.html">
+        <form id="signupForm">
             <label for="FirstName">First Name</label>
             <input type="text" id="FirstName" name="FirstName" required>
             <label for="LastName">Last Name</label>
@@ -41,8 +41,44 @@
             <input type="password" id="password" name="password" required>
             <input type="submit" value="Login">
         </form>
+        <div id="signupResponseMessage"></div>
     </div>
 
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const firstName = document.getElementById('FirstName').value;
+            const lastName = document.getElementById('LastName').value;
+            const email = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const signupResponseMessage = document.getElementById('signupResponseMessage');
+            signupResponseMessage.textContent = '';
+
+            try {
+                const response = await fetch('/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ first_name: firstName, last_name: lastName, email, password, role: 'Regular', social_media_linked: false })
+                });
+
+                if (response.ok) {
+                    const data = await response.text();
+                    signupResponseMessage.textContent = 'Signup successful: ' + data;
+                    // Redirect to the home page or handle signup success
+                    window.location.href = '/';
+                } else {
+                    const error = await response.text();
+                    signupResponseMessage.textContent = 'Signup failed: ' + error;
+                }
+            } catch (error) {
+                signupResponseMessage.textContent = 'An error occurred: ' + error.message;
+            }
+        });
+    </script>
 
     <footer>
         <div class="footer-content">

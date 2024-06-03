@@ -28,13 +28,14 @@
     <h1 style="text-align: center;">Welcome Back!</h1>
     <br>
     <div class="login-container">
-        <form action="/home.html">
+        <form id="loginForm">
             <label for="Email">Email:</label>
             <input type="text" id="Email" name="Email" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <input type="submit" value="Login">
         </form>
+        <div id="responseMessage"></div>
     </div>
 
     <div class="accessibility-button" onclick="toggleAccessibility()">
@@ -58,5 +59,40 @@
             </div>
         </div>
     </footer>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        console.log("triggered login");
+        event.preventDefault();
+
+        const email = document.getElementById('Email').value;
+        const password = document.getElementById('password').value;
+
+        const responseMessage = document.getElementById('responseMessage');
+        responseMessage.textContent = '';
+
+        try {
+            const response = await fetch('/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                const data = await response.text();
+                responseMessage.textContent = 'Login successful: ' + data;
+                // Redirect to the home page or handle login success
+                window.location.href = '/';
+            } else {
+                const error = await response.text();
+                responseMessage.textContent = 'Login failed: ' + error;
+            }
+        } catch (error) {
+            responseMessage.textContent = 'An error occurred: ' + error.message;
+        }
+    });
+    </script>
 </body>
 </html>
