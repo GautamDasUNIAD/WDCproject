@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const passport = require('passport');
 const { hashPassword, checkPassword } = require('../utils/password');
 
 
@@ -7,14 +8,20 @@ const VALID_ROLES = ['Regular', 'Manager', 'Admin'];
 /* GET users listing. */
 //! remove
 router.get('/', function(req, res, next) {
-  req.pool.query('SELECT * FROM Users', (err, results) => {
-    if (err) {
-      console.error('Error fetching users:', err);
-      res.status(500).send('Error fetching users');
+
+  if (req.isAuthenticated()) {
+        res.json({ authenticated: true, user: req.user });
     } else {
-      res.json(results);
+        res.json({ authenticated: false });
     }
-  });
+  // req.pool.query('SELECT * FROM Users', (err, results) => {
+  //   if (err) {
+  //     console.error('Error fetching users:', err);
+  //     res.status(500).send('Error fetching users');
+  //   } else {
+  //     res.json(results);
+  //   }
+  // });
 });
 
 router.post('/register', (req, res) => {
@@ -48,25 +55,16 @@ router.post('/register', (req, res) => {
 });
 
 // Login user
-router.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  req.pool.query('SELECT * FROM Users WHERE email = ?', [email], (err, results) => {
-    if (err) {
-      console.error('Error fetching user:', err);
-      res.status(500).send('Error fetching user');
-    } else {
-      if (results.length > 0) {
-        const user = results[0];
-        const isMatch = checkPassword(password, user.password);
-        if (isMatch) {
-          res.status(200).send('Login successful');
-        } else {
-          res.status(401).send('Invalid email or password');
-        }
-      } else {
-        res.status(404).send('User not found');
-      }
-    }
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/',
+  failureFlash: true // Enable flash messages
+}));
+
+router.get('/logout', (req, res, next) => {
+  req.logout(function(err) {
+      if (err) { return next(err); }
+      res.redirect('/');
   });
 });
 
