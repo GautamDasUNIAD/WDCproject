@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Update</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a class="active" href="/home">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
+        </ul>
+        <ul>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-container">
+        <div class="post-update-section">
+            <h2>Post an Update</h2>
+            <form id="postUpdateForm">
+                <label for="organization">Organization:</label>
+                <select id="organization" name="organization" required></select>
+
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea>
+
+                <label for="is_private">Private:</label>
+                <input type="checkbox" id="is_private" name="is_private">
+
+                <button type="submit">Post Update</button>
+            </form>
+            <div id="responseMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchManagerOrganizations() {
+            try {
+                const response = await fetch('/updates/manager/organizations');
+                const organizations = await response.json();
+
+                const orgSelect = document.getElementById('organization');
+                organizations.forEach(org => {
+                    const option = document.createElement('option');
+                    option.value = org.id;
+                    option.textContent = org.name;
+                    orgSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching organizations:', error);
+            }
+        }
+
+        async function postUpdate(event) {
+            event.preventDefault();
+
+            const organizationId = document.getElementById('organization').value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const is_private = document.getElementById('is_private').checked;
+
+            try {
+                const response = await fetch(`/updates/organization/${organizationId}/updates`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, description, is_private })
+                });
+
+                const message = await response.text();
+                document.getElementById('responseMessage').textContent = message;
+
+                if (response.status === 401) {
+                    alert('You need to be logged in to post updates.');
+                    window.location.href = '/login';
+                    return;
+                } else if (response.status === 403) {
+                    alert('You do not have permission to post updates.');
+                    return;
+                }
+            } catch (error) {
+                console.error('Error posting update:', error);
+            }
+        }
+
+        document.getElementById('postUpdateForm').addEventListener('submit', postUpdate);
+        document.addEventListener('DOMContentLoaded', fetchManagerOrganizations);
+    </script>
+</body>
+
+</html>

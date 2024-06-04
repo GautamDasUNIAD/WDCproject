@@ -11,6 +11,36 @@ function isAuthenticated(req, res, next) {
     }
 }
 
+// Middleware to check if the user is a manager
+function isManager(req, res, next) {
+    if (req.isAuthenticated() && req.user.role === 'Manager') {
+        return next();
+    } else {
+        res.status(403).send('You do not have permission to perform this action.');
+    }
+}
+
+// Middleware to check if the manager belongs to the organization
+function isManagerForOrg(req, res, next) {
+    const userId = req.user.id;
+    const { organizationId } = req.params;
+
+    db.query(
+        'SELECT * FROM OrganisationManagers WHERE manager_id = ? AND organization_id = ?',
+        [userId, organizationId],
+        (err, results) => {
+            if (err) {
+                console.error('Error checking manager association:', err);
+                return res.status(500).send('Internal server error');
+            }
+            if (results.length === 0) {
+                return res.status(403).send('You do not have permission to perform this action for this organization.');
+            }
+            next();
+        }
+    );
+}
+
 // Get user's organizations
 router.get('/myorganizations', isAuthenticated, (req, res) => {
     const userId = req.user.id;
@@ -74,6 +104,47 @@ router.get('/branch/:branchId/events', isAuthenticated, (req, res) => {
         (err, results) => {
             if (err) {
                 console.error('Error fetching branch events:', err);
+                return res.status(500).send('Internal server error');
+            }
+            res.json(results);
+        }
+    );
+});
+
+// RSVP for an event
+router.post('/rsvp', isAuthenticated, (req, res) => {
+    const userId = req.user.id;
+    const { eventId } = req.body;
+
+    db.query(
+        'INSERT INTO RSVP (user_id, event_id) VALUES (?, ?)',
+        [userId, eventId],
+        (err, results) => {
+            if (err) {
+                if (err.code === 'ER_DUP_ENTRY') {
+                    return res.status(400).send('You have already RSVP\'d for this event.');
+                }
+                console.error('Error RSVPing for event:', err);
+                return res.status(500).send('Internal server error');
+            }
+            res.status(201).send('Successfully RSVP\'d for the event');
+        }
+    );
+});
+
+// Get RSVPs for an event
+router.get('/organization/:organizationId/branch/:branchId/event/:eventId/rsvps', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
+    const { eventId } = req.params;
+
+    db.query(
+        `SELECT Users.id, Users.first_name, Users.last_name, Users.email
+         FROM RSVP
+         JOIN Users ON RSVP.user_id = Users.id
+         WHERE RSVP.event_id = ?`,
+        [eventId],
+        (err, results) => {
+            if (err) {
+                console.error('Error fetching RSVPs:', err);
                 return res.status(500).send('Internal server error');
             }
             res.json(results);
