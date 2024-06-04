@@ -14,14 +14,7 @@ router.get('/', function(req, res, next) {
     } else {
         res.json({ authenticated: false });
     }
-  // req.pool.query('SELECT * FROM Users', (err, results) => {
-  //   if (err) {
-  //     console.error('Error fetching users:', err);
-  //     res.status(500).send('Error fetching users');
-  //   } else {
-  //     res.json(results);
-  //   }
-  // });
+
 });
 
 router.post('/register', (req, res) => {

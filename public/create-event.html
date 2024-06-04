@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+</head>
+<body>
+    <div class="create-event-container">
+        <form id="createEventForm">
+            <label for="name">Event Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="organization_id">Organization ID:</label>
+            <input type="text" id="organization_id" name="organization_id" required>
+
+            <label for="branch_id">Branch ID:</label>
+            <input type="text" id="branch_id" name="branch_id" required>
+
+            <label for="date">Date:</label>
+            <input type="datetime-local" id="date" name="date" required>
+
+            <input type="submit" value="Create Event">
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+
+    <script>
+        document.getElementById('createEventForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const location = document.getElementById('location').value;
+            const description = document.getElementById('description').value;
+            const organization_id = document.getElementById('organization_id').value;
+            const branch_id = document.getElementById('branch_id').value;
+            const date = document.getElementById('date').value;
+
+            const responseMessage = document.getElementById('responseMessage');
+            responseMessage.textContent = '';
+
+            try {
+                const response = await fetch('/events/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, location, description, organization_id, branch_id, date })
+                });
+
+                if (response.ok) {
+                    responseMessage.textContent = 'Event created successfully';
+                } else {
+                    const error = await response.text();
+                    responseMessage.textContent = 'Error creating event: ' + error;
+                }
+            } catch (error) {
+                responseMessage.textContent = 'An error occurred: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

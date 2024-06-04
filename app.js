@@ -12,6 +12,8 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const organizationRouter= require('./routes/organizations');
+const eventRouter = require('./routes/events');
 
 var dbConnectionPool = require('./db');
 
@@ -39,16 +41,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/organizations', organizationRouter);
+app.use('/events', eventRouter);
+
 
 // OAuth routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('/home.html');
+    res.redirect('/');
 });
 
 app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('/home.html');
+    res.redirect('/');
 });
 
 module.exports = app;

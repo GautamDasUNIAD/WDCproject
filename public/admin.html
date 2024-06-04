@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Organizations</title>
+</head>
+<body>
+    <h1>Manage Organizations</h1>
+    <form id="createOrganizationForm">
+        <label for="name">Organization Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+        <label for="social_media_link">Social Media Link:</label>
+        <input type="text" id="social_media_link" name="social_media_link">
+        <input type="submit" value="Create Organization">
+    </form>
+    <h2>Existing Organizations</h2>
+    <div id="organizationList"></div>
+    <div id="responseMessage"></div>
+
+    <script>
+        document.getElementById('createOrganizationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const socialMediaLink = document.getElementById('social_media_link').value;
+
+            const responseMessage = document.getElementById('responseMessage');
+            responseMessage.textContent = '';
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/organizations', true);
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 201) {
+                        responseMessage.textContent = 'Organization created successfully';
+                        fetchOrganizations();
+                    } else {
+                        responseMessage.textContent = 'Error creating organization: ' + xhr.responseText;
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ name: name, description: description, social_media_link: socialMediaLink }));
+        });
+
+        function fetchOrganizations() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/organizations', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const organizations = JSON.parse(xhr.responseText);
+                    const organizationList = document.getElementById('organizationList');
+                    organizationList.innerHTML = '';
+
+                    organizations.forEach(function (org) {
+                        const div = document.createElement('div');
+                        div.textContent = `Name: ${org.name}, Description: ${org.description}, Social Media Link: ${org.social_media_link}`;
+                        organizationList.appendChild(div);
+                    });
+                }
+            };
+            xhr.send();
+        }
+
+        // Fetch organizations on page load
+        fetchOrganizations();
+    </script>
+</body>
+</html>
