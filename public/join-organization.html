@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join or Leave Organization</title>
+</head>
+<body>
+    <div class="search-organization-container">
+        <h1>Join or Leave Organization</h1>
+        <form id="searchOrganizationForm">
+            <label for="query">Search Organization:</label>
+            <input type="text" id="query" name="query" required>
+            <input type="submit" value="Search">
+        </form>
+        <div id="searchResults"></div>
+    </div>
+
+    <div id="organizationActions" style="display: none;">
+        <h2>Organization Actions</h2>
+        <p id="organizationName"></p>
+        <p id="organizationStatus"></p>
+        <button type="button" id="joinButton" style="display: none;">Join Organization</button>
+        <button type="button" id="leaveButton" style="display: none;">Leave Organization</button>
+        <div id="responseMessage"></div>
+    </div>
+
+    <div id="accessMessage" class="message" style="color: red;"></div>
+
+    <script>
+        async function searchOrganization(event) {
+            event.preventDefault();
+            const query = document.getElementById('query').value;
+
+            try {
+                const response = await fetch(`/userorganizations/search?query=${encodeURIComponent(query)}`);
+                if (response.status === 401) {
+                    document.getElementById('accessMessage').textContent = 'You need to be logged in to perform this action.';
+                    return;
+                }
+
+                const organizations = await response.json();
+                const searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = '';
+                organizations.forEach(org => {
+                    const button = document.createElement('button');
+                    button.textContent = org.name;
+                    button.onclick = () => showOrganizationActions(org.id, org.name);
+                    searchResults.appendChild(button);
+                });
+            } catch (error) {
+                console.error('Error searching organizations:', error);
+            }
+        }
+
+        async function showOrganizationActions(organizationId, organizationName) {
+            document.getElementById('organizationActions').style.display = 'block';
+            document.getElementById('organizationName').textContent = `Organization: ${organizationName}`;
+            document.getElementById('responseMessage').textContent = '';
+            document.getElementById('accessMessage').textContent = '';
+
+            try {
+                const response = await fetch(`/userorganizations/check?organization_id=${organizationId}`);
+                if (response.status === 401) {
+                    document.getElementById('accessMessage').textContent = 'You need to be logged in to perform this action.';
+                    return;
+                }
+
+                const { joined } = await response.json();
+                const statusText = document.getElementById('organizationStatus');
+                const joinButton = document.getElementById('joinButton');
+                const leaveButton = document.getElementById('leaveButton');
+
+                if (joined) {
+                    statusText.textContent = 'You are already a member of this organization.';
+                    joinButton.style.display = 'none';
+                    leaveButton.style.display = 'block';
+                    leaveButton.onclick = () => leaveOrganization(organizationId);
+                } else {
+                    statusText.textContent = 'You are not a member of this organization.';
+                    joinButton.style.display = 'block';
+                    leaveButton.style.display = 'none';
+                    joinButton.onclick = () => joinOrganization(organizationId);
+                }
+            } catch (error) {
+                console.error('Error checking organization membership:', error);
+            }
+        }
+
+        async function joinOrganization(organizationId) {
+            try {
+                const response = await fetch('/userorganizations/join', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ organization_id: organizationId })
+                });
+
+                if (response.status === 401) {
+                    document.getElementById('accessMessage').textContent = 'You need to be logged in to perform this action.';
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    document.getElementById('responseMessage').textContent = 'Error joining organization: ' + errorText;
+                    return;
+                }
+
+                document.getElementById('responseMessage').textContent = 'Successfully joined the organization';
+                showOrganizationActions(organizationId, document.getElementById('organizationName').textContent);
+            } catch (error) {
+                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
+            }
+        }
+
+        async function leaveOrganization(organizationId) {
+            try {
+                const response = await fetch('/userorganizations/leave', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ organization_id: organizationId })
+                });
+
+                if (response.status === 401) {
+                    document.getElementById('accessMessage').textContent = 'You need to be logged in to perform this action.';
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    document.getElementById('responseMessage').textContent = 'Error leaving organization: ' + errorText;
+                    return;
+                }
+
+                document.getElementById('responseMessage').textContent = 'Successfully left the organization';
+                showOrganizationActions(organizationId, document.getElementById('organizationName').textContent);
+            } catch (error) {
+                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
+            }
+        }
+
+        document.getElementById('searchOrganizationForm').addEventListener('submit', searchOrganization);
+    </script>
+</body>
+</html>
