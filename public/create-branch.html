@@ -7,12 +7,10 @@
 </head>
 <body>
     <div class="create-branch-container">
+        <h1>Create Branch</h1>
         <form id="createBranchForm">
             <label for="location">Branch Location:</label>
             <input type="text" id="location" name="location" required>
-
-            <label for="organization_id">Organization ID:</label>
-            <input type="text" id="organization_id" name="organization_id" required>
 
             <input type="submit" value="Create Branch">
         </form>
@@ -20,34 +18,46 @@
     </div>
 
     <script>
-        document.getElementById('createBranchForm').addEventListener('submit', async function(event) {
+        async function createBranch(event) {
             event.preventDefault();
 
-            const location = document.getElementById('location').value;
-            const organization_id = document.getElementById('organization_id').value;
+            const urlParams = new URLSearchParams(window.location.search);
+            const organizationId = urlParams.get('organizationId');
 
-            const responseMessage = document.getElementById('responseMessage');
-            responseMessage.textContent = '';
+            if (!organizationId) {
+                document.getElementById('responseMessage').textContent = 'Organization ID is required.';
+                return;
+            }
+
+            const location = document.getElementById('location').value;
 
             try {
-                const response = await fetch('/branches/create', {
+                const response = await fetch(`/branches/${organizationId}/branches/create`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ location, organization_id })
+                    body: JSON.stringify({ location })
                 });
 
-                if (response.ok) {
-                    responseMessage.textContent = 'Branch created successfully';
-                } else {
-                    const error = await response.text();
-                    responseMessage.textContent = 'Error creating branch: ' + error;
+                if (response.status === 403) {
+                    document.getElementById('responseMessage').textContent = 'You do not have permission to perform this action.';
+                    return;
                 }
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    document.getElementById('responseMessage').textContent = 'Error creating branch: ' + error;
+                    return;
+                }
+
+                document.getElementById('responseMessage').textContent = 'Branch created successfully';
             } catch (error) {
-                responseMessage.textContent = 'An error occurred: ' + error.message;
+                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
             }
-        });
+        }
+
+        document.getElementById('createBranchForm').addEventListener('submit', createBranch);
     </script>
 </body>
 </html>

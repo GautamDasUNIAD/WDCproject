@@ -54,7 +54,7 @@ CREATE TABLE `Branches` (
   PRIMARY KEY (`id`),
   KEY `organization_id` (`organization_id`),
   CONSTRAINT `Branches_ibfk_1` FOREIGN KEY (`organization_id`) REFERENCES `VolunteerOrganizations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `Branches` (
 
 LOCK TABLES `Branches` WRITE;
 /*!40000 ALTER TABLE `Branches` DISABLE KEYS */;
-INSERT INTO `Branches` VALUES (1,'Adelaide',1);
+INSERT INTO `Branches` VALUES (1,'Adelaide',1),(2,'Auckland',1);
 /*!40000 ALTER TABLE `Branches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,6 +158,33 @@ CREATE TABLE `Managers` (
 LOCK TABLES `Managers` WRITE;
 /*!40000 ALTER TABLE `Managers` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Managers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `OrganisationManagers`
+--
+
+DROP TABLE IF EXISTS `OrganisationManagers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `OrganisationManagers` (
+  `organization_id` int NOT NULL,
+  `manager_id` int NOT NULL,
+  PRIMARY KEY (`organization_id`,`manager_id`),
+  KEY `manager_id` (`manager_id`),
+  CONSTRAINT `OrganisationManagers_ibfk_1` FOREIGN KEY (`organization_id`) REFERENCES `VolunteerOrganizations` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `OrganisationManagers_ibfk_2` FOREIGN KEY (`manager_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `OrganisationManagers`
+--
+
+LOCK TABLES `OrganisationManagers` WRITE;
+/*!40000 ALTER TABLE `OrganisationManagers` DISABLE KEYS */;
+INSERT INTO `OrganisationManagers` VALUES (2,1),(1,8);
+/*!40000 ALTER TABLE `OrganisationManagers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -303,7 +330,7 @@ CREATE TABLE `Users` (
 
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-INSERT INTO `Users` VALUES (1,'Gautam','Das','gautam.das.cse@gmail.com','$2b$10$KL0tWjLOP5mfI9oYRaNnmOjxK0vNdTaYsLfSVc1k2qrFs50LQZrxa','admin',0,'2024-06-03 04:46:43','2024-06-03 04:46:43'),(3,'Gautam','Das','gautam.das.cse@.com','$2b$10$ac86neGSViyoLPtXqhgXeOamWr2u2.7EoJn.MS1uYTWbA.Wn7.oWi','admin',0,'2024-06-03 04:48:52','2024-06-03 04:48:52'),(4,'Gautam','Das','gautam.das.cse@g.com','$2b$10$5XcgMXWI/tORX4ilIkUJF.tq482tOlii8RxdQB/CQcY2wkmfp/o1q','Admin',0,'2024-06-03 04:50:33','2024-06-03 04:50:33'),(5,'Gono','Teer','gono@mail.com','$2b$10$aAmt2ElYlZ7lh1fl22hrQuVc4WsirxhLHsvQz9I.ZVqmyU0gz7Jjm','Regular',0,'2024-06-03 05:19:55','2024-06-03 05:19:55'),(6,'Gautam','Das','gdas2005gdas@gmail.com',NULL,'Regular',1,'2024-06-03 07:34:21','2024-06-03 07:34:21'),(7,'GautamDasUNIAD','','a1870669@student.adelaide.edu.au',NULL,'Regular',1,'2024-06-03 07:50:07','2024-06-03 07:50:07'),(8,'Manager','Man','manager@g.com','$2b$10$lvpAXAGqpg92eP0LZDZZv.Py9qcB47iKFSF3kGTpRBZ934TBb7xBi','Manager',0,'2024-06-04 01:28:25','2024-06-04 01:28:25');
+INSERT INTO `Users` VALUES (1,'Gautam','Das','gautam.das.cse@gmail.com','$2b$10$KL0tWjLOP5mfI9oYRaNnmOjxK0vNdTaYsLfSVc1k2qrFs50LQZrxa','Manager',0,'2024-06-03 04:46:43','2024-06-04 04:50:14'),(3,'Gautam','Das','gautam.das.cse@.com','$2b$10$ac86neGSViyoLPtXqhgXeOamWr2u2.7EoJn.MS1uYTWbA.Wn7.oWi','admin',0,'2024-06-03 04:48:52','2024-06-03 04:48:52'),(4,'Gautam','Das','gautam.das.cse@g.com','$2b$10$5XcgMXWI/tORX4ilIkUJF.tq482tOlii8RxdQB/CQcY2wkmfp/o1q','Admin',0,'2024-06-03 04:50:33','2024-06-03 04:50:33'),(5,'Gono','Teer','gono@mail.com','$2b$10$aAmt2ElYlZ7lh1fl22hrQuVc4WsirxhLHsvQz9I.ZVqmyU0gz7Jjm','Regular',0,'2024-06-03 05:19:55','2024-06-03 05:19:55'),(6,'Gautam','Das','gdas2005gdas@gmail.com',NULL,'Regular',1,'2024-06-03 07:34:21','2024-06-03 07:34:21'),(7,'GautamDasUNIAD','','a1870669@student.adelaide.edu.au',NULL,'Regular',1,'2024-06-03 07:50:07','2024-06-03 07:50:07'),(8,'Manager','Man','manager@g.com','$2b$10$lvpAXAGqpg92eP0LZDZZv.Py9qcB47iKFSF3kGTpRBZ934TBb7xBi','Manager',0,'2024-06-04 01:28:25','2024-06-04 01:28:25');
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,4 +371,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-04  4:28:48
+-- Dump completed on 2024-06-04  4:54:41

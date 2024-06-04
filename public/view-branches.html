@@ -26,7 +26,8 @@
 </head>
 <body>
     <div class="view-branches-container">
-        <h1>All Branches</h1>
+        <h1>Branches</h1>
+        <div id="message" class="message"></div>
         <table id="branchesTable">
             <thead>
                 <tr>
@@ -43,8 +44,20 @@
 
     <script>
         async function fetchBranches() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const organizationId = urlParams.get('organizationId');
+
+            if (!organizationId) {
+                document.getElementById('message').textContent = 'Organization ID is required.';
+                return;
+            }
+
             try {
-                const response = await fetch('/branches/all');
+                const response = await fetch(`/branches/${organizationId}/branches`);
+                if (response.status === 403) {
+                    document.getElementById('message').textContent = 'You do not have permission to view this information.';
+                    return;
+                }
                 if (!response.ok) {
                     throw new Error('Failed to fetch branches');
                 }
@@ -63,6 +76,7 @@
                 });
             } catch (error) {
                 console.error('Error:', error);
+                document.getElementById('message').textContent = 'An error occurred while fetching branches.';
             }
         }
 

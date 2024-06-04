@@ -51,15 +51,16 @@
     <script>
         async function fetchBranchUsers() {
             const urlParams = new URLSearchParams(window.location.search);
+            const organizationId = urlParams.get('organizationId');
             const branchId = urlParams.get('branchId');
 
-            if (!branchId) {
-                document.getElementById('message').textContent = 'Branch ID is required.';
+            if (!organizationId || !branchId) {
+                document.getElementById('message').textContent = 'Organization ID and Branch ID are required.';
                 return;
             }
 
             try {
-                const response = await fetch(`/userbranches/branch/${branchId}/users`);
+                const response = await fetch(`/userbranches/${organizationId}/branch/${branchId}/users`);
                 if (response.status === 403) {
                     document.getElementById('message').textContent = 'You do not have permission to view this information.';
                     return;

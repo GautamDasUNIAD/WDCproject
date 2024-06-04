@@ -11,6 +11,27 @@ function isAuthenticated(req, res, next) {
     }
 }
 
+// Middleware to check if the user is a manager for the specific organization
+function isManagerForOrg(req, res, next) {
+    const userId = req.user.id;
+    const { organizationId } = req.params;
+
+    db.query(
+        'SELECT * FROM OrganisationManagers WHERE manager_id = ? AND organization_id = ?',
+        [userId, organizationId],
+        (err, results) => {
+            if (err) {
+                console.error('Error checking manager association:', err);
+                return res.status(500).send('Internal server error');
+            }
+            if (results.length === 0) {
+                return res.status(403).send('You do not have permission to perform this action for this organization.');
+            }
+            next();
+        }
+    );
+}
+
 // Join branch route
 router.post('/join', isAuthenticated, (req, res) => {
     const userId = req.user.id; // Assuming the user is authenticated and user info is stored in req.user
@@ -44,17 +65,43 @@ router.get('/branches', isAuthenticated, (req, res) => {
     });
 });
 
-// Middleware to check if the user is a manager
-function isManager(req, res, next) {
-    if (req.isAuthenticated() && req.user.role === 'Manager') {
-        return next();
-    } else {
-        res.status(403).send('You do not have permission to perform this action.');
-    }
-}
+// Create branch route (restricted to managers of the organization)
+router.post('/:organizationId/branches/create', isAuthenticated, isManagerForOrg, (req, res) => {
+    const { organizationId } = req.params;
+    const { location } = req.body;
 
-// Fetch users who have joined a specific branch
-router.get('/branch/:branchId/users', isManager, (req, res) => {
+    if (!location) {
+        return res.status(400).send('Location is required');
+    }
+
+    db.query(
+        'INSERT INTO Branches (location, organization_id) VALUES (?, ?)',
+        [location, organizationId],
+        (err, results) => {
+            if (err) {
+                console.error('Error creating branch:', err);
+                return res.status(500).send('Internal server error');
+            }
+            res.status(201).send('Branch created successfully');
+        }
+    );
+});
+
+// Fetch branches for a specific organization (restricted to managers of the organization)
+router.get('/:organizationId/branches', isAuthenticated, isManagerForOrg, (req, res) => {
+    const { organizationId } = req.params;
+
+    db.query('SELECT * FROM Branches WHERE organization_id = ?', [organizationId], (err, results) => {
+        if (err) {
+            console.error('Error fetching branches:', err);
+            return res.status(500).send('Internal server error');
+        }
+        res.json(results);
+    });
+});
+
+// Fetch users who have joined a specific branch (restricted to managers of the organization)
+router.get('/:organizationId/branch/:branchId/users', isAuthenticated, isManagerForOrg, (req, res) => {
     const { branchId } = req.params;
 
     db.query(

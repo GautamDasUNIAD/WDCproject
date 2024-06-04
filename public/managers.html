@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Management</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Management</h1>
+
+    <!-- User List -->
+    <div id="userList">
+        <h2>All Users</h2>
+        <table id="usersTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Organizations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User rows will be appended here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Manager Form -->
+    <div id="addManagerForm">
+        <h2>Add Manager to Organization</h2>
+        <form id="managerForm">
+            <label for="userId">User ID:</label>
+            <input type="text" id="userId" name="userId" required>
+            <label for="organizationId">Organization ID:</label>
+            <input type="text" id="organizationId" name="organizationId" required>
+            <input type="submit" value="Add Manager">
+        </form>
+        <div id="managerResponse" class="message"></div>
+    </div>
+
+    <!-- Upgrade Role Form -->
+    <div id="upgradeRoleForm">
+        <h2>Upgrade User Role</h2>
+        <form id="upgradeForm">
+            <label for="upgradeUserId">User ID:</label>
+            <input type="text" id="upgradeUserId" name="upgradeUserId" required>
+            <input type="submit" value="Upgrade Role">
+        </form>
+        <div id="upgradeResponse" class="message"></div>
+    </div>
+
+    <div id="accessMessage" class="message"></div>
+
+    <script>
+        // Fetch and display all users
+        async function fetchUsers() {
+            try {
+                const response = await fetch('/admin/users');
+                if (response.status === 403) {
+                    document.getElementById('accessMessage').textContent = 'You do not have permission to view this page.';
+                    return;
+                }
+                const users = await response.json();
+                const tableBody = document.getElementById('usersTable').querySelector('tbody');
+                tableBody.innerHTML = '';
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.first_name}</td>
+                        <td>${user.last_name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.role}</td>
+                        <td>${user.organizations ? user.organizations : 'None'}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        }
+
+        // Add manager to organization
+        async function addManager(event) {
+            event.preventDefault();
+            const userId = document.getElementById('userId').value;
+            const organizationId = document.getElementById('organizationId').value;
+            const responseMessage = document.getElementById('managerResponse');
+
+            try {
+                const response = await fetch(`/admin/organizations/${organizationId}/managers`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    responseMessage.textContent = 'Error adding manager: ' + errorText;
+                    return;
+                }
+
+                responseMessage.textContent = 'Manager added successfully';
+            } catch (error) {
+                responseMessage.textContent = 'An error occurred: ' + error.message;
+            }
+        }
+
+        // Upgrade user role
+        async function upgradeRole(event) {
+            event.preventDefault();
+            const userId = document.getElementById('upgradeUserId').value;
+            const responseMessage = document.getElementById('upgradeResponse');
+
+            try {
+                const response = await fetch(`/admin/users/${userId}/upgrade`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    responseMessage.textContent = 'Error upgrading role: ' + errorText;
+                    return;
+                }
+
+                responseMessage.textContent = 'User role upgraded successfully';
+            } catch (error) {
+                responseMessage.textContent = 'An error occurred: ' + error.message;
+            }
+        }
+
+        document.getElementById('managerForm').addEventListener('submit', addManager);
+        document.getElementById('upgradeForm').addEventListener('submit', upgradeRole);
+        window.onload = fetchUsers;
+    </script>
+</body>
+</html>
