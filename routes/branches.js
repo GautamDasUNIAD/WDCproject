@@ -43,4 +43,26 @@ router.get('/all', (req, res) => {
     });
 });
 
+// Join branch route
+router.post('/join', (req, res) => {
+    const userId = req.user.id; // Assuming the user is authenticated and user info is stored in req.user
+    const { branch_id } = req.body;
+
+    if (!branch_id) {
+        return res.status(400).send('Branch ID is required');
+    }
+
+    db.query(
+        'INSERT INTO UserBranches (user_id, branch_id) VALUES (?, ?)',
+        [userId, branch_id],
+        (err, results) => {
+            if (err) {
+                console.error('Error joining branch:', err);
+                return res.status(500).send('Internal server error');
+            }
+            res.status(201).send('Successfully joined the branch');
+        }
+    );
+});
+
 module.exports = router;

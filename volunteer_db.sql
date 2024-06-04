@@ -220,6 +220,32 @@ LOCK TABLES `Updates` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `UserBranches`
+--
+
+DROP TABLE IF EXISTS `UserBranches`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `UserBranches` (
+  `user_id` int NOT NULL,
+  `branch_id` int NOT NULL,
+  PRIMARY KEY (`user_id`,`branch_id`),
+  KEY `branch_id` (`branch_id`),
+  CONSTRAINT `UserBranches_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `UserBranches_ibfk_2` FOREIGN KEY (`branch_id`) REFERENCES `Branches` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `UserBranches`
+--
+
+LOCK TABLES `UserBranches` WRITE;
+/*!40000 ALTER TABLE `UserBranches` DISABLE KEYS */;
+/*!40000 ALTER TABLE `UserBranches` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `UserOrganizations`
 --
 
@@ -317,4 +343,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-04  4:01:29
+-- Dump completed on 2024-06-04  4:09:19

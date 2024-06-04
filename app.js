@@ -15,6 +15,7 @@ var usersRouter = require('./routes/users');
 const organizationRouter= require('./routes/organizations');
 const eventRouter = require('./routes/events');
 const branchRouter = require('./routes/branches');
+const userBranchRouter = require('./routes/userbranches'); // interacting with the branches as a user
 
 var dbConnectionPool = require('./db');
 
@@ -29,7 +30,7 @@ app.use(function(req, res, next){
 app.use(logger('dev'));
 app.use(express.json());
 app.use(session({
-    secret: 'your-session-secret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true
 }));
@@ -45,7 +46,7 @@ app.use('/users', usersRouter);
 app.use('/organizations', organizationRouter);
 app.use('/events', eventRouter);
 app.use('/branches', branchRouter);
-
+app.use('/userbranches', userBranchRouter);
 
 // OAuth routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
