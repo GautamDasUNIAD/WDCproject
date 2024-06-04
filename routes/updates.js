@@ -41,14 +41,34 @@ function isManagerForOrg(req, res, next) {
     );
 }
 
+// Get organizations for a manager
+router.get('/manager/organizations', isAuthenticated, isManager, (req, res) => {
+    const userId = req.user.id;
+
+    db.query(
+        `SELECT o.id, o.name FROM VolunteerOrganizations o
+         JOIN OrganisationManagers om ON o.id = om.organization_id
+         WHERE om.manager_id = ?`,
+        [userId],
+        (err, results) => {
+            if (err) {
+                console.error('Error fetching manager organizations:', err);
+                return res.status(500).send('Internal server error');
+            }
+            res.json(results);
+        }
+    );
+});
+
 // Post an update
 router.post('/organization/:organizationId/updates', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
     const { organizationId } = req.params;
-    const { title, content, isPublic } = req.body;
+    const { title, description, is_private } = req.body;
+    const date = new Date();
 
     db.query(
-        'INSERT INTO Updates (organization_id, title, content, is_public) VALUES (?, ?, ?, ?)',
-        [organizationId, title, content, isPublic],
+        'INSERT INTO Updates (organization_id, title, description, is_private, date) VALUES (?, ?, ?, ?, ?)',
+        [organizationId, title, description, is_private ? 1 : 0, date],
         (err, results) => {
             if (err) {
                 console.error('Error posting update:', err);
@@ -64,7 +84,7 @@ router.get('/organization/:organizationId/updates/public', (req, res) => {
     const { organizationId } = req.params;
 
     db.query(
-        'SELECT * FROM Updates WHERE organization_id = ? AND is_public = TRUE',
+        'SELECT * FROM Updates WHERE organization_id = ? AND is_private = FALSE',
         [organizationId],
         (err, results) => {
             if (err) {
@@ -82,7 +102,10 @@ router.get('/organization/:organizationId/updates/member', isAuthenticated, (req
     const { organizationId } = req.params;
 
     db.query(
-        'SELECT * FROM Updates WHERE organization_id = ? AND is_public = FALSE AND EXISTS (SELECT 1 FROM UserOrganizations WHERE user_id = ? AND organization_id = ?)',
+        `SELECT * FROM Updates
+         WHERE organization_id = ?
+         AND is_private = TRUE
+         AND EXISTS (SELECT 1 FROM UserOrganizations WHERE user_id = ? AND organization_id = ?)`,
         [organizationId, userId, organizationId],
         (err, results) => {
             if (err) {

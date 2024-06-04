@@ -19,6 +19,7 @@ const userBranchRouter = require('./routes/userbranches'); // interacting with t
 const userOrganizationRouter = require('./routes/userorganizations'); // interacting with the organizaitons as a user
 const adminRouter = require('./routes/admin');
 const userEventsRouter = require('./routes/userevents');
+const updatesRouter = require('./routes/updates');
 
 var dbConnectionPool = require('./db');
 
@@ -53,6 +54,7 @@ app.use('/userbranches', userBranchRouter);
 app.use('/admin', adminRouter);
 app.use('/userorganizations', userOrganizationRouter);
 app.use('/userevents', userEventsRouter);
+app.use('/updates', updatesRouter);
 
 // OAuth routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));

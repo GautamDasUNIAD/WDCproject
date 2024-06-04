@@ -39,24 +39,32 @@
                 const responsePublic = await fetch(`/updates/organization/${organizationId}/updates/public`);
                 const publicUpdates = await responsePublic.json();
 
-                let memberUpdates = [];
-                if (document.cookie.includes('isLoggedIn=true')) {
-                    const responseMember = await fetch(`/updates/organization/${organizationId}/updates/member`);
-                    if (responseMember.ok) {
-                        memberUpdates = await responseMember.json();
-                    }
-                }
+                const responseMember = await fetch(`/updates/organization/${organizationId}/updates/member`);
+                const memberUpdates = responseMember.ok ? await responseMember.json() : [];
 
                 const updatesList = document.getElementById('updatesList');
                 updatesList.innerHTML = '';
 
-                [...publicUpdates, ...memberUpdates].forEach(update => {
+                publicUpdates.forEach(update => {
                     const updateDiv = document.createElement('div');
                     updateDiv.classList.add('update-item');
 
                     updateDiv.innerHTML = `
                         <h3>${update.title}</h3>
-                        <p>${update.content}</p>
+                        <p>${update.description}</p>
+                    `;
+
+                    updatesList.appendChild(updateDiv);
+                });
+
+                memberUpdates.forEach(update => {
+                    const updateDiv = document.createElement('div');
+                    updateDiv.classList.add('update-item', 'private-update');
+
+                    updateDiv.innerHTML = `
+                        <h3>${update.title}</h3>
+                        <p>${update.description}</p>
+                        <p><strong>Private Update</strong></p>
                     `;
 
                     updatesList.appendChild(updateDiv);
