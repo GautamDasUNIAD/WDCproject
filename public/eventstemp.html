@@ -53,7 +53,10 @@
             <button type="button" class="read-more-button">Read More</button>
         </div>
     </div>
+
     <div id="organizationList"></div>
+
+
     <footer>
         <div class="footer-content">
             <div class="social-media-links">
@@ -78,6 +81,7 @@
         async function fetchMyOrganizations() {
             try {
                 const response = await fetch('/userevents/myorganizations');
+                console.log('waiting');
                 if (response.status === 401) {
                     alert('You need to be logged in to view organizations.');
                     window.location.href = '/login';
@@ -144,6 +148,7 @@
                     updateTextDiv.innerHTML = `
                         <h3>${event.date} & ${event.name}</h3>
                         <p>${event.description}</p>
+                        <button type="button" onclick="rsvpForEvent(${event.id})">RSVP</button>
                     `;
 
                     eventDiv.appendChild(voteDiv);
@@ -193,15 +198,35 @@
             }
         }
 
+        async function rsvpForEvent(eventId) {
+            try {
+                const response = await fetch('/userevents/rsvp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ eventId })
+                });
+
+                if (response.status === 401) {
+                    alert('You need to be logged in to RSVP for events.');
+                    window.location.href = '/login';
+                    return;
+                }
+
+                const message = await response.text();
+                alert(message);
+            } catch (error) {
+                console.error('Error RSVPing for event:', error);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const organizationId = urlParams.get('organizationId');
-            if (organizationId) {
-                fetchEvents(organizationId);
-                fetchBranches(organizationId);
-            } else {
-                fetchMyOrganizations();
-            }
+            fetchEvents(organizationId);
+            fetchBranches(organizationId);
+            fetchMyOrganizations();
         });
     </script>
 </body>

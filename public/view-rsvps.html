@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View RSVPs</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a class="active" href="/home">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
+        </ul>
+        <ul>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h3>Filter by Branch:</h3>
+            <ul id="branchList">
+                <!-- Branches will be populated here by JavaScript -->
+            </ul>
+        </div>
+
+        <div class="rsvps-section">
+            <h2>RSVPs for Events</h2>
+            <div id="eventsList">
+                <!-- Events will be populated here by JavaScript -->
+            </div>
+            <div id="rsvpsList">
+                <!-- RSVPs will be populated here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchBranches(organizationId) {
+            try {
+                const response = await fetch(`/userevents/organization/${organizationId}/branches`);
+                if (!response.ok) {
+                    console.error('Error fetching branches:', response.statusText);
+                    return;
+                }
+
+                const branches = await response.json();
+                const branchList = document.getElementById('branchList');
+                branchList.innerHTML = '';
+
+                branches.forEach(branch => {
+                    const li = document.createElement('li');
+                    const input = document.createElement('input');
+                    input.type = 'checkbox';
+                    input.id = branch.id;
+                    input.onchange = () => {
+                        if (input.checked) {
+                            fetchEvents(organizationId, branch.id);
+                        } else {
+                            fetchEvents(organizationId);
+                        }
+                    };
+
+                    const label = document.createElement('label');
+                    label.htmlFor = branch.id;
+                    label.textContent = branch.location;
+
+                    li.appendChild(input);
+                    li.appendChild(label);
+                    branchList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error fetching branches:', error);
+            }
+        }
+
+        async function fetchEvents(organizationId, branchId) {
+            let url = `/userevents/organization/${organizationId}/events`;
+            if (branchId) {
+                url = `/userevents/branch/${branchId}/events`;
+            }
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    console.error('Error fetching events:', response.statusText);
+                    return;
+                }
+
+                const events = await response.json();
+                const eventsList = document.getElementById('eventsList');
+                eventsList.innerHTML = '';
+
+                events.forEach(event => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.classList.add('events-update');
+
+                    const updateTextDiv = document.createElement('div');
+                    updateTextDiv.classList.add('update-text');
+                    updateTextDiv.innerHTML = `
+                        <h3>${event.date} & ${event.name}</h3>
+                        <p>${event.description}</p>
+                        <button type="button" onclick="fetchRSVPs(${event.id}, ${organizationId}, ${branchId})">View RSVPs</button>
+                    `;
+
+                    eventDiv.appendChild(updateTextDiv);
+                    eventsList.appendChild(eventDiv);
+                });
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        }
+
+        async function fetchRSVPs(eventId, organizationId, branchId) {
+            try {
+                const response = await fetch(`/userevents/organization/${organizationId}/branch/${branchId}/event/${eventId}/rsvps`);
+                if (response.status === 401) {
+                    alert('You need to be logged in to view RSVPs.');
+                    window.location.href = '/login';
+                    return;
+                } else if (response.status === 403) {
+                    alert('You do not have permission to view this information.');
+                    return;
+                }
+
+                const rsvps = await response.json();
+                const rsvpsList = document.getElementById('rsvpsList');
+                rsvpsList.innerHTML = '';
+
+                rsvps.forEach(rsvp => {
+                    const rsvpDiv = document.createElement('div');
+                    rsvpDiv.classList.add('rsvp-update');
+                    rsvpDiv.innerHTML = `
+                        <p>${rsvp.first_name} ${rsvp.last_name} (${rsvp.email})</p>
+                    `;
+                    rsvpsList.appendChild(rsvpDiv);
+                });
+            } catch (error) {
+                console.error('Error fetching RSVPs:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const organizationId = urlParams.get('organizationId');
+            if (organizationId) {
+                fetchBranches(organizationId);
+                fetchEvents(organizationId);
+            }
+        });
+    </script>
+</body>
+
+</html>
