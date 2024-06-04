@@ -41,6 +41,33 @@ LOCK TABLES `Admins` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Branches`
+--
+
+DROP TABLE IF EXISTS `Branches`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Branches` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `location` varchar(255) NOT NULL,
+  `organization_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `organization_id` (`organization_id`),
+  CONSTRAINT `Branches_ibfk_1` FOREIGN KEY (`organization_id`) REFERENCES `VolunteerOrganizations` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Branches`
+--
+
+LOCK TABLES `Branches` WRITE;
+/*!40000 ALTER TABLE `Branches` DISABLE KEYS */;
+INSERT INTO `Branches` VALUES (1,'Adelaide',1);
+/*!40000 ALTER TABLE `Branches` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `EmailNotifications`
 --
 
@@ -86,10 +113,13 @@ CREATE TABLE `Events` (
   `attendees` int DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `branch_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `organization_id` (`organization_id`),
-  CONSTRAINT `Events_ibfk_1` FOREIGN KEY (`organization_id`) REFERENCES `VolunteerOrganizations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_branch` (`branch_id`),
+  CONSTRAINT `Events_ibfk_1` FOREIGN KEY (`organization_id`) REFERENCES `VolunteerOrganizations` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_branch` FOREIGN KEY (`branch_id`) REFERENCES `Branches` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,6 +128,7 @@ CREATE TABLE `Events` (
 
 LOCK TABLES `Events` WRITE;
 /*!40000 ALTER TABLE `Events` DISABLE KEYS */;
+INSERT INTO `Events` VALUES (1,'Cube','Adelaide','Once upon a time there was the cube',1,'2024-06-29 13:20:00',0,'2024-06-04 03:50:37','2024-06-04 03:50:37',1);
 /*!40000 ALTER TABLE `Events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -228,7 +259,7 @@ CREATE TABLE `Users` (
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `role` varchar(50) NOT NULL,
   `social_media_linked` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -236,7 +267,7 @@ CREATE TABLE `Users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   CONSTRAINT `Users_chk_1` CHECK ((`role` in (_utf8mb4'Regular',_utf8mb4'Manager',_utf8mb4'Admin')))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,6 +276,7 @@ CREATE TABLE `Users` (
 
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
+INSERT INTO `Users` VALUES (1,'Gautam','Das','gautam.das.cse@gmail.com','$2b$10$KL0tWjLOP5mfI9oYRaNnmOjxK0vNdTaYsLfSVc1k2qrFs50LQZrxa','admin',0,'2024-06-03 04:46:43','2024-06-03 04:46:43'),(3,'Gautam','Das','gautam.das.cse@.com','$2b$10$ac86neGSViyoLPtXqhgXeOamWr2u2.7EoJn.MS1uYTWbA.Wn7.oWi','admin',0,'2024-06-03 04:48:52','2024-06-03 04:48:52'),(4,'Gautam','Das','gautam.das.cse@g.com','$2b$10$5XcgMXWI/tORX4ilIkUJF.tq482tOlii8RxdQB/CQcY2wkmfp/o1q','Admin',0,'2024-06-03 04:50:33','2024-06-03 04:50:33'),(5,'Gono','Teer','gono@mail.com','$2b$10$aAmt2ElYlZ7lh1fl22hrQuVc4WsirxhLHsvQz9I.ZVqmyU0gz7Jjm','Regular',0,'2024-06-03 05:19:55','2024-06-03 05:19:55'),(6,'Gautam','Das','gdas2005gdas@gmail.com',NULL,'Regular',1,'2024-06-03 07:34:21','2024-06-03 07:34:21'),(7,'GautamDasUNIAD','','a1870669@student.adelaide.edu.au',NULL,'Regular',1,'2024-06-03 07:50:07','2024-06-03 07:50:07'),(8,'Manager','Man','manager@g.com','$2b$10$lvpAXAGqpg92eP0LZDZZv.Py9qcB47iKFSF3kGTpRBZ934TBb7xBi','Manager',0,'2024-06-04 01:28:25','2024-06-04 01:28:25');
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,7 +295,7 @@ CREATE TABLE `VolunteerOrganizations` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,6 +304,7 @@ CREATE TABLE `VolunteerOrganizations` (
 
 LOCK TABLES `VolunteerOrganizations` WRITE;
 /*!40000 ALTER TABLE `VolunteerOrganizations` DISABLE KEYS */;
+INSERT INTO `VolunteerOrganizations` VALUES (1,'VDC','Volunteering goes brrr','https://www.youtube.com/watch?v=dQw4w9WgXcQ','2024-06-03 09:12:39','2024-06-03 09:12:39'),(2,'VDC2','Volunteering goes brrr','https://www.youtube.com/watch?v=dQw4w9WgXcQ','2024-06-03 09:13:11','2024-06-03 09:13:11'),(3,'vdc','sdfsfsfsf','sfsfsf','2024-06-03 09:25:59','2024-06-03 09:25:59');
 /*!40000 ALTER TABLE `VolunteerOrganizations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -284,4 +317,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-03  3:14:22
+-- Dump completed on 2024-06-04  4:01:29

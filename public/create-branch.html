@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Branch</title>
+</head>
+<body>
+    <div class="create-branch-container">
+        <form id="createBranchForm">
+            <label for="location">Branch Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="organization_id">Organization ID:</label>
+            <input type="text" id="organization_id" name="organization_id" required>
+
+            <input type="submit" value="Create Branch">
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+
+    <script>
+        document.getElementById('createBranchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const location = document.getElementById('location').value;
+            const organization_id = document.getElementById('organization_id').value;
+
+            const responseMessage = document.getElementById('responseMessage');
+            responseMessage.textContent = '';
+
+            try {
+                const response = await fetch('/branches/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ location, organization_id })
+                });
+
+                if (response.ok) {
+                    responseMessage.textContent = 'Branch created successfully';
+                } else {
+                    const error = await response.text();
+                    responseMessage.textContent = 'Error creating branch: ' + error;
+                }
+            } catch (error) {
+                responseMessage.textContent = 'An error occurred: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

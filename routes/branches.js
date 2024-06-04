@@ -1,4 +1,3 @@
-// routes/events.js
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
@@ -12,32 +11,32 @@ function isManager(req, res, next) {
     }
 }
 
-// Create event route
+// Create branch route
 router.post('/create', isManager, (req, res) => {
-    const { name, location, description, organization_id, branch_id, date } = req.body;
+    const { location, organization_id } = req.body;
 
-    if (!name || !location || !description || !organization_id || !branch_id || !date) {
-        return res.status(400).send('All fields are required');
+    if (!location || !organization_id) {
+        return res.status(400).send('Location and Organization ID are required');
     }
 
     db.query(
-        'INSERT INTO Events (name, location, description, organization_id, branch_id, date) VALUES (?, ?, ?, ?, ?, ?)',
-        [name, location, description, organization_id, branch_id, date],
+        'INSERT INTO Branches (location, organization_id) VALUES (?, ?)',
+        [location, organization_id],
         (err, results) => {
             if (err) {
-                console.error('Error creating event:', err);
+                console.error('Error creating branch:', err);
                 return res.status(500).send('Internal server error');
             }
-            res.status(201).send('Event created successfully');
+            res.status(201).send('Branch created successfully');
         }
     );
 });
 
-// Fetch all events route
+// Fetch all branches route
 router.get('/all', (req, res) => {
-    db.query('SELECT * FROM Events', (err, results) => {
+    db.query('SELECT * FROM Branches', (err, results) => {
         if (err) {
-            console.error('Error fetching events:', err);
+            console.error('Error fetching branches:', err);
             return res.status(500).send('Internal server error');
         }
         res.json(results);

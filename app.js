@@ -14,6 +14,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const organizationRouter= require('./routes/organizations');
 const eventRouter = require('./routes/events');
+const branchRouter = require('./routes/branches');
 
 var dbConnectionPool = require('./db');
 
@@ -43,6 +44,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/organizations', organizationRouter);
 app.use('/events', eventRouter);
+app.use('/branches', branchRouter);
 
 
 // OAuth routes
