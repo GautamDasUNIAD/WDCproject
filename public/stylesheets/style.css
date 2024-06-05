@@ -979,6 +979,8 @@ ul {
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  border: 2px solid white;
+
 }
 
 .update img {
@@ -1217,6 +1219,7 @@ footer {
   border-left: 2px solid black;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
+  border-right: 0px solid black;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -1254,8 +1257,7 @@ footer {
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
+  /* overflow: auto; Enable scroll if needed */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
@@ -1267,7 +1269,6 @@ footer {
   border: 1px solid #888;
   width: 25%; /* Could be more or less, depending on screen size */
   border-radius: 34px;
-
 }
 
 /* The Close Button */
@@ -1348,10 +1349,52 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+body.dark-mode {
+  background-color: black;
+}
 
-.dark-mode {
+body.dark-mode nav {
+  background-color: black;
+}
+
+body.dark-mode ul{
+  background-color: black;
+}
+
+body.dark-mode footer{
+  background-color: black;
+}
+
+body.dark-mode .update{
+  background-color: black;
+  color:white;
+}
+hr{
+  border: none;
+  background-color: transparent;
+}
+body.dark-mode hr {
+  background-color: white;
+  height:1px;
+}
+body.dark-mode .modal-content {
   background-color: black;
   color: white;
 }
+
+/* body.dark-mode * {
+  background-color: inherit;
+  color: inherit;
+} */
+
+/* body.dark-mode .banner,
+/* body.dark-mode .header, */
+/* body.dark-mode .footer, */
+/* body.dark-mode .section {
+  background-color: black;
+  color: white;
+} */
+
+
 
 

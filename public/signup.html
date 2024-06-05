@@ -23,8 +23,20 @@
             <li><a href="/signup" class = button3>Signup</a></li>
         </ul>
     </nav>
-    <div class="accessibility-button" onclick="toggleAccessibility()">
+    <button type = "button" id = "myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 100px;">Dark Mode</h2>  <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
     </div>
     <br>
     <h1 style="text-align: center;">Join us!</h1>
@@ -96,5 +108,9 @@
             </div>
         </div>
     </footer>
+    <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
 </body>
 </html>

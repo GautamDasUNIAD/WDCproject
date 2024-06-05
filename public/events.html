@@ -30,8 +30,8 @@
         <div class="sidebar">
             <p><a class="active" href="/home">Home </a> / <a href="/events">Events</a></p>
             <div class="view-buttons">
-                <button type="button" class="view-button active" onclick="showListView()">List View</button>
-                <button type="button" class="view-button" onclick="window.location.href='calendar.html'">Calendar View</button>
+                <button type="button" class="view-button active" onclick="window.location.href='/events'">List View</button>
+                <button type="button" class="view-button" onclick="window.location.href='/calendar'">Calendar View</button>
             </div>
             <h3>Sort by Branch:</h3>
             <ul>
@@ -47,8 +47,20 @@
         </div>
     </div>
 
-    <div class="accessibility-button" onclick="toggleAccessibility()">
+    <button type = "button" id = "myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 100px;">Dark Mode</h2>  <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
     </div>
 
     <div class="events-section">
@@ -122,6 +134,9 @@
     <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
 
     <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
 
 
 

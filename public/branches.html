@@ -27,8 +27,20 @@
     </nav>
 
     <p class = "breadcrumbs"><span><a href="/home">Home</a> / <a href="/branches">Branches</a></span></p>
-    <div class="accessibility-button" onclick="toggleAccessibility()">
+    <button type = "button" id = "myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 100px;">Dark Mode</h2>  <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
     </div>
     <div class="map-section">
         <div class="branches-welcome">
@@ -74,6 +86,9 @@
     <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
 
     <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
 
 </body>
 
