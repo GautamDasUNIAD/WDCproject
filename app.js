@@ -20,6 +20,7 @@ const userOrganizationRouter = require('./routes/userorganizations'); // interac
 const adminRouter = require('./routes/admin');
 const userEventsRouter = require('./routes/userevents');
 const updatesRouter = require('./routes/updates');
+const userpreferencesRouter = require('./routes/userpreferences');
 
 var dbConnectionPool = require('./db');
 
@@ -55,6 +56,7 @@ app.use('/admin', adminRouter);
 app.use('/userorganizations', userOrganizationRouter);
 app.use('/userevents', userEventsRouter);
 app.use('/updates', updatesRouter);
+app.use('/userpreferences', userpreferencesRouter);
 
 // OAuth routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
