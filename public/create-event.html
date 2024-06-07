@@ -31,39 +31,73 @@
         <div id="responseMessage"></div>
     </div>
 
+    <h2>Event List</h2>
+    <div id="eventList"></div>
+
     <script>
-        document.getElementById('createEventForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('createEventForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
 
-            const name = document.getElementById('name').value;
-            const location = document.getElementById('location').value;
-            const description = document.getElementById('description').value;
-            const organization_id = document.getElementById('organization_id').value;
-            const branch_id = document.getElementById('branch_id').value;
-            const date = document.getElementById('date').value;
+                const name = document.getElementById('name').value;
+                const location = document.getElementById('location').value;
+                const description = document.getElementById('description').value;
+                const organization_id = document.getElementById('organization_id').value;
+                const branch_id = document.getElementById('branch_id').value;
+                const date = document.getElementById('date').value;
 
-            const responseMessage = document.getElementById('responseMessage');
-            responseMessage.textContent = '';
+                const responseMessage = document.getElementById('responseMessage');
+                responseMessage.textContent = '';
 
-            try {
-                const response = await fetch('/events/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, location, description, organization_id, branch_id, date })
-                });
+                try {
+                    const response = await fetch('/events/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name, location, description, organization_id, branch_id, date })
+                    });
 
-                if (response.ok) {
-                    responseMessage.textContent = 'Event created successfully';
-                } else {
-                    const error = await response.text();
-                    responseMessage.textContent = 'Error creating event: ' + error;
+                    if (response.ok) {
+                        responseMessage.textContent = 'Event created successfully';
+                        responseMessage.style.color = 'green';
+
+                        // Append the new event to the event list
+                        const eventList = document.getElementById('eventList');
+                        const newEvent = document.createElement('div');
+                        newEvent.className = 'eventItem';
+                        newEvent.innerHTML = `
+                            <h3>${name}</h3>
+                            <p><strong>Location:</strong> ${location}</p>
+                            <p><strong>Description:</strong> ${description}</p>
+                            <p><strong>Organization ID:</strong> ${organization_id}</p>
+                            <p><strong>Branch ID:</strong> ${branch_id}</p>
+                            <p><strong>Date:</strong> ${date}</p>
+                        `;
+                        eventList.appendChild(newEvent);
+                    } else {
+                        const error = await response.text();
+                        responseMessage.textContent = 'Error creating event: ' + error;
+                        responseMessage.style.color = 'red';
+                    }
+                } catch (error) {
+                    responseMessage.textContent = 'An error occurred: ' + error.message;
+                    responseMessage.style.color = 'red';
                 }
-            } catch (error) {
-                responseMessage.textContent = 'An error occurred: ' + error.message;
-            }
+            });
         });
+
+        // Local storage functions
+        function getEvents() {
+            const events = localStorage.getItem('events');
+            return events ? JSON.parse(events) : [];
+        }
+
+        function saveEvent(event) {
+            const events = getEvents();
+            events.push(event);
+            localStorage.setItem('events', JSON.stringify(events));
+        }
     </script>
 </body>
 </html>

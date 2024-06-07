@@ -341,8 +341,8 @@ nav {
   font-family: sans-serif;
   display: inline-block;
   text-align: center;
-  max-width: 90%;
-  min-width: 610px; /* Minimum width for the buttons */
+  max-width: calc(47.5%);
+  min-width: calc(47.5%); /* Minimum width for the buttons */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
@@ -398,12 +398,10 @@ textarea {
 
 .sidebar {
   float: left;
-  width: 20%;
   background-color: rgba(211,211,211,0.5);
   padding: 20px;
   box-sizing: border-box;
-  margin-bottom: 20px;
-  height: 427.5px;
+  height: auto;
   overflow-y: auto;
   box-sizing: border-box;
 }
@@ -568,7 +566,7 @@ main {
 
 .read-more-button {
   background-color: blue;
-  color: black;
+  color: white;
   border: none;
   padding: 10px 20px;
   text-align: center;
@@ -577,7 +575,7 @@ main {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s;
+  /* transition: background 0.3s, color 0.3s; */
 }
 
 .read-more-button:hover {
@@ -847,16 +845,7 @@ ul {
   margin-bottom: 20px;
 }
 
-.sidebar {
-  float: left;
-  width: 20%;
-  background-color: rgba(211,211,211,0.5);
-  padding: 20px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-  height: 429px;
-  overflow: auto;
-}
+
 .view-buttons {
   display: flex;
   border: 1px solid #ccc;
@@ -888,15 +877,7 @@ ul {
 .view-button:not(:last-child) {
   border-right: 1px solid #ccc;
 }
-.sidebar h3 {
-  text-decoration: underline;
-}
-.sidebar ul {
-  float: left;
-  background-color: transparent;
-  height: 200px;
-  width: 100px;
-}
+
 
 .events-section {
   width: 100%;
@@ -1211,7 +1192,7 @@ footer {
 .accessibility-button {
   position: fixed;
   right: 0;
-  top: 100px;
+  top: 15%;
   background-color: #4481c2;
   color: white;
   width: 40px;
@@ -1353,18 +1334,33 @@ body.dark-mode {
   background-color: black;
 }
 
-body.dark-mode nav {
+/* body.dark-mode nav {
   background-color: black;
+} */
+
+/* body.dark-mode ul{
+  background-color: black;
+} */
+
+/* body.dark-mode footer{
+  background-color: black;
+} */
+
+body.dark-mode .aboutus{
+  color:white;
 }
 
-body.dark-mode ul{
-  background-color: black;
+body.dark-mode p{
+  color:white;
 }
 
-body.dark-mode footer{
-  background-color: black;
+body.dark-mode h1{
+  color:white;
 }
-
+body.dark-mode td{
+  background-color:black;
+  color:white;
+}
 body.dark-mode .update{
   background-color: black;
   color:white;
@@ -1382,6 +1378,57 @@ body.dark-mode .modal-content {
   color: white;
 }
 
+body.dark-mode .accessibility-button{
+  border-left: 2px solid white;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+}
+
+body.dark-mode ul{
+  color: white
+}
+
+body.dark-mode h2{
+  color: white;
+}
+
+body.dark-mode .events-update{
+  color:white;
+  background-color: black;
+  border: 1px solid white;
+}
+
+body.dark-mode h3{
+  color:white;
+}
+
+body.dark-mode .calendar-events{
+  border: 1px solid white;
+}
+
+body.dark-mode .single-event{
+  background-color: black;
+  color:white;
+}
+body.dark-mode .calendar-div{
+  background-color: black;
+  color:white;
+  border: 1px solid white;
+}
+
+body.dark-mode .branches-welcome{
+  color:white;
+}
+
+body.dark-mode .login-container{
+  background-color: black;
+  color:white;
+}
+
+body.dark-mode #Reason_for_Query{
+  border: 1px solid white;
+}
+
 /* body.dark-mode * {
   background-color: inherit;
   color: inherit;
@@ -1395,6 +1442,35 @@ body.dark-mode .modal-content {
   color: white;
 } */
 
+.sidebar {
+  float: left;
+  background-color: rgba(211, 211, 211, 0.5);
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  height: auto; /* Set height to auto */
+}
+
+.container {
+  display: flex; /* Use flexbox to align sidebar and main content */
+}
+
+.main-content {
+  flex-grow: 1; /* Allow main content to grow to fill remaining space */
+}
+
+.footer {
+  clear: both; /* Ensure footer clears both floated elements */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+.sidebar ul {
+  margin: 0; /* Remove margin from ul */
+  padding: 0; /* Remove padding from ul */
+}
 
 
 
