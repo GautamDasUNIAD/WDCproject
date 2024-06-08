@@ -128,43 +128,11 @@
             </div>
 
             <div class="calendar-events">
-                <div class="single-event">
-                    <div class="event-heading">
-                        <div class="vote2">
-                            <div class="upvote">
-                                <button type="button" class="vote-button" onclick="upvote()">+</button>
-                            </div>
-                            <hr>
-                            <div class="downvote">
-                                <button type="button" class="vote-button" onclick="downvote()">-</button>
-                            </div>
-                        </div>
-                        <h1 class="title">Event Details</h1>
+                <div class="events-section" id="eventList">
+                    <div id="eventsContainer"></div>
+                    <div class = "button-container">
+                        <button type = "button" id="readMoreButton" class="read-more-button">Read More</button>
                     </div>
-
-                    <div class="event-text">
-                        <p class="text">crazy event details</p>
-                    </div>
-
-                </div>
-                <div class="single-event">
-                    <div class="event-heading">
-                        <div class="vote2">
-                            <div class="upvote">
-                                <button type="button" class="vote-button" onclick="upvote()">+</button>
-                            </div>
-                            <hr>
-                            <div class="downvote">
-                                <button type="button" class="vote-button" onclick="downvote()">-</button>
-                            </div>
-                        </div>
-                        <h1 class="title">Event Details 2</h1>
-                    </div>
-
-                    <div class="event-text">
-                        <p class="text">crazy event details</p>
-                    </div>
-
                 </div>
             </div>
 
@@ -194,6 +162,101 @@
     <script src="javascripts/homepage_slideshow.js"></script>
     <script src="javascripts/accessibilitybutton.js"></script>
     <script src="javascripts/highcontrast.js"></script>
+    <script src="javascripts/upvote.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const eventList = document.getElementById('eventList');
+            let displayedEvents = 4; // Number of initially displayed events
+
+            try {
+                const response = await fetch('/events/all');
+                const events = await response.json();
+
+                const clickCounts = {
+                    upvote: {},
+                    downvote: {}
+                };
+
+                function displayEvents(startIndex, endIndex) {
+                    for (let i = startIndex; i < endIndex; i++) {
+                        const event = events[i];
+                        const eventItem = document.createElement('div');
+                        eventItem.classList.add('events-update');
+                        eventItem.innerHTML = `
+                            <div class="vote">
+                                <div class="upvote">
+                                    <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementUpvote(${event.id})">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="downvote">
+                                    <span class="downvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.downvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementDownvote(${event.id})">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="update-text">
+                                <h3>${event.name}</h3>
+                                <p>${event.description}</p>
+                            </div>
+                        `;
+                        eventsContainer.appendChild(eventItem);
+
+                        clickCounts.upvote[event.id] = 0;
+                        clickCounts.downvote[event.id] = 0;
+
+
+                    }
+                }
+
+
+
+                    // You may also want to send this change to your server to update the database
+                    // Example:
+                    // fetch('/events/upvote', {
+                    //     method: 'POST',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify({ eventId })
+                    // });
+
+
+                // Function to increment downvote
+
+
+                    // You may also want to send this change to your server to update the database
+                    // Example:
+                    // fetch('/events/downvote', {
+                    //     method: 'POST',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify({ eventId })
+                    // });
+
+                // Display initial set of events
+                displayEvents(0, displayedEvents);
+
+                // Show more events when "Read More" button is clicked
+                readMoreButton.addEventListener('click', function() {
+                    displayedEvents += 3; // Increase the number of displayed events
+                    displayEvents(displayedEvents - 3, displayedEvents);
+                    if (displayedEvents >= events.length) {
+                        readMoreButton.style.display = 'none'; // Hide the button if all events are displayed
+                    }
+                });
+
+                // Show "Read More" button if there are more events to display
+                if (events.length > displayedEvents) {
+                    readMoreButton.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        });
+
+    </script>
 
 
 

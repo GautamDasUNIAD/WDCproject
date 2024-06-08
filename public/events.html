@@ -34,15 +34,15 @@
                 <button type="button" class="view-button" onclick="window.location.href='/calendar'">Calendar View</button>
             </div>
             <h3>Sort by Branch:</h3>
-            <ul>
-                <li><input type="checkbox" id="Adelaide"><label for="Adelaide">Adelaide</label></li>
+            <ul class = "branchesclass" id = "branchesList">
+                <!-- <li><input type="checkbox" id="Adelaide"><label for="Adelaide">Adelaide</label></li>
                 <li><input type="checkbox" id="Brisbane"><label for="Brisbane">Brisbane</label></li>
                 <li><input type="checkbox" id="Sydney"><label for="Sydney">Sydney</label></li>
                 <li><input type="checkbox" id="Melbourne"><label for="Melbourne">Melbourne</label></li>
                 <li><input type="checkbox" id="Canberra"><label for="Canberra">Canberra</label></li>
                 <li><input type="checkbox" id="Perth"><label for="Perth">Perth</label></li>
                 <li><input type="checkbox" id="Darwin"><label for="Darwin">Darwin</label></li>
-                <li><input type="checkbox" id="Regional"><label for="Regional">Regional</label></li>
+                <li><input type="checkbox" id="Regional"><label for="Regional">Regional</label></li> -->
             </ul>
         </div>
 
@@ -97,6 +97,7 @@
     <script src="javascripts/homepage_slideshow.js"></script>
     <script src="javascripts/accessibilitybutton.js"></script>
     <script src="javascripts/highcontrast.js"></script>
+    <script src="javascripts/upvote.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
             const eventList = document.getElementById('eventList');
@@ -104,40 +105,99 @@
             const readMoreButton = document.getElementById('readMoreButton');
             let displayedEvents = 4; // Number of initially displayed events
 
+            const branches = document.getElementsByClassName('branchesclass');
+
             try {
                 const response = await fetch('/events/all');
                 const events = await response.json();
 
-                // Function to display events
+
+                const uniqueLocations = new Set();
+
+
+                events.forEach(event => {
+                    uniqueLocations.add(event.location);
+                });
+
+
+                uniqueLocations.forEach(location => {
+                    const newBranch = document.createElement('li');
+                    newBranch.innerHTML = `
+                <li>
+                    <input type="checkbox" id="${location}">
+                    <label for="${location}">${location}</label>
+                </li>`;
+                    branchesList.appendChild(newBranch);
+                });
+
+                const clickCounts = {
+                    upvote: {},
+                    downvote: {}
+                };
+                function formatDate(isoDate) {
+                    const date = new Date(isoDate);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    return date.toLocaleDateString('en-US', options);
+}
                 function displayEvents(startIndex, endIndex) {
                     for (let i = startIndex; i < endIndex; i++) {
                         const event = events[i];
                         const eventItem = document.createElement('div');
                         eventItem.classList.add('events-update');
-                        let upvote_count = 1;
+                        const formattedDate = formatDate(event.date);
                         eventItem.innerHTML = `
-
                             <div class="vote">
                                 <div class="upvote">
-                                    <span style="margin-right: 3px;">${upvote_count}</span>
-                                    <button type="button" class="vote-button" onclick="upvote()">
-                                        <i class = "fa fa-plus"></i></button>
+                                    <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementUpvote(${event.id})">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
                                 </div>
-
                                 <div class="downvote">
-                                    <span style="margin-right: 3px;">0</span>
-                                    <button type="button" class="vote-button" onclick="downvote()">
-                                        <i class = "fa fa-minus"></i></button>
+                                    <span class="downvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.downvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementDownvote(${event.id})">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="update-text">
                                 <h3>${event.name}</h3>
-                                <p>${event.description}</p>
+                                <p>Description: ${event.description}</p>
+                                <p>Date: ${formattedDate}</p>
+                                <p>Location: ${event.location}</p>
+
                             </div>
                         `;
                         eventsContainer.appendChild(eventItem);
+
+                        clickCounts.upvote[event.id] = 0;
+                        clickCounts.downvote[event.id] = 0;
+
+
                     }
                 }
+
+
+
+                    // You may also want to send this change to your server to update the database
+                    // Example:
+                    // fetch('/events/upvote', {
+                    //     method: 'POST',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify({ eventId })
+                    // });
+
+
+                // Function to increment downvote
+
+
+                    // You may also want to send this change to your server to update the database
+                    // Example:
+                    // fetch('/events/downvote', {
+                    //     method: 'POST',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify({ eventId })
+                    // });
 
                 // Display initial set of events
                 displayEvents(0, displayedEvents);
@@ -162,6 +222,7 @@
         });
 
     </script>
+
 
 
 

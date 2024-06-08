@@ -15,15 +15,15 @@ function isManager(req, res, next) {
 
 // Create event route
 router.post('/create', isManager, (req, res) => {
-    const { name, location, description, organization_id, branch_id, date } = req.body;
+    const { name, location, description, organization_id, branch_id, date,upvote, downvote} = req.body;
 
     if (!name || !location || !description || !organization_id || !branch_id || !date) {
         return res.status(400).send('All fields are required');
     }
 
     db.query(
-        'INSERT INTO Events (name, location, description, organization_id, branch_id, date) VALUES (?, ?, ?, ?, ?, ?)',
-        [name, location, description, organization_id, branch_id, date],
+        'INSERT INTO Events (name, location, description, organization_id, branch_id, date, upvote, downvote) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [name, location, description, organization_id, branch_id, date, upvote, downvote],
         (err, results) => {
             if (err) {
                 console.error('Error creating event:', err);

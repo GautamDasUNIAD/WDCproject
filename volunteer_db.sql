@@ -122,13 +122,14 @@ CREATE TABLE `Events` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
 --
 -- Dumping data for table `Events`
 --
 
 LOCK TABLES `Events` WRITE;
 /*!40000 ALTER TABLE `Events` DISABLE KEYS */;
-INSERT INTO `Events` VALUES (1,'Cube','Adelaide','Once upon a time there was the cube',1,'2024-06-29 13:20:00',0,'2024-06-04 03:50:37','2024-06-04 03:50:37',1);
+INSERT INTO `Events` VALUES (1,'Cube','Adelaide','Once upon a time there was the cube',0,0,1,'2024-06-29 13:20:00',0,'2024-06-04 03:50:37','2024-06-04 03:50:37',1);
 /*!40000 ALTER TABLE `Events` ENABLE KEYS */;
 UNLOCK TABLES;
 

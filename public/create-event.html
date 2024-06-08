@@ -26,13 +26,21 @@
             <label for="date">Date:</label>
             <input type="datetime-local" id="date" name="date" required>
 
+            <label for="upvote">Upvotes:</label>
+            <input type="text" id="upvote" name="upvote" required>
+
+            <label for="downvote">Downvotes:</label>
+            <input type="text" id="downvote" name="downvote" required>
+
             <input type="submit" value="Create Event">
         </form>
         <div id="responseMessage"></div>
     </div>
 
     <h2>Event List</h2>
-    <div id="eventList"></div>
+    <div id="eventList">
+        
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -42,9 +50,12 @@
                 const name = document.getElementById('name').value;
                 const location = document.getElementById('location').value;
                 const description = document.getElementById('description').value;
+                const upvote = document.getElementById('upvote').value;
+                const downvote = document.getElementById('downvote').value;
                 const organization_id = document.getElementById('organization_id').value;
                 const branch_id = document.getElementById('branch_id').value;
                 const date = document.getElementById('date').value;
+
 
                 const responseMessage = document.getElementById('responseMessage');
                 responseMessage.textContent = '';
@@ -55,7 +66,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ name, location, description, organization_id, branch_id, date })
+                        body: JSON.stringify({ name, location, description, organization_id, branch_id, date, upvote, downvote})
                     });
 
                     if (response.ok) {
@@ -70,6 +81,8 @@
                             <h3>${name}</h3>
                             <p><strong>Location:</strong> ${location}</p>
                             <p><strong>Description:</strong> ${description}</p>
+                            <p><strong>Upvote:</strong> ${upvote}</p>
+                            <p><strong>Downvote:</strong> ${downvote}</p>
                             <p><strong>Organization ID:</strong> ${organization_id}</p>
                             <p><strong>Branch ID:</strong> ${branch_id}</p>
                             <p><strong>Date:</strong> ${date}</p>
