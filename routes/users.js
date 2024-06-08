@@ -8,7 +8,6 @@ const VALID_ROLES = ['Regular', 'Manager', 'Admin'];
 /* GET users listing. */
 //! remove
 router.get('/', function(req, res, next) {
-
   if (req.isAuthenticated()) {
         res.json({ authenticated: true, user: req.user });
     } else {
@@ -59,6 +58,16 @@ router.get('/logout', (req, res, next) => {
       if (err) { return next(err); }
       res.redirect('/');
   });
+});
+
+//
+router.get('/login-check', function(req, res){
+  if(req.isAuthenticated()){
+    res.send(req.user.email);
+  }
+  else {
+    res.send(undefined);
+  }
 });
 
 module.exports = router;
