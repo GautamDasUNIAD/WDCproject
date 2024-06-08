@@ -22,6 +22,7 @@ const userEventsRouter = require('./routes/userevents');
 const updatesRouter = require('./routes/updates');
 const userpreferencesRouter = require('./routes/userpreferences');
 
+
 var dbConnectionPool = require('./db');
 
 var app = express();

@@ -11,7 +11,6 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   background-color: #333;
 }
 
@@ -43,10 +42,8 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   background-color: #333;
-  position: relative;
-  height: 50px;
+
 }
 
 .carousel {
@@ -398,26 +395,34 @@ textarea {
 
 .sidebar {
   float: left;
-  background-color: rgba(211,211,211,0.5);
+  background-color: rgba(211, 211, 211, 0.5);
   padding: 20px;
   box-sizing: border-box;
-  height: auto;
-  overflow-y: auto;
-  box-sizing: border-box;
+  min-height: calc(100vh - 210px); /* Adjust the value based on your footer height */
+  overflow: hidden;
+  align-items: stretch
+}
+
+/* Add this new class to align the sidebar items to the top */
+.sidebar-content {
+  flex-grow: 1;
 }
 
 .view-buttons {
   display: flex;
   border: 1px solid #ccc;
   border-radius: 5px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .vote-button {
-  display: flex;
   overflow: hidden;
-  border: 1px solid transparent;
+  border: 1px solid grey;
+  display: border-box;
+
+
 }
+
 
 .view-button {
   flex: 1;
@@ -550,6 +555,18 @@ main {
 .update-text p {
   padding-left: 10px;
   margin: 0;
+}
+
+.upvote{
+  padding: 5px;
+  border: 1px solid black;
+}
+.downvote{
+  padding: 5px;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+
 }
 
 .upvote button {
@@ -716,7 +733,6 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   background-color: #333;
 }
 
@@ -846,18 +862,7 @@ ul {
 }
 
 
-.view-buttons {
-  display: flex;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  overflow: hidden;
-}
 
-.vote-button {
-  display: flex;
-  overflow: hidden;
-  border: 1px solid transparent;
-}
 
 .view-button {
   flex: 1;
@@ -1442,16 +1447,6 @@ body.dark-mode #Reason_for_Query{
   color: white;
 } */
 
-.sidebar {
-  float: left;
-  background-color: rgba(211, 211, 211, 0.5);
-  padding: 20px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-  overflow-y: auto;
-  box-sizing: border-box;
-  height: auto; /* Set height to auto */
-}
 
 .container {
   display: flex; /* Use flexbox to align sidebar and main content */
@@ -1467,10 +1462,7 @@ body.dark-mode #Reason_for_Query{
   padding: 0; /* Remove default padding */
 }
 
-.sidebar ul {
-  margin: 0; /* Remove margin from ul */
-  padding: 0; /* Remove padding from ul */
-}
+
 
 
 

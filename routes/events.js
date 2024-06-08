@@ -12,6 +12,7 @@ function isManager(req, res, next) {
     }
 }
 
+
 // Create event route
 router.post('/create', isManager, (req, res) => {
     const { name, location, description, organization_id, branch_id, date } = req.body;

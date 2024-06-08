@@ -87,17 +87,7 @@
             });
         });
 
-        // Local storage functions
-        function getEvents() {
-            const events = localStorage.getItem('events');
-            return events ? JSON.parse(events) : [];
-        }
 
-        function saveEvent(event) {
-            const events = getEvents();
-            events.push(event);
-            localStorage.setItem('events', JSON.stringify(events));
-        }
     </script>
 </body>
 </html>
