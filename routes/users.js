@@ -61,9 +61,9 @@ router.get('/logout', (req, res, next) => {
 });
 
 //
-router.get('/login-check', function(req, res){
+router.get('/whoami', function(req, res){
   if(req.isAuthenticated()){
-    res.send(req.user.email);
+    res.json({"role": req.user.role, "email": req.user.email});
   }
   else {
     res.send(undefined);
