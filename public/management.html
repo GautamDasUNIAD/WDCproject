@@ -79,63 +79,6 @@
     <script src="javascripts/vue.js"></script>
     <script src="javascripts/whoami.js"></script>
 
-    <!-- can move all the script code to a new javascript when done -->
-    <script>
-        const postUpdateIframe = document.getElementById('post-update-iframe').contentWindow.document;
-
-        async function fetchManagerOrganizations() {
-            try {
-                const response = await fetch('/updates/manager/organizations');
-                const organizations = await response.json();
-
-                const orgSelect = postUpdateIframe.getElementById('organization');
-                organizations.forEach(org => {
-                    const option = document.createElement('option');
-                    option.value = org.id;
-                    option.textContent = org.name;
-                    orgSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error fetching organizations:', error);
-            }
-        }
-
-        async function postUpdate(event) {
-            event.preventDefault();
-
-            const organizationId = postUpdateIframe.getElementById('organization').value;
-            const title = postUpdateIframe.getElementById('title').value;
-            const description = postUpdateIframe.getElementById('description').value;
-            const is_private = postUpdateIframe.getElementById('is_private').checked;
-
-            try {
-                const response = await fetch(`/updates/organization/${organizationId}/updates`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ title, description, is_private })
-                });
-
-                const message = await response.text();
-                postUpdateIframe.getElementById('responseMessage').textContent = message;
-
-                if (response.status === 401) {
-                    alert('You need to be logged in to post updates.');
-                    window.location.href = '/login';
-                    return;
-                } else if (response.status === 403) {
-                    alert('You do not have permission to post updates.');
-                    return;
-                }
-            } catch (error) {
-                console.error('Error posting update:', error);
-            }
-        }
-
-        postUpdateIframe.getElementById('postUpdateForm').addEventListener('submit', postUpdate);
-        postUpdateIframe.addEventListener('DOMContentLoaded', fetchManagerOrganizations);
-    </script>
 </body>
 
 
