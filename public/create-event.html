@@ -9,7 +9,7 @@
 <body>
     <div class = "main-container">
     <div class="create-event-container">
-        <h2>Create an Event</h2>
+        <h2 style = "text-align:center; font-size: 25px;text-decoration: underline;" >Create an Event</h2>
         <form id="createEventForm">
             <label for="name">Event Name:</label>
             <input type="text" id="name" name="name" required>
@@ -41,10 +41,7 @@
     </div>
     </div>
 
-    <h2>Event List</h2>
-    <div id="eventList">
 
-    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -77,21 +74,7 @@
                         responseMessage.textContent = 'Event created successfully';
                         responseMessage.style.color = 'green';
 
-                        // Append the new event to the event list
-                        const eventList = document.getElementById('eventList');
-                        const newEvent = document.createElement('div');
-                        newEvent.className = 'eventItem';
-                        newEvent.innerHTML = `
-                            <h3>${name}</h3>
-                            <p><strong>Location:</strong> ${location}</p>
-                            <p><strong>Description:</strong> ${description}</p>
-                            <p><strong>Upvote:</strong> ${upvote}</p>
-                            <p><strong>Downvote:</strong> ${downvote}</p>
-                            <p><strong>Organization ID:</strong> ${organization_id}</p>
-                            <p><strong>Branch ID:</strong> ${branch_id}</p>
-                            <p><strong>Date:</strong> ${date}</p>
-                        `;
-                        eventList.appendChild(newEvent);
+
                     } else {
                         const error = await response.text();
                         responseMessage.textContent = 'Error creating event: ' + error;

@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Branch</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+
 </head>
 <body>
-    <div class="create-branch-container">
-        <h1>Create Branch</h1>
-        <form id="createBranchForm">
-            <label for="location">Branch Location:</label>
-            <input type="text" id="location" name="location" required>
+    <div class = "main-container">
+        <div class="create-branch-container">
+            <h2 style = "text-align:center; font-size: 25px;text-decoration: underline;">Create a Branch</h2>
+            <form id="createBranchForm">
+                <label for="location">Branch Location:</label>
+                <input type="text" id="location" name="location" required>
 
-            <input type="submit" value="Create Branch">
-        </form>
-        <div id="responseMessage"></div>
+                <input type="submit" value="Create Branch">
+            </form>
+            <div id="responseMessage"></div>
+        </div>
     </div>
 
     <script>

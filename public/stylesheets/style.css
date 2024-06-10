@@ -312,8 +312,10 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
+  flex-grow: 0; /* Prevents the form from growing */
+  flex-shrink: 0; /* Prevents the form from shrinking */
   max-width: 400px;
+  margin: 0 auto; /* Centers the form horizontally */
 }
 
 .search-form input[type="text"] {
@@ -323,6 +325,7 @@ nav {
   margin-right: 0px;
   width: 200px;
 }
+
 
 .search-form button {
   float: right;
@@ -365,7 +368,8 @@ nav {
 }
 
 .create-event-container input[type="text"],
-.create-event-container input[type="password"] {
+.create-event-container input[type="password"],
+.create-event-container input[type="datetime-local"]{
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
@@ -378,6 +382,39 @@ nav {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+
+.create-branch-container input[type="text"],
+.create-branch-container input[type="password"],
+.create-branch-container input[type="datetime-local"]{
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.create-branch-container {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+#createBranchForm, #createOrganizationForm {
+  display: flex;
+  flex-direction: column;
+  padding:10px;
+}
+
+.iframe-container {
+  display: flex;
+}
+
+
+
 
 
 
@@ -431,6 +468,20 @@ nav {
   cursor: pointer;
   font-family:sans-serif;
 }
+
+.create-event-container input[type="submit"],
+.create-branch-container input[type="submit"],
+.post-update-section input[type="submit"]{
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family:sans-serif;
+}
+
+
 
 .breadcrumbs{
   padding: 20px

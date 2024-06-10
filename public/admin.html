@@ -23,19 +23,30 @@
             <li><a href="/signup" class = button3>Signup</a></li>
         </ul>
     </nav>
-    <h1>Manage Organizations</h1>
-    <form id="createOrganizationForm">
-        <label for="name">Organization Name:</label>
-        <input type="text" id="name" name="name" required>
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea>
-        <label for="social_media_link">Social Media Link:</label>
-        <input type="text" id="social_media_link" name="social_media_link">
-        <input type="submit" value="Create Organization">
-    </form>
-    <h2>Existing Organizations</h2>
-    <div id="organizationList"></div>
-    <div id="responseMessage"></div>
+    <h1 style = "padding:20px; text-align:center; font-size: 50px">Manage Organizations</h1>
+    <div class = "main-container">
+        <div class="create-branch-container">
+            <h2 style = "text-align:center; font-size: 25px;text-decoration: underline;" >Create an Organization</h2>
+            <form id="createOrganizationForm">
+                <label for="name">Organization Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea>
+                <label for="social_media_link">Social Media Link:</label>
+                <input type="text" id="social_media_link" name="social_media_link">
+                <input type="submit" value="Create Organization">
+            </form>
+        </div>
+
+    </div>
+    <div class = "main-container">
+        <div class="create-branch-container">
+            <h2 style = "text-align:center; font-size: 25px;text-decoration: underline;" >Existing Organizations</h2>
+            <div id="organizationList"></div>
+            <div id="responseMessage"></div>
+        </div>
+    </div>
+
 
     <script>
         document.getElementById('createOrganizationForm').addEventListener('submit', function(event) {
