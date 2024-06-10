@@ -53,6 +53,17 @@ ul {
   height: calc(100vh - 50px);
   overflow: hidden;
 }
+textarea {
+  resize: none;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+.checkbox-container label {
+  margin: 0 10px 0 0;
+}
 
 .slide {
   width: 100%;
@@ -328,11 +339,47 @@ nav {
   background: #ccc;
 }
 
+.post-update-section {
+  padding: 20px 20px 10px 20px;
+  border-radius: 8px;
+}
 
 .login-container {
   padding: 20px 20px 10px 20px;
   border-radius: 8px;
 }
+
+.post-update-section input[type="text"],
+.post-update-section input[type="password"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.post-update-section select {
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.create-event-container input[type="text"],
+.create-event-container input[type="password"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.post-update-section select {
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
 
 /* Base styles for the buttons */
 .logins {
@@ -1251,6 +1298,8 @@ footer {
   border-radius: 34px;
 }
 
+
+
 /* The Close Button */
 .close {
   color: #aaa;
@@ -1460,7 +1509,48 @@ body.dark-mode .vote{
   padding: 0; /* Remove default padding */
 }
 
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 0px;
+}
 
+#postUpdateForm {
+  display: flex;
+  flex-direction: column;
+  padding:10px;
+}
+
+
+.post-update-section {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.create-event-container {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+#createEventForm {
+  display: flex;
+  flex-direction: column;
+  padding:10px;
+}
 
 
 

@@ -11,7 +11,7 @@
 <body>
     <div class="main-container">
         <div class="post-update-section">
-            <h2>Post an Update</h2>
+            <h2 style = "text-align: center;">Post an Update</h2>
             <form id="postUpdateForm">
                 <label for="organization">Organization:</label>
                 <select id="organization" name="organization" required></select>
@@ -20,10 +20,12 @@
                 <input type="text" id="title" name="title" required>
 
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" required></textarea>
+                <textarea id="description" name="description" required rows = "4" cols = "50"></textarea>
 
                 <label for="is_private">Private:</label>
-                <input type="checkbox" id="is_private" name="is_private">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="is_private" name="is_private">
+                </div>
 
                 <button type="submit">Post Update</button>
             </form>
