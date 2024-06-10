@@ -1445,6 +1445,34 @@ body.dark-mode .vote{
   color: white;
 } */
 
+ /* Dropdown button - displays logged in user's email */
+ .dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  display: inline-block;
+}
+
+/* Dropdown contents */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 100px;
+  z-index: 1;
+}
+
+/* Buttons inside dropdown - logout */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+
 
 .container {
   display: flex; /* Use flexbox to align sidebar and main content */
