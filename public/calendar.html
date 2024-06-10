@@ -27,7 +27,7 @@
         </ul>
     </nav>
 
-    <div class="sidebar">
+    <div class="sidebar" style="min-height: 109.5vh;">
         <p><a class="active" href="/">Home </a> / <a href="/events">Events</a> </p>
         <div class="view-buttons">
             <button type="button" class="view-button" onclick="window.location.href='events.html'">List View</button>
@@ -244,6 +244,8 @@
                     if (displayedEvents >= events.length) {
                         readMoreButton.style.display = 'none'; // Hide the button if all events are displayed
                     }
+                    const sidebar = document.querySelector('.sidebar');
+                    sidebar.style.minHeight = eventsContainer.offsetHeight + 230 + 'px'; // Adjust 100 according to your ne
                 });
 
                 // Show "Read More" button if there are more events to display

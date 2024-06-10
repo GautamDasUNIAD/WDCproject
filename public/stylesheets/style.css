@@ -406,7 +406,7 @@ textarea {
   background-color: rgba(211, 211, 211, 0.5);
   padding: 20px;
   box-sizing: border-box;
-  min-height: calc(100vh - 210px); /* Adjust the value based on your footer height */
+  min-height: 100vh;/* Adjust the value based on your footer height */
   overflow: hidden;
   align-items: stretch
 }
@@ -565,12 +565,22 @@ main {
   padding: 5px;
   border: 1px solid black;
 }
+
+body.dark-mode .upvote{
+  border:1px solid white;
+}
+
 .downvote{
   padding: 5px;
   border-right: 1px solid black;
   border-left: 1px solid black;
   border-bottom: 1px solid black;
+}
 
+body.dark-mode .downvote{
+  border-right: 1px solid white;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white;
 }
 
 .upvote button {
@@ -1416,6 +1426,10 @@ body.dark-mode .login-container{
 
 body.dark-mode #Reason_for_Query{
   border: 1px solid white;
+}
+
+body.dark-mode .vote{
+  border:1px solid white;
 }
 
 /* body.dark-mode * {

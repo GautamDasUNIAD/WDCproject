@@ -104,7 +104,8 @@
             const eventList = document.getElementById('eventList');
             const eventsContainer = document.getElementById('eventsContainer');
             const readMoreButton = document.getElementById('readMoreButton');
-            let displayedEvents = 4; // Number of initially displayed events
+            let displayedEvents = 4;
+
 
             const branches = document.getElementsByClassName('branchesclass');
 
@@ -115,11 +116,9 @@
 
                 const uniqueLocations = new Set();
 
-
                 events.forEach(event => {
                     uniqueLocations.add(event.location);
                 });
-
 
                 uniqueLocations.forEach(location => {
                     const newBranch = document.createElement('li');
@@ -180,8 +179,7 @@
 
 
 
-                    // You may also want to send this change to your server to update the database
-                    // Example:
+
                     // fetch('/events/upvote', {
                     //     method: 'POST',
                     //     headers: { 'Content-Type': 'application/json' },
@@ -189,30 +187,41 @@
                     // });
 
 
-                // Function to increment downvote
 
 
-                    // You may also want to send this change to your server to update the database
-                    // Example:
                     // fetch('/events/downvote', {
                     //     method: 'POST',
                     //     headers: { 'Content-Type': 'application/json' },
                     //     body: JSON.stringify({ eventId })
                     // });
 
-                // Display initial set of events
+
                 displayEvents(0, displayedEvents);
 
-                // Show more events when "Read More" button is clicked
-                readMoreButton.addEventListener('click', function() {
-                    displayedEvents += 3; // Increase the number of displayed events
-                    displayEvents(displayedEvents - 3, displayedEvents);
-                    if (displayedEvents >= events.length) {
-                        readMoreButton.style.display = 'none'; // Hide the button if all events are displayed
+                const event = events[i];
+                const locationCheckbox = document.getElementById(`${event.location}`);
+
+                locationCheckbox.addEventListener("click", function() {
+                    // Check if the checkbox is checked
+                    if (locationCheckbox.checked) {
+                        // Call a function or perform actions when checkbox is checked
+                        displayedEvents += 3;
+                        displayEvents(displayedEvents - 3, displayedEvents);
                     }
                 });
 
-                // Show "Read More" button if there are more events to display
+
+                readMoreButton.addEventListener('click', function() {
+                    displayedEvents += 3;
+                    displayEvents(displayedEvents - 3, displayedEvents);
+                    if (displayedEvents >= events.length) {
+                        readMoreButton.style.display = 'none';
+                    }
+                    const sidebar = document.querySelector('.sidebar');
+                    sidebar.style.minHeight = eventsContainer.offsetHeight + 167.5 + 'px';
+                });
+
+
                 if (events.length > displayedEvents) {
                     readMoreButton.style.display = 'block';
                 }
