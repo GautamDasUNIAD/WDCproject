@@ -12,10 +12,20 @@ function isManager(req, res, next) {
     }
 }
 
+function isUser(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    else{
+        res.status(403).send('You do not have permission to perform this action.');
+    }
+
+}
+
 
 // Create event route
 router.post('/create', isManager, (req, res) => {
-    const { name, location, description, organization_id, branch_id, date,upvote, downvote} = req.body;
+    const { name, location, description, organization_id, branch_id, date, upvote, downvote} = req.body;
 
     if (!name || !location || !description || !organization_id || !branch_id || !date) {
         return res.status(400).send('All fields are required');
@@ -44,5 +54,31 @@ router.get('/all', (req, res) => {
         res.json(results);
     });
 });
+
+// Update upvote/downvote route
+router.post('/:eventId/vote', isUser, (req, res) => {
+    const eventId = req.params.eventId;
+    const { type, value } = req.body;
+
+    if (!['upvote', 'downvote'].includes(type) || !Number.isInteger(value)) {
+        return res.status(400).send('Invalid vote type or value');
+    }
+
+    const column = type === 'upvote' ? 'upvote' : 'downvote';
+    const query = `UPDATE Events SET ${column} = ${column} + ? WHERE id = ?`;
+
+    db.query(query, [value, eventId], (err, results) => {
+        if (err) {
+            console.error(`Error updating ${type}:`, err);
+            return res.status(500).send('Internal server error');
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Event not found');
+        }
+        res.status(200).send(`${type.charAt(0).toUpperCase() + type.slice(1)} updated successfully`);
+    });
+});
+
+
 
 module.exports = router;

@@ -23,19 +23,26 @@
 
     <div class="main-container">
         <div class="preferences-section">
-            <h2>User Preferences</h2>
+            <h2 style = "text-align:center; font-size: 25px;text-decoration: underline;">User Preferences</h2>
             <form id="preferencesForm">
                 <label for="organization">Organization:</label>
                 <select id="organization" name="organization" required></select>
 
-                <label for="notificationType">Receive Email Notifications:</label>
-                <input type="checkbox" id="notificationType" name="notificationType">
+                <label for="notificationType">Receive Email Notifications:
+                    <input type="checkbox" id="notificationType" name="notificationType">
+                </label>
 
-                <button type="submit">Update Preferences</button>
+
+
+
+
+                <input type="submit" value="Update preferences">
             </form>
             <div id="responseMessage"></div>
         </div>
     </div>
+
+    <script src="javascripts/whoami.js"></script>
 
     <script>
         async function fetchUserPreferences() {

@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const passport = require('./utils/passport-config');
 require('dotenv').config();
+var flash = require('connect-flash');
+
 
 
 
@@ -40,6 +42,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());

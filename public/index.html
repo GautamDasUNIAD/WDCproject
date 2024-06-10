@@ -18,7 +18,7 @@
             <li><a href="/branches" >Branches</a></li>
         </ul>
         <form class="search-form" action="/search" method="GET">
-            <input type="text" name="q" placeholder="Search...">
+            <input type="text" id="searchQuery" name="q" placeholder="Search...">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
         <ul>
@@ -77,6 +77,9 @@
         </div> -->
         <!-- Add more updates as needed -->
     </div>
+    <div class = "button-container">
+        <button type = "button" id="readMoreButton" class="read-more-button">Read More</button>
+    </div>
     <hr>
     <footer>
         <div class="footer-content">
@@ -104,76 +107,99 @@
     <script src="javascripts/whoami.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
+            const urlParams = new URLSearchParams(window.location.search);
             const eventList = document.getElementById('updatessectionID');
-            let organizationId = 1;
-            let displayedEvents = 4; // Number of initially displayed events
-
+            const readMoreButton = document.getElementById('readMoreButton');
+            const organizationId = urlParams.get('organizationId');
+            let displayedUpdates = 4; // Number of initially displayed updates
 
             try {
                 const response = await fetch(`/updates/organization/${organizationId}/updates/public`);
-                const events = await response.json();
+                const publicUpdates = await response.json();
 
-                function displayEvents(startIndex, endIndex) {
+                const responseMember = await fetch(`/updates/organization/${organizationId}/updates/member`);
+                const memberUpdates = responseMember.ok ? await responseMember.json() : [];
+
+                const updates = [...publicUpdates, ...memberUpdates];
+
+                updates.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                function formatDate(isoDate) {
+                    const date = new Date(isoDate);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    return date.toLocaleDateString('en-US', options);
+                };
+
+                function displayUpdates(startIndex, endIndex) {
                     for (let i = startIndex; i < endIndex; i++) {
-                        const event = events[i];
-                        const eventItem = document.createElement('div');
-                        eventItem.classList.add('update');
-                        eventItem.innerHTML = `
-                            <img src="images/update.jpg" alt="Update 1">
-                            <div class="update-text">
-                                <h3>${event.name}</h3>
-                                <p>${event.description}</p>
-                            </div>`;
+                        const update = updates[i];
+                        const updateDiv = document.createElement('div');
+                        updateDiv.classList.add('update-item');
+                        const formattedDate = formatDate(update.date);
 
-                        eventsList.appendChild(eventItem);
-
+                        updateDiv.innerHTML = `
+                            <div class="update">
+                                <img src="images/update.jpg" alt="Update Image">
+                                <div class="update-text">
+                                    <h3>${update.title}</h3>
+                                    <p>${update.description}</p>
+                                    <p>Posted on: ${formattedDate}</p>
+                                </div>
+                            </div>
+                        `;
+                        eventList.appendChild(updateDiv);
                     }
                 }
 
 
+                displayUpdates(0, displayedUpdates);
 
-                    // You may also want to send this change to your server to update the database
-                    // Example:
-                    // fetch('/events/upvote', {
-                    //     method: 'POST',
-                    //     headers: { 'Content-Type': 'application/json' },
-                    //     body: JSON.stringify({ eventId })
-                    // });
-
-
-                // Function to increment downvote
-
-
-                    // You may also want to send this change to your server to update the database
-                    // Example:
-                    // fetch('/events/downvote', {
-                    //     method: 'POST',
-                    //     headers: { 'Content-Type': 'application/json' },
-                    //     body: JSON.stringify({ eventId })
-                    // });
-
-                // Display initial set of events
-                displayEvents(0, displayedEvents);
-
-                // Show more events when "Read More" button is clicked
                 readMoreButton.addEventListener('click', function() {
-                    displayedEvents += 3; // Increase the number of displayed events
-                    displayEvents(displayedEvents - 3, displayedEvents);
-                    if (displayedEvents >= events.length) {
-                        readMoreButton.style.display = 'none'; // Hide the button if all events are displayed
+                    const previousUpdatesCount = displayedUpdates;
+                    displayedUpdates += 4; // Increase the number of displayed updates
+                    displayUpdates(previousUpdatesCount, displayedUpdates);
+
+                    // Hide the button if all updates are displayed
+                    if (displayedUpdates >= updates.length) {
+                        readMoreButton.style.display = 'none';
                     }
                 });
 
-                // Show "Read More" button if there are more events to display
-                if (events.length > displayedEvents) {
+                // Show "Read More" button if there are more updates to display
+                if (updates.length > displayedUpdates) {
                     readMoreButton.style.display = 'block';
+                } else {
+                    readMoreButton.style.display = 'none';
                 }
-
             } catch (error) {
-                console.error('Error fetching events:', error);
+                console.error('Error fetching updates:', error);
             }
         });
 
+        document.getElementsByClassName('search-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const searchQuery = document.getElementById('searchQuery').value;
+
+    try {
+        const response = await fetch(`/search?q=${encodeURIComponent(searchQuery)}`);
+        const searchResults = await response.json();
+
+        displaySearchResults(searchResults);
+    } catch (error) {
+        console.error('Error fetching search results:', error);
+    }
+});
+
+function displaySearchResults(results) {
+    const searchResultsContainer = document.getElementById('searchResults');
+    searchResultsContainer.innerHTML = '';
+
+    results.forEach(result => {
+        const resultElement = document.createElement('div');
+        resultElement.textContent = result.title; // Adjust based on your search result format
+        searchResultsContainer.appendChild(resultElement);
+    });
+}
     </script>
 
 

@@ -35,7 +35,7 @@ body,
 html {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height:100%;
   font-family: sans-serif;
 }
 
@@ -49,7 +49,7 @@ ul {
 
 .carousel {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: calc(100vh - 50px);
   overflow: hidden;
 }
@@ -393,6 +393,15 @@ nav {
   border-radius: 4px;
 }
 
+.create-organization-container input[type="text"],
+.create-organization-container input[type="password"],
+.create-organization-container input[type="datetime-local"]{
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 .create-branch-container {
   width: 100%;
   max-width: 600px;
@@ -403,7 +412,61 @@ nav {
   border-radius: 8px;
 }
 
-#createBranchForm, #createOrganizationForm {
+.preferences-section {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.preferences-section select,
+.preferences-section input[type="checkbox"],
+.preferences-section input[type="datetime-local"]{
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.preferences-section label {
+  display: inline-flex;
+}
+
+.preferences-section input[type="checkbox"] {
+  transform: scale(1.4); /* Increase the size of the checkbox */
+  margin-left: 10px;
+
+}
+
+.post-update-section input[type="checkbox"] {
+  transform: scale(1.4); /* Increase the size of the checkbox */
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+
+
+
+input[type="checkbox" i]{
+  margin: 0px 0px 0px 0px;
+}
+
+.create-organization-container {
+  width: 100%;
+  margin: 0 10px;
+  max-width: 600px;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+#createBranchForm, #createOrganizationForm, #preferencesForm, #addManagerForm, #upgradeForm{
   display: flex;
   flex-direction: column;
   padding:10px;
@@ -471,7 +534,9 @@ nav {
 
 .create-event-container input[type="submit"],
 .create-branch-container input[type="submit"],
-.post-update-section input[type="submit"]{
+.post-update-section input[type="submit"],
+.preferences-section input[type="submit"],
+.create-organization-container input[type="submit"]{
   padding: 10px;
   background-color: #007bff;
   color: #fff;
@@ -864,12 +929,6 @@ li a:hover {
   background-color: #111;
 }
 
-body,
-html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
 
 ul {
   list-style-type: none;
@@ -882,12 +941,6 @@ ul {
 
 }
 
-.carousel {
-  position: relative;
-  width: 100vw;
-  height: calc(100vh - 50px);
-  overflow: hidden;
-}
 
 .slide {
   width: 100%;
@@ -933,20 +986,9 @@ ul {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-.carousel-overlay {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  text-align: center;
-  color: white;
 
-}
 
-.carousel-text {
-  margin-bottom: 10px;
-  font-size: 24px;
 
-}
 
 .join-btn {
   padding: 10px 20px;
@@ -1326,6 +1368,14 @@ footer {
   margin-top: 2px;
 }
 
+.preferences-button {
+  display: inline-block;
+  background-color: #0078f8;
+  color: white;
+  text-decoration: none;
+  border-radius: 2px;
+}
+
 /* The Modal (background) */
 .modal {
   display: none;
@@ -1551,7 +1601,12 @@ body.dark-mode .vote{
   color: white;
   padding: 16px;
   display: inline-block;
+  border-radius:2px;
+
+
 }
+
+
 
 /* Dropdown contents */
 .dropdown-content {
@@ -1591,12 +1646,25 @@ body.dark-mode .vote{
 .main-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100%;
+  align-items: flex-start;
   box-sizing: border-box;
   padding: 20px;
   margin: 0px;
 }
+
+
+#userList {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-left:30px;
+  margin-top:30px;
+}
+
 
 #postUpdateForm {
   display: flex;

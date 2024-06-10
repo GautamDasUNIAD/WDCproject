@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const newLi = document.createElement('li');
             const newButton = document.createElement('a');
             newButton.textContent = email;
+
             newLi.appendChild(newButton);
             buttonListRight.appendChild(newLi);
             if (role == "Admin"){
