@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 
+
 // /* GET home page. */
 // router.get('/', function(req, res, next) {
 //   res.render('index', { title: 'Express' });
@@ -45,6 +46,10 @@ router.get('/events', (req, res) => {
 
 router.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'admin.html'));
+});
+
+router.get('/management', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public', 'management.html'));
 });
 
 router.get('/create-branch', (req, res) => {
@@ -97,8 +102,6 @@ router.get('/view-rsvps', (req, res) => {
 router.get('/view-updates', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'view-updates.html'));
 });
-
-
 
 
 
