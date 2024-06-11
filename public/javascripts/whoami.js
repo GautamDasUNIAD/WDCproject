@@ -20,28 +20,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
           const userDropdownDiv = document.createElement('div');
           userDropdownDiv.classList.add("dropdown");
-
-          const dropdownBtn = document.createElement('a');
-          dropdownBtn.classList.add("dropbtn");
-          dropdownBtn.textContent = full_name;
-
-          const dropdownContentDiv = document.createElement('div');
-          dropdownContentDiv.classList.add("dropdown-content");
-
-          const preferences = document.createElement('a');
-          // preferences.classList.add('preferences-button');
-          preferences.href = "/preferences";
-          preferences.textContent = "Preferences";
-          dropdownContentDiv.appendChild(preferences);
-
-          const logoutBtn = document.createElement('a');
-          logoutBtn.href = "/users/logout";
-          logoutBtn.textContent = "Logout";
-          dropdownContentDiv.appendChild(logoutBtn);
-
-
-          userDropdownDiv.append(dropdownBtn);
-          userDropdownDiv.append(dropdownContentDiv);
+          userDropdownDiv.innerHTML = `
+            <a class="dropbtn">${full_name}</a>
+            <div class="dropdown-content">
+              <a href="/preferences">Preferences</a>
+              <a href="users/logout">Logout</a>
+            </div>
+          `;
           navBar.append(userDropdownDiv);
 
 
