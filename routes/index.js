@@ -16,15 +16,22 @@ var path = require('path');
 //   res.sendFile(path.join(__dirname, '../public', 'home.html'));
 // });
 
+// Middleware used to clear user's cookies if they have no active session
+router.use(function(req, res, next){
+  if (!req.isAuthenticated()){
+    res.clearCookie('email');
+    res.clearCookie('first_name');
+    res.clearCookie('last_name');
+    res.clearCookie('role');
+  }
+  next();
+});
+
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
       return next();
   } else {
-      res.clearCookie('email');
-      res.clearCookie('first_name');
-      res.clearCookie('last_name');
-      res.clearCookie('role');
       res.status(401).send('You need to be logged in to perform this action.');
   }
 }
