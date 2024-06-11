@@ -1,12 +1,20 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-  var xhttp = new XMLHttpRequest();
+function getCookie(name){
+  let cookieArr = document.cookie.split(";");
+  for (let i = 0; i < cookieArr.length; i++){
+    let cookiePair = cookieArr[i].split("=");
+    if (name === cookiePair[0].trim()){
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  return null;
+}
 
-  xhttp.onreadystatechange = function(){
-    if (this.readyState == 4 && this.status == 200){
-      var response = JSON.parse(xhttp.response);
-      var email = response.email;
-      var role = response.role;
-      if (email != undefined){
+document.addEventListener('DOMContentLoaded', (event) => {
+  var name = getCookie('first_name');
+  var last_name = getCookie('last_name');
+  var full_name = name + " " + last_name;
+  var role = getCookie('role');
+      if (name != undefined){
           document.querySelector('nav ul:nth-of-type(2)').remove();
           const navBar = document.querySelector('nav');
 
@@ -15,7 +23,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
           const dropdownBtn = document.createElement('a');
           dropdownBtn.classList.add("dropbtn");
-          dropdownBtn.textContent = email;
+          dropdownBtn.textContent = full_name;
 
           const dropdownContentDiv = document.createElement('div');
           dropdownContentDiv.classList.add("dropdown-content");
@@ -54,9 +62,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
           }
       }
     }
-  };
-
-  xhttp.open("GET", "/users/whoami", true);
-  xhttp.send();
-}
 );

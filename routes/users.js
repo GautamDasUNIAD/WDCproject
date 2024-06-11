@@ -3,6 +3,18 @@ var router = express.Router();
 const passport = require('passport');
 const { hashPassword, checkPassword } = require('../utils/password');
 
+// Middleware to check if the user is authenticated
+function isAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+      return next();
+  } else {
+      res.clearCookie('email');
+      res.clearCookie('first_name');
+      res.clearCookie('last_name');
+      res.clearCookie('role');
+      res.status(401).send('You need to be logged in to perform this action.');
+  }
+}
 
 const VALID_ROLES = ['Regular', 'Manager', 'Admin'];
 /* GET users listing. */
@@ -48,26 +60,28 @@ router.post('/register', (req, res) => {
 
 // Login user
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/users/return-cookies',
   failureRedirect: '/',
   failureFlash: true // Enable flash messages
 }));
 
+router.get('/return-cookies', isAuthenticated, function(req, res, next) {
+  res.cookie('email', req.user.email);
+  res.cookie('first_name', req.user.first_name);
+  res.cookie('last_name', req.user.last_name);
+  res.cookie('role', req.user.role);
+  res.redirect('/');
+});
+
 router.get('/logout', (req, res, next) => {
   req.logout(function(err) {
       if (err) { return next(err); }
+      res.clearCookie('email');
+      res.clearCookie('first_name');
+      res.clearCookie('last_name');
+      res.clearCookie('role');
       res.redirect('/');
   });
-});
-
-//
-router.get('/whoami', function(req, res){
-  if(req.isAuthenticated()){
-    res.json({"role": req.user.role, "email": req.user.email});
-  }
-  else {
-    res.send(undefined);
-  }
 });
 
 module.exports = router;

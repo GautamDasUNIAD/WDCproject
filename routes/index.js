@@ -21,6 +21,10 @@ function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
       return next();
   } else {
+      res.clearCookie('email');
+      res.clearCookie('first_name');
+      res.clearCookie('last_name');
+      res.clearCookie('role');
       res.status(401).send('You need to be logged in to perform this action.');
   }
 }
