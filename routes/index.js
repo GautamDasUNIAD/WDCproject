@@ -16,6 +16,33 @@ var path = require('path');
 //   res.sendFile(path.join(__dirname, '../public', 'home.html'));
 // });
 
+// Middleware to check if the user is authenticated
+function isAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+      return next();
+  } else {
+      res.status(401).send('You need to be logged in to perform this action.');
+  }
+}
+
+// Middleware to check if the user is a manager
+function isManager(req, res, next) {
+  if (req.isAuthenticated() && req.user.role === 'Manager') {
+      return next();
+  } else {
+      res.status(403).send('You do not have permission to perform this action.');
+  }
+}
+
+// Middleware to check if the user is an admin
+function isAdmin(req, res, next) {
+  if (req.isAuthenticated() && req.user.role === 'Admin') {
+      return next();
+  } else {
+      res.status(403).send('You do not have permission to perform this action.');
+  }
+}
+
 router.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'login.html'));
 });
@@ -44,11 +71,13 @@ router.get('/events', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'events.html'));
 });
 
-router.get('/admin', (req, res) => {
+// Admin dashboard
+router.get('/admin', isAuthenticated, isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'admin.html'));
 });
 
-router.get('/management', (req, res) => {
+// Manager dashboard
+router.get('/management', isAuthenticated, isManager, (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'management.html'));
 });
 
