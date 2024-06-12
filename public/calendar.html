@@ -36,16 +36,7 @@
             <button type="button" class="view-button active" onclick="showCalendarView()">Calendar View</button>
         </div>
         <h3>Sort by Branch:</h3>
-        <ul>
-            <li><input type="checkbox" id="Adelaide"><label for="Adelaide">Adelaide</label></li>
-            <li><input type="checkbox" id="Brisbane"><label for="Brisbane">Brisbane</label></li>
-            <li><input type="checkbox" id="Sydney"><label for="Sydney">Sydney</label></li>
-            <li><input type="checkbox" id="Melbourne"><label for="Melbourne">Melbourne</label></li>
-            <li><input type="checkbox" id="Canberra"><label for="Canberra">Canberra</label></li>
-            <li><input type="checkbox" id="Perth"><label for="Perth">Perth</label></li>
-            <li><input type="checkbox" id="Darwin"><label for="Darwin">Darwin</label></li>
-            <li><input type="checkbox" id="Regional"><label for="Regional">Regional</label></li>
-        </ul>
+            <ul class = "branchesclass" id = "branchesList"></ul>
     </div>
 
     <button type = "button" id = "myBtn" class="accessibility-button">
@@ -68,64 +59,121 @@
         <h2>Key Events</h2>
         <div class="split-div">
             <div class="calendar-div">
+                <div class="left-button">
+                    <button type = "button" id="prevMonth">&lt;</button>
+                </div>
+
                 <div class="calendar" id="calendar">
                     <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const monthNames = ["January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"
-                            ];
-                            const today = new Date();
-                            let currentMonth = today.getMonth();
-                            let currentYear = today.getFullYear();
+document.addEventListener('DOMContentLoaded', function () {
+    const calendar = document.getElementById('calendar');
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
 
-                            function createCalendar(month, year) {
-                                let firstDay = new Date(year, month).getDay();
-                                let daysInMonth = 32 - new Date(year, month, 32).getDate();
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
 
-                                let tbl = document.createElement("table");
-                                let thead = tbl.createTHead();
-                                let row = thead.insertRow();
-                                let cell = row.insertCell();
-                                cell.colSpan = 7;
-                                cell.textContent = monthNames[month] + " " + year;
+    // Function to update the calendar display
+    function updateCalendarDisplay(events) {
+        const tbl = createCalendar(currentMonth, currentYear, events);
+        calendar.innerHTML = '';
+        calendar.appendChild(tbl);
+    }
 
-                                let headerDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-                                row = tbl.insertRow();
-                                for (let day of headerDays) {
-                                    cell = row.insertCell();
-                                    cell.textContent = day;
-                                }
+    // Function to create the calendar HTML based on events data
+    function createCalendar(month, year, events) {
+        let firstDay = new Date(year, month).getDay();
+        let daysInMonth = 32 - new Date(year, month, 32).getDate();
 
-                                let date = 1;
-                                for (let i = 0; i < 6; i++) {
-                                    let row = tbl.insertRow();
-                                    for (let j = 0; j < 7; j++) {
-                                        if (i === 0 && j < firstDay) {
-                                            row.insertCell();
-                                        } else if (date > daysInMonth) {
-                                            break;
-                                        }
-                                        else {
+        let tbl = document.createElement("table");
+        let thead = tbl.createTHead();
+        let row = thead.insertRow();
+        let cell = row.insertCell();
+        cell.colSpan = 7;
+        cell.textContent = monthNames[month] + " " + year;
 
-                                            let cell = row.insertCell();
-                                            if (i === 2 && j === 3) {
-                                                cell.textContent = "EVENT"
-                                            } else
-                                                cell.textContent = date;
-                                            if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-                                                cell.style.backgroundColor = "#ffcccb"; // Highlight today's date
-                                            }
-                                            date++;
-                                        }
-                                    }
-                                }
-                                return tbl;
-                            }
+        let headerDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        row = tbl.insertRow();
+        for (let day of headerDays) {
+            cell = row.insertCell();
+            cell.textContent = day;
+        }
 
-                            document.getElementById('calendar').appendChild(createCalendar(currentMonth, currentYear));
-                        });
+        let date = 1;
+        for (let i = 0; i < 6; i++) {
+            row = tbl.insertRow();
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDay) {
+                    row.insertCell();
+                } else if (date > daysInMonth) {
+                    break;
+                } else {
+                    let cell = row.insertCell();
+                    let event = events.find(e => new Date(e.date).getDate() === date && new Date(e.date).getMonth() === month);
+                    cell.textContent = date; // Always display the date
+                    if (event) {
+                        let eventInfo = document.createElement('div');
+                        eventInfo.textContent = event.name;
+                        eventInfo.style.fontSize = '0.85em'; // Smaller font size for event name
+                        eventInfo.style.color = 'red'; // Color for event name
+                        cell.appendChild(eventInfo);
+                        cell.title = event.description; // Tooltip to show full event description
+                        cell.style.backgroundColor = '#ffcccb'; // Highlight event days
+                    }
+
+                    // Highlight today's date in pastel blue, without overriding event highlight
+                    if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                        cell.style.border = "2px solid #add8e6"; // Use border to highlight today's date
+                    }
+
+                    date++;
+                }
+            }
+        }
+        return tbl;
+    }
+
+    // Fetch events from the server and update the calendar
+    async function fetchEventsAndUpdateCalendar() {
+        try {
+            const response = await fetch('/events/all');
+            const events = await response.json();
+            updateCalendarDisplay(events);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    }
+
+    fetchEventsAndUpdateCalendar();
+
+    document.getElementById('prevMonth').addEventListener('click', function() {
+        if (currentMonth === 0) {
+            currentMonth = 11;
+            currentYear -= 1;
+        } else {
+            currentMonth -= 1;
+        }
+        fetchEventsAndUpdateCalendar();
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', function() {
+        if (currentMonth === 11) {
+            currentMonth = 0;
+            currentYear += 1;
+        } else {
+            currentMonth += 1;
+        }
+        fetchEventsAndUpdateCalendar();
+    });
+});
+
                     </script>
 
+                </div>
+                <div class = "right-button">
+                    <button type = "button" id="nextMonth">&gt;</button>
                 </div>
             </div>
 
@@ -140,7 +188,6 @@
 
         </div>
     </div>
-
     <footer>
         <div class="footer-content">
             <div class="social-media-links">
@@ -170,11 +217,33 @@
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
             const eventList = document.getElementById('eventList');
+
+            const branches = document.getElementsByClassName('branchesclass');
             let displayedEvents = 4; // Number of initially displayed events
 
             try {
                 const response = await fetch('/events/all');
                 const events = await response.json();
+
+                events.sort((a, b) => new Date(a.date)- new Date(b.date));
+
+                const uniqueLocations = new Set();
+
+
+
+                events.forEach(event => {
+                    uniqueLocations.add(event.location);
+                });
+
+                uniqueLocations.forEach(location => {
+                    const newBranch = document.createElement('li');
+                    newBranch.innerHTML = `
+                <li>
+                    <input type="checkbox" id="${location}">
+                    <label for="${location}">${location}</label>
+                </li>`;
+                    branchesList.appendChild(newBranch);
+                });
 
                 const clickCounts = {
                     upvote: {},
@@ -211,6 +280,7 @@
                         clickCounts.upvote[event.id] = 0;
                         clickCounts.downvote[event.id] = 0;
 
+                        const locationCheckbox = document.getElementById(`${event.location}`);
 
                     }
                 }
