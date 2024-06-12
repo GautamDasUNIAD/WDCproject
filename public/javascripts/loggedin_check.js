@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         if (email != undefined){
             document.querySelector('a.button2').remove();
             document.querySelector('a.button3').remove();
+            document.querySelector('button.join-btn').remove();
             const buttonListRight = document.querySelector('nav ul:nth-of-type(2)');
             const newLi = document.createElement('li');
             const newButton = document.createElement('a');

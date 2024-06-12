@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <nav>
+    <nav id = "navbar">
         <ul>
             <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
@@ -107,6 +107,7 @@
     <script src="javascripts/accessibilitybutton.js"></script>
     <script src="javascripts/highcontrast.js"></script>
     <script src="javascripts/whoami.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
             var selectedOrgId = getCookie('selectedOrgId');
@@ -203,7 +204,10 @@ function displaySearchResults(results) {
         searchResultsContainer.appendChild(resultElement);
     });
 }
-    </script>
+
+
+
+</script>
 
 
 

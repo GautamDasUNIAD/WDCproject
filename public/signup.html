@@ -9,7 +9,7 @@
 </head>
 <body>
     <nav>
-        <ul>
+        <ul class = "banner">
             <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
             <li><a href="/branches" >Branches</a></li>
@@ -20,7 +20,7 @@
                 <!-- Options will be populated dynamically -->
             </div>
         </div>
-        <ul>
+        <ul class = "banner">
             <li><a href="/login" class = button2>Login</a></li>
             <li><a href="/signup" class = button3>Signup</a></li>
         </ul>
@@ -40,23 +40,34 @@
           </div>
         </div>
     </div>
-    <br>
-    <h1 style="text-align: center;">Join us!</h1>
-    <br>
-    <div class="login-container">
+
+    <div class = "main-container" style = "padding-top: 100px;  /* Adjust the value to create the desired amount of space */
+    padding-bottom: 100px; ">
+        <div class="create-login-container">
+            <h1 style="text-align: center;">Join us!</h1>
+            <div class="login-container">
         <form id="signupForm">
-            <label for="FirstName">First Name</label>
+            <label for="FirstName">First Name:</label>
             <input type="text" id="FirstName" name="FirstName" required>
-            <label for="LastName">Last Name</label>
+            <label for="LastName">Last Name:</label>
             <input type="text" id="LastName" name="LastName" required>
-            <label for="username">Email</label>
+            <label for="username">Email:</label>
             <input type="text" id="username" name="username" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-            <input type="submit" value="Login">
+            <input type="submit" value="Sign up">
         </form>
+
+
+        <div class = loginsdiv>
+            <a class = "signups" href="/auth/google"><i class="fab fa-google"></i> Login with Google</a>
+            <a class = "signups" href="/auth/github"><i class="fab fa-github"></i> Login with GitHub</a>
+        </div>
         <br>
-        <div id="signupResponseMessage"></div>
+        <div style = "padding:20px" id="signupResponseMessage"></div>
+        <p style = "text-align:center">Have an account? <a href = "/login">Log in</a></p>
+        </div>
+        </div>
     </div>
 
     <script>

@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           const optionDiv = document.createElement('div');
           optionDiv.dataset.id = org.id;
           optionDiv.textContent = org.name;
+          optionDiv.classList.add("organizations-dropdown-button")
           optionDiv.addEventListener('click', function() {
               document.cookie = "selectedOrgId=" + org.id + ";";
               const url = new URL(window.location.href);
