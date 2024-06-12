@@ -9,6 +9,46 @@ function getCookie(name){
   return null;
 }
 
+document.addEventListener('DOMContentLoaded', async function() {
+  var selectedOrgId = getCookie('selectedOrgId');
+
+  // Fetch and populate the dropdown with organizations
+  try {
+      const response = await fetch('/organizations');
+      const organizations = await response.json();
+      const dropdownContent = document.getElementById('organization-dropdown');
+      const dropdownButton = document.querySelector('.organizations-dropdown-button');
+      const organizationTitle = document.getElementsByClassName("carousel-text")[0];
+
+      organizations.forEach(org => {
+          if (org.id == selectedOrgId){
+              dropdownButton.textContent = org.name;
+              if (organizationTitle != undefined){
+                organizationTitle.textContent = org.name;
+              }
+          }
+
+          const optionDiv = document.createElement('div');
+          optionDiv.dataset.id = org.id;
+          optionDiv.textContent = org.name;
+          optionDiv.addEventListener('click', function() {
+              document.cookie = "selectedOrgId=" + org.id + ";";
+              const url = new URL(window.location.href);
+              window.location.href = url.toString();
+          });
+          dropdownContent.appendChild(optionDiv);
+      });
+
+      dropdownButton.addEventListener('click', function() {
+          dropdownContent.classList.toggle('show');
+      });
+
+  } catch (error) {
+      console.error('Error fetching organizations:', error);
+  }
+});
+
+
 document.addEventListener('DOMContentLoaded', (event) => {
   var name = getCookie('first_name');
   var last_name = getCookie('last_name');
@@ -21,7 +61,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           const userDropdownDiv = document.createElement('div');
           userDropdownDiv.classList.add("dropdown");
           userDropdownDiv.innerHTML = `
-            <a class="dropbtn">${full_name}</a>
+            <a class="user-dropdown-button">${full_name}</a>
             <div class="dropdown-content">
               <a href="/preferences">Preferences</a>
               <a href="users/logout">Logout</a>
@@ -48,3 +88,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
       }
     }
 );
+
