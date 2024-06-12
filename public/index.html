@@ -17,10 +17,12 @@
             <li><a href="/events">Events</a></li>
             <li><a href="/branches" >Branches</a></li>
         </ul>
-        <form class="search-form" action="/search" method="GET">
-            <input type="text" id="searchQuery" name="q" placeholder="Search...">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
+        <div class="dropdown">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
         <ul>
             <li><a href="/login" class = button2>Login</a></li>
             <li><a href="/signup" class = button3>Signup</a></li>
@@ -107,10 +109,47 @@
     <script src="javascripts/whoami.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
+            var selectedOrgId = getCookie('selectedOrgId');
+
+            // Fetch and populate the dropdown with organizations
+            try {
+                const response = await fetch('/organizations');
+                const organizations = await response.json();
+                const dropdownContent = document.getElementById('organization-dropdown');
+                const dropdownButton = document.querySelector('.organizations-dropdown-button');
+                const organizationTitle = document.getElementsByClassName("carousel-text")[0];
+
+                organizations.forEach(org => {
+                    if (org.id == selectedOrgId){
+                        dropdownButton.textContent = org.name;
+                        organizationTitle.textContent = org.name;
+                    }
+
+                    const optionDiv = document.createElement('div');
+                    optionDiv.dataset.id = org.id;
+                    optionDiv.textContent = org.name;
+                    optionDiv.addEventListener('click', function() {
+                        document.cookie = "selectedOrgId=" + org.id + ";";
+                        window.location.href = `/`;
+                    });
+                    dropdownContent.appendChild(optionDiv);
+                });
+
+                dropdownButton.addEventListener('click', function() {
+                    dropdownContent.classList.toggle('show');
+                });
+
+            } catch (error) {
+                console.error('Error fetching organizations:', error);
+            }
+
+
+
+
             const urlParams = new URLSearchParams(window.location.search);
             const eventList = document.getElementById('updatessectionID');
             const readMoreButton = document.getElementById('readMoreButton');
-            const organizationId = urlParams.get('organizationId');
+            const organizationId = selectedOrgId;
             let displayedUpdates = 4; // Number of initially displayed updates
 
             try {
