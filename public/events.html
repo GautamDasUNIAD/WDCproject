@@ -198,6 +198,17 @@
                 readMoreButton.addEventListener('click', function () {
                     displayedEvents += 3;
                     filterEvents();
+
+                    if (!window.matchMedia('(max-width: 768px)').matches) {
+                        const sidebar = document.querySelector('.sidebar');
+                        sidebar.style.minHeight = eventsContainer.offsetHeight + 167.5 + 'px';
+                    }
+                    if (window.matchMedia('(max-width: 768px)').matches){
+                        const branchesList = document.querySelector('ul#branchesList.branchesclass');
+                        const sidebar = document.querySelector('.sidebar');
+                        const branchesListHeight = branchesList.clientHeight; // Get the height of branchesList in pixels
+                        sidebar.style.minHeight = (167.5 + branchesListHeight) + 'px';
+                    }
                 });
 
             } catch (error) {

@@ -38,8 +38,8 @@ body.dark-mode ul.branchesclass{
 }
 /* Custom checkbox styling */
 .branchesclass li {
-  list-style: none;
-  margin: 5px 0;
+  margin-right: 11px;
+  margin-bottom: 10px;
 }
 
 .branchesclass input[type="checkbox"] {
@@ -240,7 +240,6 @@ footer {
   padding: 20px 0;
   background-color: #333;
   color: white;
-  text-align: center;
   margin-top: auto;
 }
 
@@ -678,9 +677,11 @@ textarea {
   padding: 20px;
   width: 22%;
   box-sizing: border-box;
-  min-height: 100vh; /* Adjust the value based on your footer height */
+  min-height: 90vh; /* Adjust the value based on your footer height */
   align-items: stretch;
   border-right: 1px solid #ccc; /* Add a border to visually separate sidebar content */
+  z-index:-9999;
+  position:relative;
 
 }
 
@@ -747,7 +748,7 @@ body.dark-mode .view-button{
   overflow: hidden;
   border: 1px solid grey;
   display: border-box;
-  cursor: pointer; 
+  cursor: pointer;
 
 
 }
@@ -779,7 +780,7 @@ body.dark-mode .view-button{
 .sidebar ul {
   float: left;
   background-color: transparent;
-  height: 200px;
+  height: 210px;
   width: 100px;
 }
 
@@ -1047,7 +1048,7 @@ footer {
   padding: 50px 0;
   background-color: rgb(3, 85, 3);
   color: white;
-  text-align: center;
+
 }
 
 .hamburger {
