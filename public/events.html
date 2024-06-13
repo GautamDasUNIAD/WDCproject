@@ -10,21 +10,26 @@
 
 </head>
 <body>
-    <nav>
-        <ul>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
             <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
-            <li><a href="/branches" >Branches</a></li>
+            <li><a href="/branches">Branches</a></li>
         </ul>
-        <div class="dropdown" id="organizations-dropdown-div">
+        <div class="dropdown" id = "organizations-dropdown-div">
             <div class="organizations-dropdown-button">Select an organization...</div>
             <div class="dropdown-content" id="organization-dropdown">
                 <!-- Options will be populated dynamically -->
             </div>
         </div>
         <ul>
-            <li><a href="/login" class = button2>Login</a></li>
-            <li><a href="/signup" class = button3>Signup</a></li>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
         </ul>
     </nav>
 
@@ -53,7 +58,7 @@
         <i class="fas fa-eye"></i>
     </button>
     <!-- The Modal -->
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal" style = "display:none">
         <div class="modal-content">
           <span class="close">&times;</span>
           <div style="display: flex; align-items: center;">
@@ -101,6 +106,7 @@
     <script src="javascripts/highcontrast.js"></script>
     <script src="javascripts/upvote.js"></script>
     <script src="javascripts/whoami.js"></script>
+    <script src="javascripts/adjustnav.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
             const eventList = document.getElementById('eventList');
@@ -166,8 +172,9 @@
                             </div>
                             <div class="update-text">
                                 <h3>${event.name}</h3>
-                                <p>Description: ${event.description}</p>
-                                <p>Date: ${formattedDate}</p>
+                                <p style = "color: rgb(88,88,88); font-size: 10px;">${formattedDate}</p>
+                                <p>${event.description}</p>
+
                                 <p>Location: ${event.location}</p>
 
                             </div>
@@ -220,16 +227,30 @@
                 // });
 
 
-                readMoreButton.addEventListener('click', function() {
+
+                readMoreButton.addEventListener('click', async function() {
                     displayedEvents += 3;
                     displayEvents(displayedEvents - 3, displayedEvents);
 
                     if (displayedEvents >= events.length) {
                         readMoreButton.style.display = 'none';
+
+                    }
+                    if (!window.matchMedia('(max-width: 768px)').matches) {
+                        const sidebar = document.querySelector('.sidebar');
+                        sidebar.style.minHeight = eventsContainer.offsetHeight + 167.5 + 'px';
+                    }
+                    if (window.matchMedia('(max-width: 768px)').matches){
+                        const branchesList = document.querySelector('ul#branchesList.branchesclass');
+                        const sidebar = document.querySelector('.sidebar');
+                        const branchesListHeight = branchesList.clientHeight; // Get the height of branchesList in pixels
+                        sidebar.style.minHeight = (167.5 + branchesListHeight) + 'px';
                     }
 
-                    const sidebar = document.querySelector('.sidebar');
-                    sidebar.style.minHeight = eventsContainer.offsetHeight + 167.5 + 'px';
+
+
+
+
                 });
 
 
@@ -244,6 +265,24 @@
                 console.error('Error fetching events:', error);
             }
         });
+
+        function adjustSidebarHeight() {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+        const branchesList = document.querySelector('ul#branchesList.branchesclass');
+        const sidebar = document.querySelector('.sidebar');
+        const branchesListHeight = branchesList.clientHeight; // Get the height of branchesList in pixels
+        sidebar.style.minHeight = (167.5 + branchesListHeight) + 'px';
+    } else {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.style.minHeight = 300 + 167.5 + 'px';
+    }
+}
+
+// Initial call to adjust sidebar height on page load
+document.addEventListener('DOMContentLoaded', adjustSidebarHeight);
+
+// Add event listener for window resize to continuously monitor viewport width
+window.addEventListener('resize', adjustSidebarHeight);
 
     </script>
 
