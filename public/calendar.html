@@ -56,7 +56,7 @@
     </div>
 
     <div class="calendar-section">
-        <h2>Key Events</h2>
+        <h2 style = "font-size:30px">Key Events</h2>
         <div class="split-div">
             <div class="calendar-div">
                 <div class="left-button">
@@ -80,6 +80,8 @@
                                 const tbl = createCalendar(currentMonth, currentYear, events);
                                 calendar.innerHTML = '';
                                 calendar.appendChild(tbl);
+
+
                             }
 
                             // Function to create the calendar HTML based on events data
@@ -93,6 +95,9 @@
                                 let cell = row.insertCell();
                                 cell.colSpan = 7;
                                 cell.textContent = monthNames[month] + " " + year;
+                                // let nextMonth = document.getElementById("nextMonth");
+                                // cell.appendChild(nextMonth);
+
 
                                 let headerDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
                                 row = tbl.insertRow();

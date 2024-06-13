@@ -112,7 +112,7 @@
             const eventList = document.getElementById('eventList');
             const eventsContainer = document.getElementById('eventsContainer');
             const readMoreButton = document.getElementById('readMoreButton');
-            let displayedEvents = 4;
+            let displayedEvents = 3;
 
 
             const branches = document.getElementsByClassName('branchesclass');
@@ -268,15 +268,12 @@
         });
 
         function adjustSidebarHeight() {
-    if (window.matchMedia('(max-width: 768px)').matches) {
-        const branchesList = document.querySelector('ul#branchesList.branchesclass');
-        const sidebar = document.querySelector('.sidebar');
-        const branchesListHeight = branchesList.clientHeight; // Get the height of branchesList in pixels
-        sidebar.style.minHeight = (167.5 + branchesListHeight) + 'px';
-    } else {
-        const sidebar = document.querySelector('.sidebar');
-        sidebar.style.minHeight = 300 + 167.5 + 'px';
-    }
+        if (window.matchMedia('(max-width: 768px)').matches) {
+            const branchesList = document.querySelector('ul#branchesList.branchesclass');
+            const sidebar = document.querySelector('.sidebar');
+            const branchesListHeight = branchesList.clientHeight; // Get the height of branchesList in pixels
+            sidebar.style.minHeight = (167.5 + branchesListHeight) + 'px';
+        }
 }
 
 // Initial call to adjust sidebar height on page load

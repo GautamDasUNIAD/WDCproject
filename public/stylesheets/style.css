@@ -76,6 +76,8 @@ textarea {
 
 }
 
+
+
 .prev,
 .next {
   cursor: pointer;
@@ -705,6 +707,7 @@ body.dark-mode .view-button{
   overflow: hidden;
   border: 1px solid grey;
   display: border-box;
+  cursor: pointer; 
 
 
 }
@@ -1063,7 +1066,6 @@ ul {
   overflow: hidden;
   background-color: #f4f3f3;
   position: relative;
-  font-size:15px;
 }
 
 ul.banner-class {
@@ -1266,12 +1268,12 @@ ul.banner-class {
   justify-content: center;
   margin-bottom: 20px;
   background-color: #f9f9f9;
-  max-width: 60%;
+  max-width: 50%;
   margin-left: 0;
   margin-right: 0;
   border: 1px solid black;
   min-height: 50px;
-  width: 60%;
+  width: 50%;
 }
 .calendar-events {
   display: flex;
@@ -1280,12 +1282,12 @@ ul.banner-class {
   justify-content: left;
   margin-bottom: 20px;
   background-color: #f9f9f9;
-  max-width: 30%;
+  max-width: 40%;
   margin-left: 0;
   margin-right: 0;
   border: 1px solid black;
   min-height: 50px;
-  width: 30%;
+  width: 40%;
 }
 .calendar-section {
   width: 100%;
