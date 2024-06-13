@@ -96,6 +96,12 @@
     <script src="javascripts/whoami.js"></script>
     <script src="javascripts/adjustnav.js"></script>
     <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
         function rsvpForEvent(eventId) {
             const xhr = new XMLHttpRequest();
             xhr.open('POST', '/userevents/rsvp', true);
@@ -109,7 +115,7 @@
                         alert('You need to be logged in to RSVP for events.');
                         window.location.href = '/login';
                     } else {
-                        alert('Error RSVPing for event: '+ xhr.responseText);
+                        alert('Error RSVPing for event: ' + xhr.responseText);
                     }
                 }
             };
@@ -132,7 +138,13 @@
 
 
             try {
-                const response = await fetch('/events/all');
+                const selectedOrgId = getCookie('selectedOrgId');
+                if (!selectedOrgId) {
+                    console.error('No selected organization ID found in cookies.');
+                    return;
+                }
+
+                const response = await fetch(`/events/organization/${selectedOrgId}`);
                 const events = await response.json();
 
                 events.sort((a, b) => new Date(a.date) - new Date(b.date));

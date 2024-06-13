@@ -55,6 +55,19 @@ router.get('/all', (req, res) => {
     });
 });
 
+// Fetch events by org id
+router.get('/organization/:id', (req, res) => {
+    const organizationId = req.params.id;
+
+    db.query('SELECT * FROM Events WHERE organization_id = ?', [organizationId], (err, results) => {
+        if (err) {
+            console.error('Error fetching events for organization:', err);
+            return res.status(500).send('Internal server error');
+        }
+        res.json(results);
+    });
+});
+
 // Update upvote/downvote route
 router.post('/:eventId/vote', isUser, (req, res) => {
     const eventId = req.params.eventId;
