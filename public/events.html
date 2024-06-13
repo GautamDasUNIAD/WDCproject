@@ -96,6 +96,37 @@
     <script src="javascripts/whoami.js"></script>
     <script src="javascripts/adjustnav.js"></script>
     <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        function rsvpForEvent(eventId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/userevents/rsvp', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) { // Request is complete
+                    if (xhr.status === 201) {
+                        alert(xhr.responseText);
+                    } else if (xhr.status === 401) {
+                        alert('You need to be logged in to RSVP for events.');
+                        window.location.href = '/login';
+                    } else {
+                        alert('Error RSVPing for event: ' + xhr.responseText);
+                    }
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('Network error while RSVPing for event.');
+            };
+
+            xhr.send(JSON.stringify({ eventId }));
+        }
+
         document.addEventListener('DOMContentLoaded', async function () {
             const eventList = document.getElementById('eventList');
             const eventsContainer = document.getElementById('eventsContainer');
@@ -104,11 +135,17 @@
             const sidebar = document.querySelector('.sidebar');
             let displayedEvents = 4;
 
-            try {
-                const response = await fetch('/events/all');
-                const events = await response.json();
 
-                events.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            try {
+                const selectedOrgId = getCookie('selectedOrgId');
+                if (!selectedOrgId) {
+                    console.error('No selected organization ID found in cookies.');
+                    return;
+                }
+
+                const response = await fetch(`/events/organization/${selectedOrgId}`);
+                const events = await response.json();
 
                 const uniqueLocations = new Set();
 
@@ -154,9 +191,12 @@
                             </div>
                             <div class="update-text">
                                 <h3>${event.name}</h3>
-                                <p style="color: rgb(88,88,88); font-size: 10px;">${formattedDate}</p>
+                                <p style=" font-size: 10px;">${formattedDate}</p>
                                 <p>${event.description}</p>
                                 <p>Location: ${event.location}</p>
+                            </div>
+                            <div class="rsvp-button-container">
+                                <button class="rsvp-button" type="button" onclick="rsvpForEvent(${event.id})">RSVP</button>
                             </div>
                         `;
                         eventsContainer.appendChild(eventItem);
@@ -199,9 +239,11 @@
                 document.addEventListener('DOMContentLoaded', adjustSidebarHeight);
                 window.addEventListener('load', adjustSidebarHeight);
 
+
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
+
         });
 
     </script>
