@@ -11,27 +11,35 @@
 </head>
 
 <body>
-    <nav id = "navbar">
-        <ul>
-            <li><a class="active" href="/">LOGO</a></li>
-            <li><a href="/events">Events</a></li>
-            <li><a href="/branches" >Branches</a></li>
-        </ul>
-        <div class="dropdown">
-            <div class="organizations-dropdown-button">Select an organization...</div>
-            <div class="dropdown-content" id="organization-dropdown">
-                <!-- Options will be populated dynamically -->
-            </div>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-        <ul>
-            <li><a href="/login" class = button2>Login</a></li>
-            <li><a href="/signup" class = button3>Signup</a></li>
-        </ul>
+            <ul class="menu">
+                <li><a class="active" href="/">LOGO</a></li>
+                <li><a href="/events">Events</a></li>
+                <li><a href="/branches">Branches</a></li>
+            </ul>
+            <div class="dropdown">
+                <div class="organizations-dropdown-button">Select an organization...</div>
+                <div class="dropdown-content" id="organization-dropdown">
+                    <!-- Options will be populated dynamically -->
+                </div>
+            </div>
+            <ul>
+                <li><a href="/login" class="button2">Login</a></li>
+                <li><a href="/signup" class="button3">Signup</a></li>
+            </ul>
+
+
     </nav>
+
 
     <div class="carousel">
         <div class="slides">
-            <div class="slide"><img src="/images/bg1.jpg" alt="Slide 1"></div>
+            <div class="slide"><img src="/images/volunteering1.png" alt="Slide 1"></div>
             <div class="slide"><img src="/images/bg2.jpg" alt="Slide 2"></div>
             <div class="slide"><img src="/images/bg3.jpg" alt="Slide 3"></div>
         </div>
@@ -109,6 +117,20 @@
     <script src="javascripts/whoami.js"></script>
 
     <script>
+         document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger');
+    const menus = document.querySelectorAll('.menu'); // Select all elements with class 'menu'
+
+    hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('active');
+
+        // Toggle 'active' class for each menu element
+        menus.forEach(menu => {
+            menu.classList.toggle('active');
+        });
+    });
+});
+
         document.addEventListener('DOMContentLoaded', async function() {
             var selectedOrgId = getCookie('selectedOrgId');
             const urlParams = new URLSearchParams(window.location.search);
@@ -181,30 +203,29 @@
         });
 
         document.getElementsByClassName('search-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const searchQuery = document.getElementById('searchQuery').value;
+            event.preventDefault();
+            const searchQuery = document.getElementById('searchQuery').value;
 
-    try {
-        const response = await fetch(`/search?q=${encodeURIComponent(searchQuery)}`);
-        const searchResults = await response.json();
+            try {
+                const response = await fetch(`/search?q=${encodeURIComponent(searchQuery)}`);
+                const searchResults = await response.json();
 
-        displaySearchResults(searchResults);
-    } catch (error) {
-        console.error('Error fetching search results:', error);
-    }
-});
+                displaySearchResults(searchResults);
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+            }
+        });
 
-function displaySearchResults(results) {
-    const searchResultsContainer = document.getElementById('searchResults');
-    searchResultsContainer.innerHTML = '';
+        function displaySearchResults(results) {
+            const searchResultsContainer = document.getElementById('searchResults');
+            searchResultsContainer.innerHTML = '';
 
-    results.forEach(result => {
-        const resultElement = document.createElement('div');
-        resultElement.textContent = result.title; // Adjust based on your search result format
-        searchResultsContainer.appendChild(resultElement);
-    });
-}
-
+            results.forEach(result => {
+                const resultElement = document.createElement('div');
+                resultElement.textContent = result.title; // Adjust based on your search result format
+                searchResultsContainer.appendChild(resultElement);
+            });
+        }
 
 
 </script>
