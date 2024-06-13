@@ -130,6 +130,8 @@ textarea {
   object-fit: cover;
 }
 
+
+
 .prev,
 .next {
   cursor: pointer;
@@ -768,7 +770,7 @@ body.dark-mode .view-button {
 .sidebar ul {
   float: left;
   background-color: transparent;
-  height: 200px;
+  height: 210px;
   width: 100px;
 }
 
@@ -1282,7 +1284,7 @@ main {
   margin-right: 0;
   border: 1px solid var(--primary-text);
   min-height: 50px;
-  width: 60%;
+  width: 50%;
 }
 
 .calendar-events {
@@ -1297,7 +1299,7 @@ main {
   margin-right: 0;
   border: 1px solid var(--primary-text);
   min-height: 50px;
-  width: 30%;
+  width: 40%;
 }
 
 .calendar-section {

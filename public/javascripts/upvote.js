@@ -5,12 +5,14 @@ function incrementUpvote(eventId) {
     let upvoteCount = parseInt(upvoteElement.textContent);
 
     if (click_count_upvote % 2 == 0) {
-        upvoteElement.textContent = --upvoteCount;
         updateVote(eventId, 'upvote', -1);
+        upvoteElement.textContent = --upvoteCount;
     } else {
         upvoteElement.textContent = ++upvoteCount;
         updateVote(eventId, 'upvote', 1);
     }
+
+
 }
 
 let click_count_downvote = 0;
@@ -20,12 +22,15 @@ function incrementDownvote(eventId) {
     let downvoteCount = parseInt(downvoteElement.textContent);
 
     if (click_count_downvote % 2 == 0) {
-        downvoteElement.textContent = --downvoteCount;
         updateVote(eventId, 'downvote', -1);
+        downvoteElement.textContent = --downvoteCount;
     } else {
         downvoteElement.textContent = ++downvoteCount;
         updateVote(eventId, 'downvote', 1);
+
     }
+
+
 }
 
 function updateVote(eventId, type, value) {
@@ -48,18 +53,15 @@ function updateVote(eventId, type, value) {
     });
 }
 
+
 function hasUserVoted(eventId) {
     // Check browser storage (e.g., localStorage) for user's votes
     const votedEvents = JSON.parse(localStorage.getItem('votedEvents')) || [];
     return votedEvents.includes(eventId);
 }
 
-// Function to mark an event as voted by the user
 function markUserVote(eventId) {
-    // Retrieve the list of voted events from browser storage
     const votedEvents = JSON.parse(localStorage.getItem('votedEvents')) || [];
-    // Add the current event to the list
     votedEvents.push(eventId);
-    // Save the updated list back to browser storage
     localStorage.setItem('votedEvents', JSON.stringify(votedEvents));
 }
