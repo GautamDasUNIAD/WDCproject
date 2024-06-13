@@ -28,14 +28,9 @@ router.get('/users', isAdmin, (req, res) => {
 // Add manager to organization
 router.post('/organizations/:organizationId/managers', isAdmin, [
     // Validation and sanitization happens here
-<<<<<<< HEAD
     param('organizationId').isInt().withMessage('Organization ID must be an integer'), // Validates that organizationId is an integer
     body('userId').isInt().withMessage('User ID must be an integer')
     // Validates that userId is an integer
-=======
-    param('organizationId').isInt().withMessage('Organization ID must be an integer'),
-    body('userId').isInt().withBody('User ID must be an integer')
->>>>>>> d209ab7abed0bc0df000363a6a45aad8e5a75c2f
 ], (req, res) => {
     const errors = validationResult(req); // Checks for validation errors
     if (!errors.isEmpty()) {

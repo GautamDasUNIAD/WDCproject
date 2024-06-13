@@ -76,7 +76,7 @@
                             // Function to update the calendar display
                             function updateCalendarDisplay(events) {
                                 const tbl = createCalendar(currentMonth, currentYear, events);
-                                calendar.innerText = '';
+                                calendar.innerHTML = '';
                                 calendar.appendChild(tbl);
                             }
 
@@ -235,7 +235,7 @@
 
                 uniqueLocations.forEach(location => {
                     const newBranch = document.createElement('li');
-                    newBranch.innerText = `
+                    newBranch.innerHTML = `
                 <li>
                     <input type="checkbox" id="${location}">
                     <label for="${location}">${location}</label>
@@ -253,7 +253,7 @@
                         const event = events[i];
                         const eventItem = document.createElement('div');
                         eventItem.classList.add('events-update');
-                        eventItem.innerText = `
+                        eventItem.innerHTML = `
                             <div class="vote">
                                 <div class="upvote">
                                     <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>

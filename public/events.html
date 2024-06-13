@@ -124,7 +124,7 @@
 
                 uniqueLocations.forEach(location => {
                     const newBranch = document.createElement('li');
-                    newBranch.innerText = `
+                    newBranch.innerHTML = `
                 <li>
                     <input type="checkbox" id="${location}">
                     <label for="${location}">${location}</label>
@@ -148,7 +148,7 @@
                         const eventItem = document.createElement('div');
                         eventItem.classList.add('events-update');
                         const formattedDate = formatDate(event.date);
-                        eventItem.innerText = `
+                        eventItem.innerHTML = `
                             <div class="vote">
                                 <div class="upvote">
                                     <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>

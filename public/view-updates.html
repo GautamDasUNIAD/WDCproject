@@ -43,13 +43,13 @@
                 const memberUpdates = responseMember.ok ? await responseMember.json() : [];
 
                 const updatesList = document.getElementById('updatesList');
-                updatesList.innerText = '';
+                updatesList.innerHTML = '';
 
                 publicUpdates.forEach(update => {
                     const updateDiv = document.createElement('div');
                     updateDiv.classList.add('update-item');
 
-                    updateDiv.innerText = `
+                    updateDiv.innerHTML = `
                         <h3>${update.title}</h3>
                         <p>${update.description}</p>
                     `;
@@ -61,7 +61,7 @@
                     const updateDiv = document.createElement('div');
                     updateDiv.classList.add('update-item', 'private-update');
 
-                    updateDiv.innerText = `
+                    updateDiv.innerHTML = `
                         <h3>${update.title}</h3>
                         <p>${update.description}</p>
                         <p><strong>Private Update</strong></p>
