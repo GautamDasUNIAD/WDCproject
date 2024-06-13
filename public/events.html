@@ -7,7 +7,6 @@
     <title>Events</title>
     <link rel="stylesheet" href="stylesheets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 </head>
 
 <body>
@@ -34,7 +33,6 @@
         </ul>
     </nav>
 
-
     <div class="sidebar">
         <p><a class="active" href="/">Home </a> / <a href="/events">Events</a></p>
         <div class="view-buttons">
@@ -43,17 +41,9 @@
         </div>
         <h3>Filter by Branch:</h3>
         <ul class="branchesclass" id="branchesList">
-            <!-- <li><input type="checkbox" id="Adelaide"><label for="Adelaide">Adelaide</label></li>
-                <li><input type="checkbox" id="Brisbane"><label for="Brisbane">Brisbane</label></li>
-                <li><input type="checkbox" id="Sydney"><label for="Sydney">Sydney</label></li>
-                <li><input type="checkbox" id="Melbourne"><label for="Melbourne">Melbourne</label></li>
-                <li><input type="checkbox" id="Canberra"><label for="Canberra">Canberra</label></li>
-                <li><input type="checkbox" id="Perth"><label for="Perth">Perth</label></li>
-                <li><input type="checkbox" id="Darwin"><label for="Darwin">Darwin</label></li>
-                <li><input type="checkbox" id="Regional"><label for="Regional">Regional</label></li> -->
+            <!-- Checkboxes will be populated dynamically -->
         </ul>
     </div>
-
 
     <button type="button" id="myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
@@ -79,8 +69,6 @@
         </div>
     </div>
 
-
-
     <footer>
         <div class="footer-content">
             <div class="social-media-links">
@@ -100,7 +88,6 @@
 
     <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
 
-
     <script src="javascripts/scrollbutton.js"></script>
     <script src="javascripts/homepage_slideshow.js"></script>
     <script src="javascripts/accessibilitybutton.js"></script>
@@ -113,8 +100,9 @@
             const eventList = document.getElementById('eventList');
             const eventsContainer = document.getElementById('eventsContainer');
             const readMoreButton = document.getElementById('readMoreButton');
-            let displayedEvents = 4;
             const branchesList = document.getElementById('branchesList');
+            const sidebar = document.querySelector('.sidebar');
+            let displayedEvents = 4;
 
             try {
                 const response = await fetch('/events/all');
@@ -131,9 +119,9 @@
                 uniqueLocations.forEach(location => {
                     const newBranch = document.createElement('li');
                     newBranch.innerHTML = `
-                <input type="checkbox" id="${location}">
-                <label for="${location}">${location}</label>
-            `;
+                        <input type="checkbox" id="${location}">
+                        <label for="${location}">${location}</label>
+                    `;
                     branchesList.appendChild(newBranch);
                 });
 
@@ -150,29 +138,31 @@
                         eventItem.classList.add('events-update');
                         const formattedDate = formatDate(event.date);
                         eventItem.innerHTML = `
-                    <div class="vote">
-                        <div class="upvote">
-                            <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>
-                            <button type="button" class="vote-button" onclick="incrementUpvote(${event.id})">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                        <div class="downvote">
-                            <span class="downvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.downvote}</span>
-                            <button type="button" class="vote-button" onclick="incrementDownvote(${event.id})">
-                                <i class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="update-text">
-                        <h3>${event.name}</h3>
-                        <p style="color: rgb(88,88,88); font-size: 10px;">${formattedDate}</p>
-                        <p>${event.description}</p>
-                        <p>Location: ${event.location}</p>
-                    </div>
-                `;
+                            <div class="vote">
+                                <div class="upvote">
+                                    <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementUpvote(${event.id})">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="downvote">
+                                    <span class="downvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.downvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementDownvote(${event.id})">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="update-text">
+                                <h3>${event.name}</h3>
+                                <p style="color: rgb(88,88,88); font-size: 10px;">${formattedDate}</p>
+                                <p>${event.description}</p>
+                                <p>Location: ${event.location}</p>
+                            </div>
+                        `;
                         eventsContainer.appendChild(eventItem);
                     });
+
+                    adjustSidebarHeight();
 
                     if (filteredEvents.length > displayedEvents) {
                         readMoreButton.style.display = 'block';
@@ -198,35 +188,23 @@
                     filterEvents();
                 });
 
+                function adjustSidebarHeight() {
+                    const eventsSectionHeight = document.querySelector('#eventsContainer').clientHeight;
+                    sidebar.style.height = eventsSectionHeight + 'px';
+                }
+
+                window.addEventListener('resize', adjustSidebarHeight);
+
+                // Adjust sidebar height after DOM content is loaded and whenever the events are filtered
+                document.addEventListener('DOMContentLoaded', adjustSidebarHeight);
+                window.addEventListener('load', adjustSidebarHeight);
+
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
         });
 
-
-        function adjustSidebarHeight() {
-            if (window.matchMedia('(max-width: 768px)').matches) {
-                const branchesList = document.querySelector('ul#branchesList.branchesclass');
-                const sidebar = document.querySelector('.sidebar');
-                const branchesListHeight = branchesList.clientHeight; // Get the height of branchesList in pixels
-                sidebar.style.minHeight = (167.5 + branchesListHeight) + 'px';
-            } else {
-                const sidebar = document.querySelector('.sidebar');
-                sidebar.style.minHeight = 300 + 167.5 + 'px';
-            }
-        }
-
-        // Initial call to adjust sidebar height on page load
-        document.addEventListener('DOMContentLoaded', adjustSidebarHeight);
-
-        // Add event listener for window resize to continuously monitor viewport width
-        window.addEventListener('resize', adjustSidebarHeight);
-
     </script>
-
-
-
-
 </body>
 
 </html>
