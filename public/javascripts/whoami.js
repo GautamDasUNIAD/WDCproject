@@ -56,7 +56,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
   var full_name = name + " " + last_name;
   var role = getCookie('role');
       if (name != undefined){
-          document.querySelector('button.join-btn').remove();
+          if (document.querySelector('button.join-btn') != undefined){
+            document.querySelector('button.join-btn').remove();
+          }
           document.querySelector('nav ul:nth-of-type(2)').remove();
           const navBar = document.querySelector('nav');
 

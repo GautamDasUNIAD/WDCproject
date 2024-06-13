@@ -1628,10 +1628,13 @@ body.dark-mode .vote{
 
 .dropdown {
   display: inline-block;
+  z-index:10000;
+}
+
+#organizations-dropdown-div {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  z-index:10000;
 }
 
 
