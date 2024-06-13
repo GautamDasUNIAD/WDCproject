@@ -202,18 +202,6 @@
             }
         });
 
-        function displaySearchResults(results) {
-            const searchResultsContainer = document.getElementById('searchResults');
-            searchResultsContainer.innerHTML = '';
-
-            results.forEach(result => {
-                const resultElement = document.createElement('div');
-                resultElement.textContent = result.title; // Adjust based on your search result format
-                searchResultsContainer.appendChild(resultElement);
-            });
-        }
-
-
 </script>
 
 
