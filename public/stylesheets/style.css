@@ -680,9 +680,83 @@ textarea {
   padding: 20px;
   width: 22%;
   box-sizing: border-box;
-  min-height: 110vh; /* Adjust the value based on your footer height */
+  min-height: 400px; /* Adjust the value based on your footer height */
   align-items: stretch;
   border-right: 1px solid var(--primary-text); /* Add a border to visually separate sidebar content */
+}
+
+.events-update {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+  min-height: 90px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.vote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  width: 100px; /* Set a fixed width */
+}
+
+.vote div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.vote .upvote, .vote .downvote {
+  width: 100%; /* Ensure both upvote and downvote have the same width */
+  text-align: center; /* Center content */
+}
+
+.vote .upvote button, .vote .downvote button {
+  margin-left: 5px;
+}
+
+.update-text {
+  flex: 1;
+  text-align: left;
+  padding: 0 20px;
+}
+
+.rsvp-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px; /* Set a fixed width */
+}
+
+.rsvp-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+}
+
+.rsvp-button:hover {
+  background-color: #0056b3;
+  color: #ffffff;
 }
 
 /* Media query for screens smaller than 768px (typical mobile phones) */
