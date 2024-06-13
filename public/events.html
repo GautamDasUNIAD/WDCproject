@@ -191,10 +191,12 @@
                             </div>
                             <div class="update-text">
                                 <h3>${event.name}</h3>
-                                <p style="color: rgb(88,88,88); font-size: 10px;">${formattedDate}</p>
+                                <p style=" font-size: 10px;">${formattedDate}</p>
                                 <p>${event.description}</p>
                                 <p>Location: ${event.location}</p>
-                                <button type="button" onclick="rsvpForEvent(${event.id})">RSVP</button>
+                            </div>
+                            <div class="rsvp-button-container">
+                                <button class="rsvp-button" type="button" onclick="rsvpForEvent(${event.id})">RSVP</button>
                             </div>
                         `;
                         eventsContainer.appendChild(eventItem);
