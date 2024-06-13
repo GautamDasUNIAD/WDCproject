@@ -55,11 +55,11 @@ router.get('/all', (req, res) => {
     });
 });
 
-// Fetch events by org id
+// Fetch events for a specific organization route
 router.get('/organization/:id', (req, res) => {
     const organizationId = req.params.id;
 
-    db.query('SELECT * FROM Events WHERE organization_id = ?', [organizationId], (err, results) => {
+    db.query('SELECT * FROM Events WHERE organization_id = ? ORDER BY date Asc', [organizationId], (err, results) => {
         if (err) {
             console.error('Error fetching events for organization:', err);
             return res.status(500).send('Internal server error');
