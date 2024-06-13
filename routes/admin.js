@@ -1,17 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { isAdmin } = require('./path/to/auth-middleware');  // Correct path to where isAdmin is defined
+const { param, body, validationResult } = require('express-validator');
 
-// Middleware to check if the user is an admin
-function isAdmin(req, res, next) {
-    if (req.isAuthenticated() && req.user.role === 'Admin') {
-        return next();
-    } else {
-        res.status(403).send('You do not have permission to perform this action.');
-    }
-}
-
-// Get all users with organization involvement for managers
+// Example usage of isAdmin
 router.get('/users', isAdmin, (req, res) => {
     const query = `
         SELECT Users.id, Users.first_name, Users.last_name, Users.email, Users.role,
@@ -19,7 +12,7 @@ router.get('/users', isAdmin, (req, res) => {
         FROM Users
         LEFT JOIN OrganisationManagers ON Users.id = OrganisationManagers.manager_id
         LEFT JOIN VolunteerOrganizations ON OrganisationManagers.organization_id = VolunteerOrganizations.id
-        GROUP BY Users.id, Users.first_name, Users.last_name, Users.email, Users.role;
+        GROUP BY Users.id, Users.first_name, Users.last_name, Users.email, Users.save;
     `;
 
     db.query(query, (err, results) => {
@@ -32,14 +25,17 @@ router.get('/users', isAdmin, (req, res) => {
 });
 
 // Add manager to organization
-router.post('/organizations/:organizationId/managers', isAdmin, (req, res) => {
-    const { organizationId } = req.params;
-    const { userId } = req.body;
-
-    if (!userId) {
-        return res.status(400).send('User ID is required');
+router.post('/organizations/:organizationId/managers', isAdmin, [
+    // Validation and sanitization happens here
+    param('organizationId').isInt().withMessage('Organization ID must be an integer'), // Validates that organizationId is an integer
+    body('userId').isInt().withBody('User ID must be an integer') // Validates that userId is an integer
+], (req, res) => {
+    const errors = validationResult(req); // Checks for validation errors
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() }); // Returns errors if validation fails
     }
 
+    const { organizationId, userId } = req.body;
     db.query(
         'INSERT INTO OrganisationManagers (organization_id, manager_id) VALUES (?, ?)',
         [organizationId, userId],
@@ -54,9 +50,16 @@ router.post('/organizations/:organizationId/managers', isAdmin, (req, res) => {
 });
 
 // Upgrade user role
-router.post('/users/:userId/upgrade', isAdmin, (req, res) => {
-    const { userId } = req.params;
+router.post('/users/:userId/upgrade', isAdmin, [
+    // Validation and sanitization happens here
+    param('userId').isInt().withMessage('User ID must be an integer') // Validates that userId is an integer
+], (req, res) => {
+    const errors = validationResult(req); // Checks for validation errors
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() }); // Returns errors if validation fails
+    }
 
+    const { userId } = req.params;
     db.query(
         "UPDATE Users SET role = 'Manager' WHERE id = ?",
         [userId],
