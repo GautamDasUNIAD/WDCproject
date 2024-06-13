@@ -59,15 +59,7 @@
         </div>
         <div class="map">
             <img src="images/map.png" style="width: 100%;" alt="">
-            <i class="fa-solid fa-location-dot" style="top: 71%; left: 86%;" v-on:click="changeDetails('Adelaide')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 69%; left: 90%;" v-on:click="changeDetails('Sydney')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 72%; left: 96.3%;" v-on:click="changeDetails('Auckland')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 30%; left: 19%;" v-on:click="changeDetails('Miami')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 21%; left: 23%;" v-on:click="changeDetails('New York')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 26%; left: 8.5%;" v-on:click="changeDetails('Vancouver')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 22%; left: 44%;" v-on:click="changeDetails('Madrid')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 33%; left: 73%;" v-on:click="changeDetails('Kolkata')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 22%; left: 80.5%;" v-on:click="changeDetails('Beijing')"></i>
+            <i v-for="branch in branches" class="fa-solid fa-location-dot" :style="{ left: branch.x + '%', top: branch.y + '%' }" v-on:click="changeDetails(branch.location)">{{ branch.name }}</i>
         </div>
         <h2>{{ location }}</h2>
         <p style = "padding-bottom: 50px">{{ description }}</p>
@@ -102,6 +94,19 @@
     <script src="javascripts/whoami.js"></script>
     <script src="javascripts/adjustnav.js"></script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            var selectedOrgId = getCookie('selectedOrgId');
+            const response = await fetch(`branches/${selectedOrgId}/branches`);
+            const branchesData = await response.json();
+
+            console.log(branchesData);
+            branchesData.forEach(branch => {
+                mapdiv.addBranch(branch);
+            });
+
+        });
+    </script>
 </body>
 
 

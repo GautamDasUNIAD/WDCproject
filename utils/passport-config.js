@@ -25,18 +25,25 @@ passport.deserializeUser((id, done) => {
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
-}, (email, password, done) => {
+  }, (email, password, done) => {
     db.query('SELECT * FROM Users WHERE email = ?', [email], (err, results) => {
-        if (err) return done(err);
-        if (results.length === 0) return done(null, false, { message: 'Incorrect email or password.' });
+      console.log(email, password);
+      if (err) return done(err);
+      if (results.length === 0) return done(null, false, { message: 'Incorrect email or password.' });
 
-        const user = results[0];
-        const isMatch = bcrypt.compare(password, user.password);
-        if (!isMatch) return done(null, false, { message: 'Incorrect email or password.' });
-
-        return done(null, user);
+      const user = results[0];
+      bcrypt.compare(password, user.password)
+        .then(isMatch => {
+          console.log(password, isMatch);
+          if (!isMatch) {
+            return done(null, false, { message: 'Incorrect email or password.' });
+          }
+          return done(null, user);
+        })
+        .catch(err => done(err));
     });
-}));
+  }));
+
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,

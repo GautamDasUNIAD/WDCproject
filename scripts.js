@@ -28,7 +28,7 @@ function load() {
     });
     const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
 
-    document.getElementById('monthDisplay').innerText =
+    document.getElementById('monthDisplay').innerHTML =
         `${dt.toLocaleDateString('en-us', { month: 'long' })} ${year}`;
 
     calendar.innerHTML = '';
@@ -38,7 +38,7 @@ function load() {
         daySquare.classList.add('day');
 
         if (i > paddingDays) {
-            daySquare.innerText = i - paddingDays;
+            daySquare.innerHTML = i - paddingDays;
             daySquare.addEventListener('click', () => console.log('click'));
         } else {
             daySquare.classList.add('padding');

@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (role == "Admin" || role == "Manager"){
           const buttonListLeft = document.querySelector('nav ul');
           if (role == "Admin"){
+
             const newLi2 = document.createElement('li');
             const newButton2 = document.createElement('a');
             newButton2.href = '/admin';
