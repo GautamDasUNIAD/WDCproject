@@ -71,7 +71,7 @@ router.post('/login', (req, res, next) => {
         return next(err);
       }
       console.log('Hurray, login successful!');
-      return res.redirect('/'); // Redirect to the homepage or handle it as needed
+      return res.redirect('/users/return-cookies'); // Redirect to the homepage or handle it as needed
     });
   })(req, res, next);
 });
