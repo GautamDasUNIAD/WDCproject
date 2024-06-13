@@ -9,21 +9,9 @@
 </head>
 
 <body>
-    <nav>
-        <ul>
-            <li><a class="active" href="/home">LOGO</a></li>
-            <li><a href="/events">Events</a></li>
-            <li><a href="/branches">Branches</a></li>
-        </ul>
-        <ul>
-            <li><a href="/login" class="button2">Login</a></li>
-            <li><a href="/signup" class="button3">Signup</a></li>
-        </ul>
-    </nav>
-
     <div class="main-container">
         <div class="post-update-section">
-            <h2>Post an Update</h2>
+            <h2 style = "text-align: center; font-size: 25px;text-decoration: underline;">Post an Update</h2>
             <form id="postUpdateForm">
                 <label for="organization">Organization:</label>
                 <select id="organization" name="organization" required></select>
@@ -32,12 +20,16 @@
                 <input type="text" id="title" name="title" required>
 
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" required></textarea>
+                <textarea id="description" name="description" required rows = "4" cols = "50"></textarea>
 
-                <label for="is_private">Private:</label>
-                <input type="checkbox" id="is_private" name="is_private">
+                <label for="is_private">Private:
+                    <input type="checkbox" id="is_private" name="is_private">
+                </label>
 
-                <button type="submit">Post Update</button>
+
+
+
+                <input type="submit" value="Post Update">
             </form>
             <div id="responseMessage"></div>
         </div>

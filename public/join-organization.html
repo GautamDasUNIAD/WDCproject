@@ -40,7 +40,7 @@
 
                 const organizations = await response.json();
                 const searchResults = document.getElementById('searchResults');
-                searchResults.innerHTML = '';
+                searchResults.innerText = '';
                 organizations.forEach(org => {
                     const button = document.createElement('button');
                     button.textContent = org.name;

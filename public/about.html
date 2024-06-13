@@ -13,14 +13,16 @@
 <body>
     <nav>
         <ul>
-            <li><a class="active" href="/home">LOGO</a></li>
+            <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
             <li><a href="/branches" >Branches</a></li>
         </ul>
-        <form class="search-form" action="/search" method="GET">
-            <input type="text" name="q" placeholder="Search...">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
+        <div class="dropdown" id="organizations-dropdown-div">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
         <ul>
             <li><a href="/login" class = button2>Login</a></li>
             <li><a href="/signup" class = button3>Signup</a></li>
@@ -36,6 +38,23 @@
         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
         culpa qui officia deserunt mollit anim id est laborum.
     </p>
+    <button type = "button" id = "myBtn" class="accessibility-button">
+        <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 100px;">Dark Mode</h2>  <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+    </div>
+
+
     <footer>
         <div class="footer-content">
             <div class="social-media-links">
@@ -44,7 +63,7 @@
                 <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
             </div>
             <div class="footer-logo">
-                <img src="logo.png" alt="Company Logo">
+                <img src="images/logo.png" alt="Company Logo">
             </div>
             <div class="footer-links">
                 <a href="/about">About Us</a>
@@ -56,6 +75,11 @@
     <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
 
     <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
+    <script src="javascripts/whoami.js"></script>
+    <script src="javascripts/adjustnav.js"></script>
 
 
 

@@ -63,11 +63,11 @@
                 }
                 const branches = await response.json();
                 const tableBody = document.getElementById('branchesTable').querySelector('tbody');
-                tableBody.innerHTML = '';
+                tableBody.innerText = '';
 
                 branches.forEach(branch => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `
+                    row.innerText = `
                         <td>${branch.id}</td>
                         <td>${branch.location}</td>
                         <td>${branch.organization_id}</td>

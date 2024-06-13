@@ -4,104 +4,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>events</title>
+    <title>Events</title>
     <link rel="stylesheet" href="stylesheets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a class="active" href="/home">LOGO</a></li>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
-            <li><a href="/branches" >Branches</a></li>
+            <li><a href="/branches">Branches</a></li>
         </ul>
-        <form class="search-form" action="/search" method="GET">
-            <input type="text" name="q" placeholder="Search...">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
+        <div class="dropdown" id = "organizations-dropdown-div">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
         <ul>
-            <li><a href="/login" class = button2>Login</a></li>
-            <li><a href="/signup" class = button3>Signup</a></li>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
         </ul>
     </nav>
 
-    <div class="main-container">
+
         <div class="sidebar">
-            <p><a class="active" href="/home">Home </a> / <a href="/events">Events</a></p>
+            <p><a class="active" href="/">Home </a> / <a href="/events">Events</a></p>
             <div class="view-buttons">
-                <button type="button" class="view-button active" onclick="showListView()">List View</button>
-                <button type="button" class="view-button" onclick="window.location.href='calendar.html'">Calendar View</button>
+                <button type="button" class="view-button active" onclick="window.location.href='/events'">List View</button>
+                <button type="button" class="view-button" onclick="window.location.href='/calendar'">Calendar View</button>
             </div>
             <h3>Sort by Branch:</h3>
-            <ul>
-                <li><input type="checkbox" id="Adelaide"><label for="Adelaide">Adelaide</label></li>
+            <ul class = "branchesclass" id = "branchesList">
+                <!-- <li><input type="checkbox" id="Adelaide"><label for="Adelaide">Adelaide</label></li>
                 <li><input type="checkbox" id="Brisbane"><label for="Brisbane">Brisbane</label></li>
                 <li><input type="checkbox" id="Sydney"><label for="Sydney">Sydney</label></li>
                 <li><input type="checkbox" id="Melbourne"><label for="Melbourne">Melbourne</label></li>
                 <li><input type="checkbox" id="Canberra"><label for="Canberra">Canberra</label></li>
                 <li><input type="checkbox" id="Perth"><label for="Perth">Perth</label></li>
                 <li><input type="checkbox" id="Darwin"><label for="Darwin">Darwin</label></li>
-                <li><input type="checkbox" id="Regional"><label for="Regional">Regional</label></li>
+                <li><input type="checkbox" id="Regional"><label for="Regional">Regional</label></li> -->
             </ul>
         </div>
-    </div>
 
-    <div class="accessibility-button" onclick="toggleAccessibility()">
+
+    <button type = "button" id = "myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" style = "display:none">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 100px;">Dark Mode</h2>  <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
     </div>
 
-    <div class="events-section">
+    <div class="events-section" id="eventList">
         <h2>Key Events</h2>
-        <div class="events-update">
-            <div class="vote">
-                <div class="upvote">
-                    <button type="button" class="vote-button" onclick="upvote()">+</button>
-                </div>
-                <hr>
-                <div class="downvote">
-                <button type="button" class="vote-button" onclick="downvote()">-</button>
-            </div>
-            </div>
-            <div class="update-text">
-                <h3>Date & Title</h3>
-                <p>Description of the update...</p>
-            </div>
-        </div>
-        <div class="events-update">
-            <div class="vote">
-                <div class="upvote">
-                    <button type="button" class="vote-button" onclick="showCalendarView()">+</button>
-                </div>
-                <hr>
-                <div class="downvote">
-                <button type="button" class="vote-button" onclick="downvote()">-</button>
-            </div>
-            </div>
-            <div class="update-text">
-                <h3>Date & Title</h3>
-                <p>Description of the update...</p>
-            </div>
-        </div>
-        <div class="events-update">
-            <div class="vote">
-                <div class="upvote">
-                    <button type="button" class="vote-button" onclick="upvote()">+</button>
-                </div>
-                <hr>
-                <div class="downvote">
-                <button type="button" class="vote-button" onclick="downvote()">-</button>
-            </div>
-            </div>
-            <div class="update-text">
-                <h3>Date & Title</h3>
-                <p>Description of the update...</p>
-            </div>
-        </div>
-        <div class="button-container">
-            <button type="button" class="read-more-button">Read More</button>
+        <div id="eventsContainer"></div>
+        <div class = "button-container">
+            <button type = "button" id="readMoreButton" class="read-more-button">Read More</button>
         </div>
     </div>
+
+
+
     <footer>
         <div class="footer-content">
             <div class="social-media-links">
@@ -110,7 +88,7 @@
                 <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
             </div>
             <div class="footer-logo">
-                <img src="logo.png" alt="Company Logo">
+                <img src="images/logo.png" alt="Company Logo">
             </div>
             <div class="footer-links">
                 <a href="/about">About Us</a>
@@ -121,7 +99,194 @@
 
     <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
 
+
     <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
+    <script src="javascripts/upvote.js"></script>
+    <script src="javascripts/whoami.js"></script>
+    <script src="javascripts/adjustnav.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const eventList = document.getElementById('eventList');
+            const eventsContainer = document.getElementById('eventsContainer');
+            const readMoreButton = document.getElementById('readMoreButton');
+            let displayedEvents = 4;
+
+
+            const branches = document.getElementsByClassName('branchesclass');
+
+            try {
+                const response = await fetch('/events/all');
+                const events = await response.json();
+
+
+                events.sort((a, b) => new Date(a.date)- new Date(b.date));
+
+                const uniqueLocations = new Set();
+
+                events.forEach(event => {
+                    uniqueLocations.add(event.location);
+                });
+
+                uniqueLocations.forEach(location => {
+                    const newBranch = document.createElement('li');
+                    newBranch.innerText = `
+                <li>
+                    <input type="checkbox" id="${location}">
+                    <label for="${location}">${location}</label>
+                </li>`;
+                    branchesList.appendChild(newBranch);
+                });
+
+                const clickCounts = {
+                    upvote: {},
+                    downvote: {}
+                };
+
+                function formatDate(isoDate) {
+                    const date = new Date(isoDate);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    return date.toLocaleDateString('en-US', options);
+}
+                function displayEvents(startIndex, endIndex) {
+                    for (let i = startIndex; i < endIndex; i++) {
+                        const event = events[i];
+                        const eventItem = document.createElement('div');
+                        eventItem.classList.add('events-update');
+                        const formattedDate = formatDate(event.date);
+                        eventItem.innerText = `
+                            <div class="vote">
+                                <div class="upvote">
+                                    <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementUpvote(${event.id})">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="downvote">
+                                    <span class="downvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.downvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementDownvote(${event.id})">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="update-text">
+                                <h3>${event.name}</h3>
+                                <p style = "color: rgb(88,88,88); font-size: 10px;">${formattedDate}</p>
+                                <p>${event.description}</p>
+
+                                <p>Location: ${event.location}</p>
+
+                            </div>
+                        `;
+                        eventsContainer.appendChild(eventItem);
+
+                        clickCounts.upvote[event.id] = 0;
+                        clickCounts.downvote[event.id] = 0;
+
+                        const locationCheckbox = document.getElementById(`${event.location}`);
+
+
+
+                    }
+                }
+
+
+
+
+
+
+
+
+                displayEvents(0, displayedEvents);
+
+                // fetch('/events/upvote', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ eventId })
+                // });
+
+
+                // fetch('/events/downvote', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ eventId })
+                // });
+
+                // Maybe useful
+                // const event = events[i];
+                // const locationCheckbox = document.getElementById(`${event.location}`);
+
+                // locationCheckbox.addEventListener("click", function() {
+                //     // Check if the checkbox is checked
+                //     if (locationCheckbox.checked) {
+                //         // Call a function or perform actions when checkbox is checked
+                //         displayedEvents += 3;
+                //         displayEvents(displayedEvents - 3, displayedEvents);
+                //     }
+                // });
+
+
+
+                readMoreButton.addEventListener('click', async function() {
+                    displayedEvents += 3;
+                    displayEvents(displayedEvents - 3, displayedEvents);
+
+                    if (displayedEvents >= events.length) {
+                        readMoreButton.style.display = 'none';
+
+                    }
+                    if (!window.matchMedia('(max-width: 768px)').matches) {
+                        const sidebar = document.querySelector('.sidebar');
+                        sidebar.style.minHeight = eventsContainer.offsetHeight + 167.5 + 'px';
+                    }
+                    if (window.matchMedia('(max-width: 768px)').matches){
+                        const branchesList = document.querySelector('ul#branchesList.branchesclass');
+                        const sidebar = document.querySelector('.sidebar');
+                        const branchesListHeight = branchesList.clientHeight; // Get the height of branchesList in pixels
+                        sidebar.style.minHeight = (167.5 + branchesListHeight) + 'px';
+                    }
+
+
+
+
+
+                });
+
+
+                if (events.length > displayedEvents) {
+                    readMoreButton.style.display = 'block';
+                }
+                else {
+                    readMoreButton.style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        });
+
+        function adjustSidebarHeight() {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+        const branchesList = document.querySelector('ul#branchesList.branchesclass');
+        const sidebar = document.querySelector('.sidebar');
+        const branchesListHeight = branchesList.clientHeight; // Get the height of branchesList in pixels
+        sidebar.style.minHeight = (167.5 + branchesListHeight) + 'px';
+    } else {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.style.minHeight = 300 + 167.5 + 'px';
+    }
+}
+
+// Initial call to adjust sidebar height on page load
+document.addEventListener('DOMContentLoaded', adjustSidebarHeight);
+
+// Add event listener for window resize to continuously monitor viewport width
+window.addEventListener('resize', adjustSidebarHeight);
+
+    </script>
+
 
 
 

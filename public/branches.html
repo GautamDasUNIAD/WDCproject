@@ -7,49 +7,62 @@
     <title>Branches</title>
     <link rel="stylesheet" href="stylesheets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 
 <body>
-    <nav>
-        <ul>
-            <li><a class="active" href="/home">LOGO</a></li>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
-            <li><a href="/branches" >Branches</a></li>
+            <li><a href="/branches">Branches</a></li>
         </ul>
-        <form class="search-form" action="/search" method="GET">
-            <input type="text" name="q" placeholder="Search...">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
+        <div class="dropdown" id = "organizations-dropdown-div">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
         <ul>
-            <li><a href="/login" class = button2>Login</a></li>
-            <li><a href="/signup" class = button3>Signup</a></li>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
         </ul>
     </nav>
 
-    <p class = "breadcrumbs"><span><a href="/home">Home</a> / <a href="/branches">Branches</a></span></p>
-    <div class="accessibility-button" onclick="toggleAccessibility()">
+    <p class = "breadcrumbs"><span><a href="/">Home</a> / <a href="/branches">Branches</a></span></p>
+    <button type = "button" id = "myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" style = "display:none">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 100px;">Dark Mode</h2>  <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
     </div>
-    <div class="map-section">
+    <div class="map-section" id="map">
         <div class="branches-welcome">
             <h1>Our Locations</h1>
             <p> Explore our diverse network of branches across the world...  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
             <p> Click each pin to learn more!</p>
+            <br>
         </div>
         <div class="map">
-            <img src="map.png" style="width: 100%;" alt="">
-            <i class="fa-solid fa-location-dot" style="top: 71%; left: 86%;" onclick="changeDetails('Adelaide')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 69%; left: 90%;" onclick="changeDetails('Sydney')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 72%; left: 96.3%;" onclick="changeDetails('Auckland')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 30%; left: 19%;" onclick="changeDetails('Miami')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 21%; left: 23%;" onclick="changeDetails('New York')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 26%; left: 8.5%;" onclick="changeDetails('Vancouver')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 22%; left: 44%;" onclick="changeDetails('Madrid')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 33%; left: 73%;" onclick="changeDetails('Kolkata')"></i>
-            <i class="fa-solid fa-location-dot" style="top: 22%; left: 80.5%;" onclick="changeDetails('Beijing')"></i>
+            <img src="images/map.png" style="width: 100%;" alt="">
+            <i v-for="branch in branches" class="fa-solid fa-location-dot" :style="{ left: branch.x + '%', top: branch.y + '%' }" v-on:click="changeDetails(branch.location)">{{ branch.name }}</i>
         </div>
-        <h2>{{ Location }}</h2>
-        <p>{{ Description }}</p>
+        <h2>{{ location }}</h2>
+        <p style = "padding-bottom: 50px">{{ description }}</p>
     </div>
 
 
@@ -61,7 +74,7 @@
                 <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
             </div>
             <div class="footer-logo">
-                <img src="logo.png" alt="Company Logo">
+                <img src="images/logo.png" alt="Company Logo">
             </div>
             <div class="footer-links">
                 <a href="/about">About Us</a>
@@ -74,7 +87,26 @@
     <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
 
     <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
+    <script src="javascripts/vue.js"></script>
+    <script src="javascripts/whoami.js"></script>
+    <script src="javascripts/adjustnav.js"></script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            var selectedOrgId = getCookie('selectedOrgId');
+            const response = await fetch(`branches/${selectedOrgId}/branches`);
+            const branchesData = await response.json();
+
+            console.log(branchesData);
+            branchesData.forEach(branch => {
+                mapdiv.addBranch(branch);
+            });
+
+        });
+    </script>
 </body>
 
 

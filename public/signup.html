@@ -3,45 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Branches</title>
+    <title>Signup</title>
     <link rel="stylesheet" href="stylesheets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a class="active" href="/home">LOGO</a></li>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
-            <li><a href="/branches" >Branches</a></li>
+            <li><a href="/branches">Branches</a></li>
         </ul>
-        <form class="search-form" action="/search" method="GET">
-            <input type="text" name="q" placeholder="Search...">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
+        <div class="dropdown" id = "organizations-dropdown-div">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
         <ul>
-            <li><a href="/login" class = button2>Login</a></li>
-            <li><a href="/signup" class = button3>Signup</a></li>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
         </ul>
     </nav>
-    <div class="accessibility-button" onclick="toggleAccessibility()">
+    <button type = "button" id = "myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" style = "display:none">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 100px;">Dark Mode</h2>  <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
     </div>
-    <br>
-    <h1 style="text-align: center;">Join us!</h1>
-    <br>
-    <div class="login-container">
+
+    <div class = "main-container" style = "padding-top: 100px;  /* Adjust the value to create the desired amount of space */
+    padding-bottom: 100px; ">
+        <div class="create-login-container">
+            <h1 style="text-align: center;">Join us!</h1>
+            <div class="login-container">
         <form id="signupForm">
-            <label for="FirstName">First Name</label>
+            <label for="FirstName">First Name:</label>
             <input type="text" id="FirstName" name="FirstName" required>
-            <label for="LastName">Last Name</label>
+            <label for="LastName">Last Name:</label>
             <input type="text" id="LastName" name="LastName" required>
-            <label for="username">Email</label>
+            <label for="username">Email:</label>
             <input type="text" id="username" name="username" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-            <input type="submit" value="Login">
+            <input type="submit" value="Sign up">
         </form>
-        <div id="signupResponseMessage"></div>
+
+
+        <div class = loginsdiv>
+            <a class = "signups" href="/auth/google"><i class="fab fa-google"></i> Login with Google</a>
+            <a class = "signups" href="/auth/github"><i class="fab fa-github"></i> Login with GitHub</a>
+        </div>
+        <br>
+        <div style = "padding:20px" id="signupResponseMessage"></div>
+        <p style = "text-align:center">Have an account? <a href = "/login">Log in</a></p>
+        </div>
+        </div>
     </div>
 
     <script>
@@ -80,6 +111,8 @@
         });
     </script>
 
+    <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
+
     <footer>
         <div class="footer-content">
             <div class="social-media-links">
@@ -88,7 +121,7 @@
                 <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
             </div>
             <div class="footer-logo">
-                <img src="logo.png" alt="Company Logo">
+                <img src="images/logo.png" alt="Company Logo">
             </div>
             <div class="footer-links">
                 <a href="/about">About Us</a>
@@ -96,5 +129,10 @@
             </div>
         </div>
     </footer>
+    <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
+    <script src="javascripts/whoami.js"></script>
 </body>
 </html>

@@ -23,11 +23,13 @@
             font-weight: bold;
         }
     </style>
+     <link rel="stylesheet" href="stylesheets/style.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <h1>Admin Management</h1>
 
-    <!-- User List -->
+
+    <h1 style = "text-align:center; font-size: 50px">Admin Management</h1>
     <div id="userList">
         <h2>All Users</h2>
         <table id="usersTable">
@@ -47,27 +49,29 @@
         </table>
     </div>
 
-    <!-- Add Manager Form -->
-    <div id="addManagerForm">
-        <h2>Add Manager to Organization</h2>
-        <form id="managerForm">
-            <label for="userId">User ID:</label>
-            <input type="text" id="userId" name="userId" required>
-            <label for="organizationId">Organization ID:</label>
-            <input type="text" id="organizationId" name="organizationId" required>
-            <input type="submit" value="Add Manager">
-        </form>
-        <div id="managerResponse" class="message"></div>
-    </div>
 
-    <!-- Upgrade Role Form -->
-    <div id="upgradeRoleForm">
-        <h2>Upgrade User Role</h2>
-        <form id="upgradeForm">
-            <label for="upgradeUserId">User ID:</label>
-            <input type="text" id="upgradeUserId" name="upgradeUserId" required>
-            <input type="submit" value="Upgrade Role">
-        </form>
+    <div class = "main-container">
+        <div class="create-organization-container">
+                <h2>Add Manager to Organization</h2>
+                <form id="addManagerForm">
+                    <label for="userId">User ID:</label>
+                    <input type="text" id="userId" name="userId" required>
+                    <label for="organizationId">Organization ID:</label>
+                    <input type="text" id="organizationId" name="organizationId" required>
+                    <input type="submit" value="Add Manager">
+                </form>
+                <div id="managerResponse" class="message"></div>
+        </div>
+
+        <div class="create-organization-container">
+            <h2>Upgrade User Role</h2>
+            <form id="upgradeForm">
+                <label for="upgradeUserId">User ID:</label>
+                <input type="text" id="upgradeUserId" name="upgradeUserId" required>
+                <input type="submit" value="Upgrade Role">
+            </form>
+        </div>
+
         <div id="upgradeResponse" class="message"></div>
     </div>
 
@@ -84,10 +88,10 @@
                 }
                 const users = await response.json();
                 const tableBody = document.getElementById('usersTable').querySelector('tbody');
-                tableBody.innerHTML = '';
+                tableBody.innerText = '';
                 users.forEach(user => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `
+                    row.innerText = `
                         <td>${user.id}</td>
                         <td>${user.first_name}</td>
                         <td>${user.last_name}</td>
@@ -156,7 +160,7 @@
             }
         }
 
-        document.getElementById('managerForm').addEventListener('submit', addManager);
+        document.getElementById('addManagerForm').addEventListener('submit', addManager);
         document.getElementById('upgradeForm').addEventListener('submit', upgradeRole);
         window.onload = fetchUsers;
     </script>

@@ -1,4 +1,5 @@
 const express = require('express');
+const nodemailer = require('nodemailer');
 const router = express.Router();
 const db = require('../db');
 
@@ -60,6 +61,15 @@ router.get('/manager/organizations', isAuthenticated, isManager, (req, res) => {
     );
 });
 
+// Configure nodemailer
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: "mbtu uuro awya fvul"
+    }
+});
+
 // Post an update
 router.post('/organization/:organizationId/updates', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
     const { organizationId } = req.params;
@@ -74,10 +84,46 @@ router.post('/organization/:organizationId/updates', isAuthenticated, isManager,
                 console.error('Error posting update:', err);
                 return res.status(500).send('Internal server error');
             }
-            res.status(201).send('Update posted successfully');
+
+            // Fetch members who want to receive email notifications
+            db.query(
+                `SELECT Users.email FROM Users
+                 JOIN UserOrganizations ON Users.id = UserOrganizations.user_id
+                 LEFT JOIN EmailNotifications ON Users.id = EmailNotifications.user_id AND EmailNotifications.organization_id = ?
+                 WHERE UserOrganizations.organization_id = ? AND (EmailNotifications.notification_type = 'updates' OR EmailNotifications.notification_type IS NULL)`,
+                [organizationId, organizationId],
+                (err, members) => {
+                    if (err) {
+                        console.error('Error fetching members:', err);
+                        return res.status(500).send('Internal server error');
+                    }
+
+                    // Send emails to members
+                    const emailPromises = members.map(member => {
+                        const mailOptions = {
+                            from: process.env.EMAIL_USER,
+                            to: member.email,
+                            subject: `New Update: ${title}`,
+                            text: description
+                        };
+
+                        return transporter.sendMail(mailOptions);
+                    });
+
+                    Promise.all(emailPromises)
+                        .then(() => {
+                            res.status(201).send('Update posted and emails sent successfully');
+                        })
+                        .catch(emailErr => {
+                            console.error('Error sending emails:', emailErr);
+                            res.status(500).send('Update posted but failed to send emails');
+                        });
+                }
+            );
         }
     );
 });
+
 
 // Get public updates
 router.get('/organization/:organizationId/updates/public', (req, res) => {

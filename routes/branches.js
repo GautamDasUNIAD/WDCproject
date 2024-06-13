@@ -35,15 +35,15 @@ function isManagerForOrg(req, res, next) {
 // Create branch route (restricted to managers of the organization)
 router.post('/:organizationId/branches/create', isAuthenticated, isManagerForOrg, (req, res) => {
     const { organizationId } = req.params;
-    const { location } = req.body;
+    var { location, description, xCoordinate, yCoordinate } = req.body;
 
     if (!location) {
         return res.status(400).send('Location is required');
     }
 
     db.query(
-        'INSERT INTO Branches (location, organization_id) VALUES (?, ?)',
-        [location, organizationId],
+        'INSERT INTO Branches (location, description, x, y, organization_id) VALUES (?, ?, ?, ?, ?)',
+        [location, description, xCoordinate, yCoordinate, organizationId],
         (err, results) => {
             if (err) {
                 console.error('Error creating branch:', err);
@@ -54,8 +54,8 @@ router.post('/:organizationId/branches/create', isAuthenticated, isManagerForOrg
     );
 });
 
-// Fetch branches for a specific organization (restricted to managers of the organization)
-router.get('/:organizationId/branches', isAuthenticated, isManagerForOrg, (req, res) => {
+// Fetch branches for a specific organization
+router.get('/:organizationId/branches', (req, res) => {
     const { organizationId } = req.params;
 
     db.query('SELECT * FROM Branches WHERE organization_id = ?', [organizationId], (err, results) => {

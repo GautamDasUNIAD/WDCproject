@@ -11,7 +11,7 @@ function isAdmin(req, res, next) {
 }
 
 // Get all organizations
-router.get('/', isAdmin, (req, res) => {
+router.get('/', (req, res) => {
     db.query('SELECT * FROM VolunteerOrganizations', (err, results) => {
         if (err) {
             console.error('Error fetching organizations:', err);

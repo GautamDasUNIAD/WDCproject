@@ -11,7 +11,7 @@
 <body>
     <nav>
         <ul>
-            <li><a class="active" href="/home">LOGO</a></li>
+            <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
             <li><a href="/branches">Branches</a></li>
         </ul>
@@ -51,7 +51,7 @@
 
                 const branches = await response.json();
                 const branchList = document.getElementById('branchList');
-                branchList.innerHTML = '';
+                branchList.innerText = '';
 
                 branches.forEach(branch => {
                     const li = document.createElement('li');
@@ -94,7 +94,7 @@
 
                 const events = await response.json();
                 const eventsList = document.getElementById('eventsList');
-                eventsList.innerHTML = '';
+                eventsList.innerText = '';
 
                 events.forEach(event => {
                     const eventDiv = document.createElement('div');
@@ -102,7 +102,7 @@
 
                     const updateTextDiv = document.createElement('div');
                     updateTextDiv.classList.add('update-text');
-                    updateTextDiv.innerHTML = `
+                    updateTextDiv.innerText = `
                         <h3>${event.date} & ${event.name}</h3>
                         <p>${event.description}</p>
                         <button type="button" onclick="fetchRSVPs(${event.id}, ${organizationId}, ${branchId})">View RSVPs</button>
@@ -130,12 +130,12 @@
 
                 const rsvps = await response.json();
                 const rsvpsList = document.getElementById('rsvpsList');
-                rsvpsList.innerHTML = '';
+                rsvpsList.innerText = '';
 
                 rsvps.forEach(rsvp => {
                     const rsvpDiv = document.createElement('div');
                     rsvpDiv.classList.add('rsvp-update');
-                    rsvpDiv.innerHTML = `
+                    rsvpDiv.innerText = `
                         <p>${rsvp.first_name} ${rsvp.last_name} (${rsvp.email})</p>
                     `;
                     rsvpsList.appendChild(rsvpDiv);

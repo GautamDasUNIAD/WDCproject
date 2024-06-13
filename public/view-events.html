@@ -54,11 +54,11 @@
                 }
                 const events = await response.json();
                 const tableBody = document.getElementById('eventsTable').querySelector('tbody');
-                tableBody.innerHTML = '';
+                tableBody.innerText = '';
 
                 events.forEach(event => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `
+                    row.innerText = `
                         <td>${event.id}</td>
                         <td>${event.name}</td>
                         <td>${event.location}</td>

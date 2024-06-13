@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const passport = require('./utils/passport-config');
 require('dotenv').config();
+var flash = require('connect-flash');
+
 
 
 
@@ -20,10 +22,13 @@ const userOrganizationRouter = require('./routes/userorganizations'); // interac
 const adminRouter = require('./routes/admin');
 const userEventsRouter = require('./routes/userevents');
 const updatesRouter = require('./routes/updates');
+const userpreferencesRouter = require('./routes/userpreferences');
+
 
 var dbConnectionPool = require('./db');
 
 var app = express();
+
 
 app.use(function(req, res, next){
     req.pool = dbConnectionPool;
@@ -38,6 +43,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -55,6 +61,7 @@ app.use('/admin', adminRouter);
 app.use('/userorganizations', userOrganizationRouter);
 app.use('/userevents', userEventsRouter);
 app.use('/updates', updatesRouter);
+app.use('/userpreferences', userpreferencesRouter);
 
 // OAuth routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -66,5 +73,7 @@ app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] 
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
     res.redirect('/');
 });
+
+
 
 module.exports = app;
