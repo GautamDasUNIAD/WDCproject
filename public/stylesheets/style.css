@@ -277,6 +277,7 @@ footer {
   transition: 0.2s ease;
   cursor: pointer;
   font-size: 2vw;
+  transform: translate(-50%, -100%);
 }
 
 .map i:hover {
