@@ -70,9 +70,9 @@
                 <input type="text" id="upgradeUserId" name="upgradeUserId" required>
                 <input type="submit" value="Upgrade Role">
             </form>
+            <div id="upgradeResponse" class="message"></div>
         </div>
 
-        <div id="upgradeResponse" class="message"></div>
     </div>
 
     <div id="accessMessage" class="message"></div>
@@ -123,10 +123,19 @@
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    responseMessage.textContent = 'Error adding manager: ' + errorText;
-                    return;
-                }
+            const errorData = await response.json();
+            let errorMessage = 'Error upgrading role: ';
+
+            if (errorData.errors && errorData.errors.length > 0) {
+                errorMessage += errorData.errors.map(error => error.msg).join(', ');
+            } else {
+                errorMessage += 'An unknown error occurred';
+            }
+
+            responseMessage.textContent =  errorMessage;
+            responseMessage.style.color = 'red';
+            return;
+        }
 
                 responseMessage.textContent = 'Manager added successfully';
             } catch (error) {
@@ -149,10 +158,15 @@
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    responseMessage.textContent = 'Error upgrading role: ' + errorText;
+                    const errorData = await response.json();
+                    const errorMessage = errorData.errors && errorData.errors.length > 0
+                        ? errorData.errors[0].msg
+                        : 'An unknown error occurred';
+                    responseMessage.textContent = 'Error upgrading role: ' + errorMessage;
+                    responseMessage.style.color = 'red';
                     return;
                 }
+
 
                 responseMessage.textContent = 'User role upgraded successfully';
             } catch (error) {

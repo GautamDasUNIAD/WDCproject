@@ -54,7 +54,8 @@ li a:hover {
 .branchesclass li {
   list-style: none;
   display: inline-block;
-  margin: 5px 0;
+  margin-right: 10px;
+  margin-bottom:5px;
 }
 
 
@@ -255,6 +256,7 @@ footer {
   text-align: center;
   margin-top: auto;
   position: relative; /* Ensure the pseudo-element is positioned relative to the footer */
+  z-index:1000000;
 }
 
 footer::before {
@@ -678,7 +680,7 @@ textarea {
   padding: 20px;
   width: 22%;
   box-sizing: border-box;
-  min-height: 400px; /* Adjust the value based on your footer height */
+  min-height: 110vh; /* Adjust the value based on your footer height */
   align-items: stretch;
   border-right: 1px solid var(--primary-text); /* Add a border to visually separate sidebar content */
 }
