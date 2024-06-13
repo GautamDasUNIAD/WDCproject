@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+const db = require('../db');
 
 
 // /* GET home page. */
@@ -34,6 +35,27 @@ function isAuthenticated(req, res, next) {
   } else {
       res.status(401).send('You need to be logged in to perform this action.');
   }
+}
+
+// Middleware to check if the manager belongs to the organization
+function isManagerForOrg(req, res, next) {
+  const userId = req.user.id;
+  const organizationId = req.cookies.selectedOrgId;
+
+  db.query(
+      'SELECT * FROM OrganisationManagers WHERE manager_id = ? AND organization_id = ?',
+      [userId, organizationId],
+      (err, results) => {
+          if (err) {
+              console.error('Error checking manager association:', err);
+              return res.status(500).send('Internal server error');
+          }
+          if (results.length === 0) {
+              return res.status(403).send('You do not have permission to perform this action for this organization.');
+          }
+          next();
+      }
+  );
 }
 
 // Middleware to check if the user is a manager
@@ -88,7 +110,7 @@ router.get('/admin', isAuthenticated, isAdmin, (req, res) => {
 });
 
 // Manager dashboard
-router.get('/management', isAuthenticated, isManager, (req, res) => {
+router.get('/management', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'management.html'));
 });
 

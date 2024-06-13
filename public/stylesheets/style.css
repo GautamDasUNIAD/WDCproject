@@ -7,13 +7,6 @@ a {
   color: #00B7FF;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: #333;
-}
-
 li {
   float: left;
   margin-right:10px;
@@ -21,15 +14,29 @@ li {
 
 li a {
   display: block;
-  color: white;
+  color:purple;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  font-weight: bold;
 }
 
 li a:hover {
-  background-color: #111;
+  background-color: #9b9a9a;
 }
+
+.button2 li a:hover {
+  background-color: black;
+}
+
+body.dark-mode ul {
+  background-color: black;
+}
+
+body.dark-mode ul.branchesclass{
+  background-color:rgb(16, 16, 16);
+}
+
 
 body,
 html {
@@ -39,18 +46,10 @@ html {
   font-family: sans-serif;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: #333;
-
-}
 
 .carousel {
   position: relative;
   width: 100%;
-  height: calc(100vh - 50px);
   overflow: hidden;
 }
 textarea {
@@ -81,8 +80,6 @@ textarea {
 .next {
   cursor: pointer;
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
 
   width: auto;
   padding: 16px;
@@ -92,7 +89,7 @@ textarea {
   transition: 0.6s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
-  z-index: 1000;
+
 }
 
 .prev {
@@ -188,10 +185,13 @@ textarea {
 .update-text h3 {
   margin-top: 0;
   margin-bottom: 5px;
+  padding-top:10px;
 }
 
 .update-text p {
+  padding-top:5px;
   margin: 0;
+  padding-bottom: 7px;
 }
 
 footer {
@@ -235,8 +235,8 @@ footer {
 #scrollToTopBtn {
   /* display: none; */
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 4%;
+  right: 2%;
   z-index: 1000;
   background-color: #333;
   color: white;
@@ -253,7 +253,6 @@ footer {
 
 .map-section {
   position: relative;
-  width: 100vw;
   overflow: hidden;
   min-height: 100%;
 }
@@ -278,6 +277,7 @@ footer {
   transition: 0.2s ease;
   cursor: pointer;
   font-size: 2vw;
+  transform: translate(-50%, -100%);
 }
 
 .map i:hover {
@@ -296,16 +296,23 @@ footer {
   margin-left: auto;
   margin-right: auto;
   word-wrap: break-word;
-  width: 40%;
+  width: 100%;
   text-align: center;
 }
 
 nav {
-  background-color: #333;
+  background-color: #f4f3f3;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+  padding-left: 3vh;
+  /* position:sticky; */
+  z-index: 10000000;
+  top:0;
+  max-height: 10%;
+
 }
 
 .search-form {
@@ -348,7 +355,7 @@ nav {
 }
 
 .login-container {
-  padding: 20px 20px 10px 20px;
+  padding: 5px 5px 5px 5px;
   border-radius: 8px;
 }
 
@@ -383,6 +390,29 @@ nav {
   border-radius: 4px;
 }
 
+.map-container {
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-container img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.click-coordinates {
+  position: absolute;
+  font-size: 24px;
+  color: red;
+  transform: translate(-50%, -100%);
+}
 
 .create-branch-container input[type="text"],
 .create-branch-container input[type="password"],
@@ -411,6 +441,26 @@ nav {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
+
+.create-login-container {
+  width: 100%;
+  max-width: 450px;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.create-login-container input[type="text"],
+.create-login-container input[type="password"],
+.create-login-container input[type="datetime-local"]{
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 
 .preferences-section {
   width: 100%;
@@ -451,9 +501,9 @@ nav {
 
 
 
-input[type="checkbox" i]{
+/* input[type="checkbox" i]{
   margin: 0px 0px 0px 0px;
-}
+} */
 
 .create-organization-container {
   width: 100%;
@@ -466,7 +516,7 @@ input[type="checkbox" i]{
   border-radius: 8px;
 }
 
-#createBranchForm, #createOrganizationForm, #preferencesForm, #addManagerForm, #upgradeForm{
+#createBranchForm, #createOrganizationForm, #preferencesForm, #addManagerForm, #upgradeForm, #loginForm,#signupForm{
   display: flex;
   flex-direction: column;
   padding:10px;
@@ -493,15 +543,31 @@ input[type="checkbox" i]{
   font-family: sans-serif;
   display: inline-block;
   text-align: center;
-  max-width: calc(47.5%);
-  min-width: calc(47.5%); /* Minimum width for the buttons */
+  max-width: calc(46.5%);
+  min-width: calc(46.5%); /* Minimum width for the buttons */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+/* Base styles for the buttons */
+.signups {
+  padding: 10px 20px 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: sans-serif;
+  display: inline-block;
+  text-align: center;
+  max-width: calc(46.5%);
+  min-width: calc(46.5%); /* Minimum width for the buttons */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .loginsdiv {
   display: flex;
   justify-content: center; /* Center the buttons horizontally */
-  gap: 20px; /* Space between the buttons */
+  gap: 10px; /* Space between the buttons */
 }
 
 
@@ -510,9 +576,9 @@ input[type="checkbox" i]{
   flex-direction: column;
 }
 
-.login-container label {
+/* .login-container label {
   font-weight: bold;
-}
+} */
 
 .login-container input[type="text"],
 .login-container input[type="password"] {
@@ -536,7 +602,8 @@ input[type="checkbox" i]{
 .create-branch-container input[type="submit"],
 .post-update-section input[type="submit"],
 .preferences-section input[type="submit"],
-.create-organization-container input[type="submit"]{
+.create-organization-container input[type="submit"],
+.create-login-container input[type = "submit"]{
   padding: 10px;
   background-color: #007bff;
   color: #fff;
@@ -565,14 +632,63 @@ textarea {
 }
 
 .sidebar {
-  float: left;
+  float: left; /* Keep sidebar floating by default */
   background-color: rgba(211, 211, 211, 0.5);
   padding: 20px;
+  width: 22%;
   box-sizing: border-box;
-  min-height: 100vh;/* Adjust the value based on your footer height */
-  overflow: hidden;
-  align-items: stretch
+  min-height: 100vh; /* Adjust the value based on your footer height */
+  align-items: stretch;
+  border-right: 1px solid #ccc; /* Add a border to visually separate sidebar content */
+
 }
+
+/* Media query for screens smaller than 768px (typical mobile phones) */
+@media (max-width: 768px) {
+  .sidebar {
+    float: none; /* Remove float */
+    width: 100%; /* Take full width */
+    border-right: none; /* Remove border */
+  }
+}
+
+.split-div{
+  display: flex;
+  align-items: left;
+  justify-content: space-around;
+}
+
+@media (max-width: 768px) {
+  .calendar-div {
+    float: none; /* Remove float */
+    min-width: 94%; /* Take full width */
+    border-right: none; /* Remove border */
+  }
+  .calendar-events{
+    min-width:100%;
+  }
+  .split-div{
+    display: block;
+  }
+
+}
+
+
+body.dark-mode .sidebar{
+  background-color: rgba(32, 32, 32, 0.5);
+}
+
+body.dark-mode .view-button.active{
+  background-color: rgb(106, 92, 92);
+  color:white;
+}
+
+
+body.dark-mode .view-button{
+  background-color: black;
+  color:white;
+}
+
 
 /* Add this new class to align the sidebar items to the top */
 .sidebar-content {
@@ -631,11 +747,25 @@ textarea {
   box-sizing: border-box;
 }
 
+body.dark-mode .events-section{
+  background-color:black;
+}
+
+body.dark-mode .create-login-container{
+  background-color:black;
+  border:white 1px solid;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+}
+
+body.dark-mode label{
+  color:white;
+}
 
 .events-update {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 100px;
   margin-bottom: 20px;
   background-color: #f9f9f9;
   max-width: 800px;
@@ -643,6 +773,9 @@ textarea {
   margin-right: auto;
   border: 1px solid black;
   min-height: 90px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 10px; /* Rounded corners */
+
 }
 
 .vote {
@@ -650,9 +783,7 @@ textarea {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid black;
-  width: calc(50px + 5%);
-  height: 100px;
+  padding:10px;
 }
 
 .events-update-text {
@@ -663,6 +794,7 @@ textarea {
 .events-update-text h3 {
   margin-top: 0;
   margin-bottom: 5px;
+  text-align: left;
 }
 .events-update-text, .attendance {
   border: 1px solid black;
@@ -727,6 +859,7 @@ main {
 .upvote{
   padding: 5px;
   border: 1px solid black;
+  border-radius: 5px 5px 0 0;
 }
 
 body.dark-mode .upvote{
@@ -738,6 +871,7 @@ body.dark-mode .upvote{
   border-right: 1px solid black;
   border-left: 1px solid black;
   border-bottom: 1px solid black;
+  border-radius: 0 0 5px 5px;
 }
 
 body.dark-mode .downvote{
@@ -868,10 +1002,16 @@ body.dark-mode .downvote{
 }
 footer {
   width: 100%;
-  padding: 20px 0;
-  background-color: #333;
+  padding: 50px 0;
+  background-color: rgb(3, 85, 3);
   color: white;
   text-align: center;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
 }
 
 .footer-content {
@@ -904,30 +1044,17 @@ footer {
 
 
 
-
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: #333;
+.banner{
+  font-weight: bold;
 }
+
+
+
 
 li {
   float: left;
 }
 
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-li a:hover {
-  background-color: #111;
-}
 
 
 ul {
@@ -935,13 +1062,17 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color: #f4f3f3;
   position: relative;
-  height: 50px;
-
+  font-size:15px;
 }
 
-
+ul.banner-class {
+  background-color: #007BFF;
+}
+.banner-class{
+  background-color: #007BFF;
+}
 .slide {
   width: 100%;
   height: 100%;
@@ -954,22 +1085,7 @@ ul {
 
 }
 
-.prev,
-.next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: auto;
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
-  z-index: 1000;
-}
+
 
 .prev {
   left: 0;
@@ -1018,24 +1134,7 @@ ul {
 
 
 
-.view-button {
-  flex: 1;
-  padding: 10px 20px;
-  border: none;
-  background-color: #f9f9f9;
-  color: #333;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
 
-.view-button:hover, .view-button.active {
-  background-color: #ddd;
-}
-
-.view-button:not(:last-child) {
-  border-right: 1px solid #ccc;
-}
 
 
 .events-section {
@@ -1253,6 +1352,7 @@ ul {
   background-color: #0056b3;
 }
 
+
 .split-div{
   display: flex;
   align-items: left;
@@ -1268,6 +1368,7 @@ ul {
   align-items: right;
   align-content: center;
 }
+
 
 .single-event{
   height: 100%;
@@ -1301,48 +1402,20 @@ ul {
 }
 
 
-footer {
-  width: 100%;
-  padding: 20px 0;
-  background-color: #333;
-  color: white;
-  text-align: center;
-}
 
-.footer-content {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+
 
 .social-media-links a {
   margin: 0 10px;
 }
 
-.footer-logo img {
-  margin: 20px 0;
-  width: 120px;
-  height: auto;
-}
-
-.footer-links a {
-  margin: 0 10px;
-  color: white;
-  text-decoration: none;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
 
 
 
 .accessibility-button {
   position: fixed;
   right: 0;
-  top: 15%;
+  top: 20%;
   background-color: #4481c2;
   color: white;
   width: 40px;
@@ -1357,7 +1430,7 @@ footer {
   justify-content: center;
   font-size: 22px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 1000000000;
 }
 
 .button2 {
@@ -1366,17 +1439,17 @@ footer {
   color: white;
   text-decoration: none;
   border-radius: 2px;
-  margin-right: 10px;
   margin-top: 2px;
 }
 
 .button3 {
-  display: inline-block;
   background-color: rgb(255, 98, 0);
   color: white;
   text-decoration: none;
   border-radius: 2px;
   margin-top: 2px;
+  margin-right: 8px;
+  float:right;
 }
 
 .preferences-button {
@@ -1389,26 +1462,31 @@ footer {
 
 /* The Modal (background) */
 .modal {
-  display: none;
+  display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  /* overflow: auto; Enable scroll if needed */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index:100000000000000;
 }
 
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 25%; /* Could be more or less, depending on screen size */
+  width: 80%; /* Adjust width as needed */
+  max-width: 400px; /* Maximum width */
   border-radius: 34px;
+  box-sizing: border-box;
 }
+
 
 
 
@@ -1431,8 +1509,8 @@ footer {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 60px; /* 3% of the viewport width */
+  height: 34px; /* 2% of the viewport height */
 }
 
 /* Hide default HTML checkbox */
@@ -1494,6 +1572,11 @@ body.dark-mode {
   background-color: black;
 }
 
+body.dark-mode nav{
+  background-color:black;
+  border-bottom: white 2px solid;
+}
+
 /* body.dark-mode nav {
   background-color: black;
 } */
@@ -1545,7 +1628,7 @@ body.dark-mode .accessibility-button{
 }
 
 body.dark-mode ul{
-  color: white
+  color: white;
 }
 
 body.dark-mode h2{
@@ -1589,9 +1672,6 @@ body.dark-mode #Reason_for_Query{
   border: 1px solid white;
 }
 
-body.dark-mode .vote{
-  border:1px solid white;
-}
 
 /* body.dark-mode * {
   background-color: inherit;
@@ -1607,25 +1687,59 @@ body.dark-mode .vote{
 } */
 
  /* Dropdown button - displays logged in user's email */
- .dropbtn {
+ .user-dropdown-button {
   background-color: #04AA6D;
   color: white;
   padding: 16px;
   display: inline-block;
   border-radius:2px;
+}
 
+.dropdown {
+  display: inline-block;
+  z-index:10000;
+}
+
+#organizations-dropdown-div {
+  /* margin-right: 100px; */
+ margin-right:1%
+}
+
+
+
+
+.organizations-dropdown-button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 30vw; /* Set a fixed width */
+  box-sizing: border-box; /* Ensure padding and border are included in the width */
+  text-align: center; /* Align text to the left */
+  border-radius: 2px;
+  margin-right: 10px;
+  margin-top: 2px;
+  position:relative;
+
+  /* align-items: center; */
 
 }
 
 
 
+.menu li.floatright {
+  margin-left: auto; /* Pushes item to the right */
+}
 /* Dropdown contents */
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
   min-width: 100px;
-  z-index: 1;
+
+  cursor: pointer;
 }
 
 /* Buttons inside dropdown - logout */
@@ -1635,7 +1749,7 @@ body.dark-mode .vote{
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content :hover {background-color: #ddd;}
 .dropdown:hover .dropdown-content {display: block;}
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
@@ -1709,6 +1823,85 @@ body.dark-mode .vote{
   flex-direction: column;
   padding:10px;
 }
+/* Basic styling for the hamburger menu */
+.hamburger {
+  display: none; /* Hide by default on larger screens */
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 5px;
+  transition: 0.4s;
+}
+
+/* Rotate animation when menu is active */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+  .hamburger {
+      display: block; /* Show hamburger menu on smaller screens */
+  }
+
+  .menu {
+      display: none; /* Hide the regular menu items */
+      flex-direction: column; /* Stack items vertically */
+      background-color: #f9f9f9;
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+  }
+
+  .menu.active {
+      display: flex; /* Show menu items when hamburger menu is active */
+  }
+
+  .menu:last-child {
+      top: 120px; /* Adjust top position for the second menu */
+  }
+
+  .menu li {
+      text-align: center;
+      padding: 10px;
+  }
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  flex-direction: column; /* Ensure images stack vertically */
+}
+
+.slides img {
+  width: 100%;
+  height: auto; /* Ensure images maintain aspect ratio */
+  display: block;
+}
+
+
+
+
+
 
 
 

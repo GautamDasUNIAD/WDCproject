@@ -29,6 +29,7 @@ var dbConnectionPool = require('./db');
 
 var app = express();
 
+
 app.use(function(req, res, next){
     req.pool = dbConnectionPool;
     next();
@@ -72,5 +73,7 @@ app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] 
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
     res.redirect('/');
 });
+
+
 
 module.exports = app;
