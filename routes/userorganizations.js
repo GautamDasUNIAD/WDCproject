@@ -120,22 +120,39 @@ router.post('/leave', isAuthenticated, (req, res) => {
     );
 });
 
-// Get users in an organization
+// Get all users in an organization
 router.get('/organization/:organizationId/users', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
     const { organizationId } = req.params;
 
     db.query(
-        `SELECT Users.id, Users.first_name, Users.last_name, Users.email
+        `SELECT Users.id, Users.first_name, Users.last_name, Users.email, Users.role, UserOrganizations.created_at
          FROM Users
          JOIN UserOrganizations ON Users.id = UserOrganizations.user_id
          WHERE UserOrganizations.organization_id = ?`,
         [organizationId],
         (err, results) => {
             if (err) {
-                console.error('Error fetching users in organization:', err);
+                console.error('Error fetching users:', err);
                 return res.status(500).send('Internal server error');
             }
             res.json(results);
+        }
+    );
+});
+
+// Remove a user from an organization
+router.delete('/organization/:organizationId/user/:userId', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
+    const { organizationId, userId } = req.params;
+
+    db.query(
+        'DELETE FROM UserOrganizations WHERE user_id = ? AND organization_id = ?',
+        [userId, organizationId],
+        (err, results) => {
+            if (err) {
+                console.error('Error removing user:', err);
+                return res.status(500).send('Internal server error');
+            }
+            res.status(200).send('User removed from the organization successfully');
         }
     );
 });

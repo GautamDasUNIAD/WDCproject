@@ -135,8 +135,6 @@
             const sidebar = document.querySelector('.sidebar');
             let displayedEvents = 4;
 
-
-
             try {
                 const selectedOrgId = getCookie('selectedOrgId');
                 if (!selectedOrgId) {
@@ -146,6 +144,7 @@
 
                 const response = await fetch(`/events/organization/${selectedOrgId}`);
                 const events = await response.json();
+
 
                 const uniqueLocations = new Set();
 

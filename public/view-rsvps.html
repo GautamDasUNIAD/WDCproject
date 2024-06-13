@@ -9,18 +9,6 @@
 </head>
 
 <body>
-    <nav>
-        <ul>
-            <li><a class="active" href="/">LOGO</a></li>
-            <li><a href="/events">Events</a></li>
-            <li><a href="/branches">Branches</a></li>
-        </ul>
-        <ul>
-            <li><a href="/login" class="button2">Login</a></li>
-            <li><a href="/signup" class="button3">Signup</a></li>
-        </ul>
-    </nav>
-
     <div class="main-container">
         <div class="sidebar">
             <h3>Filter by Branch:</h3>
@@ -29,11 +17,15 @@
             </ul>
         </div>
 
-        <div class="rsvps-section">
-            <h2>RSVPs for Events</h2>
+        <div class="events-section">
+            <h2>Events</h2>
             <div id="eventsList">
                 <!-- Events will be populated here by JavaScript -->
             </div>
+        </div>
+
+        <div class="rsvps-section">
+            <h2>RSVPs for Events</h2>
             <div id="rsvpsList">
                 <!-- RSVPs will be populated here by JavaScript -->
             </div>
@@ -59,11 +51,8 @@
                     input.type = 'checkbox';
                     input.id = branch.id;
                     input.onchange = () => {
-                        if (input.checked) {
-                            fetchEvents(organizationId, branch.id);
-                        } else {
-                            fetchEvents(organizationId);
-                        }
+                        fetchEvents(organizationId);
+                        fetchRSVPs(0,organizationId,0);
                     };
 
                     const label = document.createElement('label');
@@ -79,10 +68,11 @@
             }
         }
 
-        async function fetchEvents(organizationId, branchId) {
+        async function fetchEvents(organizationId) {
+            const selectedBranchId = document.querySelector('#branchList input[type="checkbox"]:checked')?.id;
             let url = `/userevents/organization/${organizationId}/events`;
-            if (branchId) {
-                url = `/userevents/branch/${branchId}/events`;
+            if (selectedBranchId) {
+                url = `/userevents/branch/${selectedBranchId}/events`;
             }
 
             try {
@@ -99,13 +89,17 @@
                 events.forEach(event => {
                     const eventDiv = document.createElement('div');
                     eventDiv.classList.add('events-update');
+                    eventDiv.onclick = () => {
+                        document.querySelectorAll('.events-update').forEach(div => div.classList.remove('active'));
+                        eventDiv.classList.add('active');
+                        fetchRSVPs(event.id, organizationId, selectedBranchId);
+                    };
 
                     const updateTextDiv = document.createElement('div');
                     updateTextDiv.classList.add('update-text');
                     updateTextDiv.innerHTML = `
                         <h3>${event.date} & ${event.name}</h3>
                         <p>${event.description}</p>
-                        <button type="button" onclick="fetchRSVPs(${event.id}, ${organizationId}, ${branchId})">View RSVPs</button>
                     `;
 
                     eventDiv.appendChild(updateTextDiv);
@@ -118,7 +112,8 @@
 
         async function fetchRSVPs(eventId, organizationId, branchId) {
             try {
-                const response = await fetch(`/userevents/organization/${organizationId}/branch/${branchId}/event/${eventId}/rsvps`);
+                const url = `/userevents/organization/${organizationId}/branch/${branchId}/event/${eventId}/rsvps`;
+                const response = await fetch(url);
                 if (response.status === 401) {
                     alert('You need to be logged in to view RSVPs.');
                     window.location.href = '/login';
@@ -131,6 +126,11 @@
                 const rsvps = await response.json();
                 const rsvpsList = document.getElementById('rsvpsList');
                 rsvpsList.innerHTML = '';
+
+                const rsvpCount = document.createElement('div');
+                rsvpCount.classList.add('rsvp-count');
+                rsvpCount.textContent = `Total RSVPs: ${rsvps.length}`;
+                rsvpsList.appendChild(rsvpCount);
 
                 rsvps.forEach(rsvp => {
                     const rsvpDiv = document.createElement('div');

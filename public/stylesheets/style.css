@@ -1,5 +1,5 @@
 :root {
-  --primary-background: #f6f9f8; /* Light Beige */
+  --primary-background: #f6f9f8; /* Ligmt Beige */
   --secondary-background: #d5d9dc; /* Light Orange */
   --primary-text: #084479; /* Dark Brown */
   --secondary-text: #fa5366; /* Dark Orange */
@@ -788,6 +788,75 @@ textarea {
   }
 }
 
+.main-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  background-color: var(--primary-background);
+}
+
+.sidebar, .rsvps-section, .events-section {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 20%;
+  border-right: 1px solid #ddd;
+  background-color: var(--secondary-background);
+}
+
+.events-section {
+  width: 40%;
+  border-right: 1px solid #ddd;
+  background-color: var(--primary-background);
+}
+
+.rsvps-section {
+  width: 40%;
+  background-color: var(--primary-background);
+}
+
+.events-update, .rsvp-update {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.events-update:hover {
+  background-color: #eee;
+}
+
+.events-update.active {
+  background-color: #007BFF;
+  color: white;
+}
+
+.update-text h3, .update-text p, .rsvp-update p {
+  margin: 5px 0;
+}
+
+#branchList {
+  list-style: none;
+  padding: 0;
+}
+
+#branchList li {
+  margin-bottom: 10px;
+}
+
+#branchList input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.rsvp-count {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
 
 /* Add this new class to align the sidebar items to the top */
@@ -827,6 +896,29 @@ textarea {
   border-right: 1px solid var(--primary-text);
 }
 
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: var(--secondary-button);
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.button-container button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
 .sidebar h3 {
   text-decoration: underline;
 }
@@ -849,6 +941,7 @@ textarea {
 
 .events-update {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   justify-content: center;
   margin-left: 100px;
@@ -869,27 +962,56 @@ textarea {
   align-items: center;
   justify-content: center;
   padding: 10px;
+  width: 100px; /* Set a fixed width */
 }
 
-.events-update-text {
+.vote div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.vote .upvote, .vote .downvote {
+  width: 100%; /* Ensure both upvote and downvote have the same width */
+  text-align: center; /* Center content */
+}
+
+.vote .upvote button, .vote .downvote button {
+  margin-left: 5px;
+}
+
+.update-text {
   flex: 1;
   text-align: left;
+  padding: 0 20px;
 }
 
-.events-update-text h3 {
-  margin-top: 0;
-  margin-bottom: 5px;
-  text-align: left;
+.rsvp-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px; /* Set a fixed width */
 }
 
-.events-update-text, .attendance {
-  border: 1px solid var(--primary-text);
-  padding: 10px;
-  margin: 5px;
+.rsvp-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 5px;
 }
 
-.events-update-text p {
-  margin: 0;
+.rsvp-button:hover {
+  background-color: #0056b3;
+  color: #ffffff;
 }
 
 main {
@@ -1699,6 +1821,19 @@ input:checked + .slider:before {
   box-sizing: border-box;
   padding: 20px;
   margin: 0px;
+}
+
+.manage-users-section {
+  width: 100%;
+}
+
+.manage-users-section h2 {
+  text-align: center;
+}
+
+#usersTable {
+  width: 100%;
+  text-align: center;
 }
 
 #userList {
