@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
           const userDropdownDiv = document.createElement('div');
           userDropdownDiv.classList.add("dropdown");
-          userDropdownDiv.innerHTML = `
+          userDropdownDiv.innerText = `
             <a class="dropbtn">${full_name}</a>
             <div class="dropdown-content">
               <a href="/preferences">Preferences</a>

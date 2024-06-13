@@ -31,7 +31,7 @@ function load() {
     document.getElementById('monthDisplay').innerText =
         `${dt.toLocaleDateString('en-us', { month: 'long' })} ${year}`;
 
-    calendar.innerHTML = '';
+    calendar.innerText = '';
 
     for(let i = 1; i <= paddingDays + daysInMonth; i++) {
         const daySquare = document.createElement('div');
