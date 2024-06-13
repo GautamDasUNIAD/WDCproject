@@ -70,11 +70,11 @@
                 }
                 const users = await response.json();
                 const tableBody = document.getElementById('usersTable').querySelector('tbody');
-                tableBody.innerHTML = '';
+                tableBody.innerText = '';
 
                 users.forEach(user => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `
+                    row.innerText = `
                         <td>${user.id}</td>
                         <td>${user.first_name}</td>
                         <td>${user.last_name}</td>
