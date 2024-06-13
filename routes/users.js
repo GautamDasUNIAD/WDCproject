@@ -56,11 +56,26 @@ router.post('/register', (req, res) => {
 
 
 // Login user
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/users/return-cookies',
-  failureRedirect: '/',
-  failureFlash: true // Enable flash messages
-}));
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    console.log('from route', info);
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      console.log('Login failed:', info.message);
+      return res.status(401).json(info.message);
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      console.log('Hurray, login successful!');
+      return res.redirect('/'); // Redirect to the homepage or handle it as needed
+    });
+  })(req, res, next);
+});
+
 
 router.get('/return-cookies', isAuthenticated, function(req, res, next) {
   res.cookie('email', req.user.email);
