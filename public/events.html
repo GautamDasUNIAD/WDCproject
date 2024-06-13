@@ -115,6 +115,7 @@
                 const response = await fetch('/events/all');
                 const events = await response.json();
 
+
                 events.sort((a, b) => new Date(a.date)- new Date(b.date));
 
                 const uniqueLocations = new Set();

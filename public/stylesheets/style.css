@@ -1292,6 +1292,17 @@ ul.banner-class {
   align-items: left;
   justify-content: space-around;
 }
+
+.left-button{
+  align-items: left;
+  align-content: center;
+}
+
+.right-button{
+  align-items: right;
+  align-content: center;
+}
+
 .single-event{
   height: 100%;
   display: flex;
