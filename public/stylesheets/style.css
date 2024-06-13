@@ -714,6 +714,75 @@ textarea {
   }
 }
 
+.main-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  background-color: var(--primary-background);
+}
+
+.sidebar, .rsvps-section, .events-section {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 20%;
+  border-right: 1px solid #ddd;
+  background-color: var(--secondary-background);
+}
+
+.events-section {
+  width: 40%;
+  border-right: 1px solid #ddd;
+  background-color: var(--primary-background);
+}
+
+.rsvps-section {
+  width: 40%;
+  background-color: var(--primary-background);
+}
+
+.events-update, .rsvp-update {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.events-update:hover {
+  background-color: #eee;
+}
+
+.events-update.active {
+  background-color: #007BFF;
+  color: white;
+}
+
+.update-text h3, .update-text p, .rsvp-update p {
+  margin: 5px 0;
+}
+
+#branchList {
+  list-style: none;
+  padding: 0;
+}
+
+#branchList li {
+  margin-bottom: 10px;
+}
+
+#branchList input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.rsvp-count {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
 
 /* Add this new class to align the sidebar items to the top */
