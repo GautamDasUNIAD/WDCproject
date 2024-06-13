@@ -483,6 +483,11 @@ main {
   margin-bottom: 20px;
 }
 
+.prevMonth {
+
+}
+
+
 .event-details p {
   margin: 10px 0;
 }
@@ -1120,6 +1125,7 @@ ul {
   align-items: left;
   justify-content: space-around;
 }
+
 .single-event{
   height: 100%;
   display: flex;

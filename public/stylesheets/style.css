@@ -389,6 +389,29 @@ nav {
   border-radius: 4px;
 }
 
+.map-container {
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-container img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.click-coordinates {
+  position: absolute;
+  font-size: 24px;
+  color: red;
+  transform: translate(-50%, -100%);
+}
 
 .create-branch-container input[type="text"],
 .create-branch-container input[type="password"],
