@@ -50,6 +50,9 @@ DROP TABLE IF EXISTS `Branches`;
 CREATE TABLE `Branches` (
   `id` int NOT NULL AUTO_INCREMENT,
   `location` varchar(255) NOT NULL,
+  `description` text,
+  `x` float DEFAULT NULL,
+  `y` float DEFAULT NULL,
   `organization_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `organization_id` (`organization_id`),
@@ -63,7 +66,7 @@ CREATE TABLE `Branches` (
 
 LOCK TABLES `Branches` WRITE;
 /*!40000 ALTER TABLE `Branches` DISABLE KEYS */;
-INSERT INTO `Branches` VALUES (1,'Adelaide',1),(2,'Auckland',1),(3,'hllo',1);
+INSERT INTO `Branches` VALUES (1,'Adelaide',NULL,NULL,NULL,1),(2,'Auckland',NULL,NULL,NULL,1),(3,'hllo',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `Branches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -376,4 +379,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-12  4:27:53
+-- Dump completed on 2024-06-13 12:02:58
