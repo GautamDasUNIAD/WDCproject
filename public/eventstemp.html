@@ -96,7 +96,7 @@
                 }
 
                 const orgList = document.getElementById('organizationList');
-                orgList.innerText = '';
+                orgList.innerHTML = '';
                 organizations.forEach(org => {
                     const li = document.createElement('li');
                     const a = document.createElement('a');
@@ -125,7 +125,7 @@
 
                 const events = await response.json();
                 const eventsList = document.getElementById('eventsList');
-                eventsList.innerText = '';
+                eventsList.innerHTML = '';
 
                 events.forEach(event => {
                     const eventDiv = document.createElement('div');
@@ -133,7 +133,7 @@
 
                     const voteDiv = document.createElement('div');
                     voteDiv.classList.add('vote');
-                    voteDiv.innerText = `
+                    voteDiv.innerHTML = `
                         <div class="upvote">
                             <button type="button" class="vote-button" onclick="upvote()">+</button>
                         </div>
@@ -145,7 +145,7 @@
 
                     const updateTextDiv = document.createElement('div');
                     updateTextDiv.classList.add('update-text');
-                    updateTextDiv.innerText = `
+                    updateTextDiv.innerHTML = `
                         <h3>${event.date} & ${event.name}</h3>
                         <p>${event.description}</p>
                         <button type="button" onclick="rsvpForEvent(${event.id})">RSVP</button>
@@ -170,7 +170,7 @@
 
                 const branches = await response.json();
                 const branchList = document.getElementById('branchList');
-                branchList.innerText = '';
+                branchList.innerHTML = '';
 
                 branches.forEach(branch => {
                     const li = document.createElement('li');

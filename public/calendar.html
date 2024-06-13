@@ -257,7 +257,7 @@
                         const event = events[i];
                         const eventItem = document.createElement('div');
                         eventItem.classList.add('events-update');
-                        eventItem.innerText = `
+                        eventItem.innerHTML = `
                             <div class="vote">
                                 <div class="upvote">
                                     <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>

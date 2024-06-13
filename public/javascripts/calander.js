@@ -28,17 +28,17 @@ function load() {
     });
     const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
 
-    document.getElementById('monthDisplay').innerText =
+    document.getElementById('monthDisplay').innerHTML =
         `${dt.toLocaleDateString('en-us', { month: 'long' })} ${year}`;
 
-    calendar.innerText = '';
+    calendar.innerHTML = '';
 
     for(let i = 1; i <= paddingDays + daysInMonth; i++) {
         const daySquare = document.createElement('div');
         daySquare.classList.add('day');
 
         if (i > paddingDays) {
-            daySquare.innerText = i - paddingDays;
+            daySquare.innerHTML = i - paddingDays;
             daySquare.addEventListener('click', () => console.log('click'));
         } else {
             daySquare.classList.add('padding');
