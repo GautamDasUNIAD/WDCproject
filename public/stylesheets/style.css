@@ -1,5 +1,5 @@
 :root {
-  --primary-background: #f6f9f8; /* Light Beige */
+  --primary-background: #f6f9f8; /* Ligmt Beige */
   --secondary-background: #d5d9dc; /* Light Orange */
   --primary-text: #084479; /* Dark Brown */
   --secondary-text: #fa5366; /* Dark Orange */
@@ -1747,6 +1747,19 @@ input:checked + .slider:before {
   box-sizing: border-box;
   padding: 20px;
   margin: 0px;
+}
+
+.manage-users-section {
+  width: 100%;
+}
+
+.manage-users-section h2 {
+  text-align: center;
+}
+
+#usersTable {
+  width: 100%;
+  text-align: center;
 }
 
 #userList {

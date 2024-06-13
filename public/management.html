@@ -53,7 +53,7 @@
             <button type="button" @click="showIframe('create-event.html')">Create Event</button>
             <button type="button" @click="showIframe('view-rsvps.html')">View RSVPs</button>
             <button type="button" @click="showIframe('create-branch.html')">Create Branch</button>
-            <button type="button" @click="showIframe('view-branch-members.html')">View Branch Members</button>
+            <button type="button" @click="showIframe('manage-users.html')">View Org Members</button>
         </div>
 
         <div v-if="currentIframe" class="iframe-container">
@@ -109,6 +109,15 @@
                         }
                         iframeSrc += `?organizationId=${selectedOrgId}`;
                     }
+                    if (iframeSrc === 'manage-users.html') {
+                        const selectedOrgId = getCookie('selectedOrgId');
+                        if (!selectedOrgId) {
+                            console.error('No selected organization ID found in cookies.');
+                            return;
+                        }
+                        iframeSrc += `?organizationId=${selectedOrgId}`;
+                    }
+
                     this.currentIframe = iframeSrc;
                 }
             }
