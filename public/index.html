@@ -137,7 +137,7 @@
                         updateDiv.classList.add('update-item');
                         const formattedDate = formatDate(update.date);
 
-                        updateDiv.innerText = `
+                        updateDiv.innerHTML = `
                             <div class="update">
                                 <img src="images/update.jpg" alt="Update Image">
                                 <div class="update-text">
@@ -192,7 +192,7 @@
 
 function displaySearchResults(results) {
     const searchResultsContainer = document.getElementById('searchResults');
-    searchResultsContainer.innerText = '';
+    searchResultsContainer.innerHTML = '';
 
     results.forEach(result => {
         const resultElement = document.createElement('div');
