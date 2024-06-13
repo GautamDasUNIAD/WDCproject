@@ -1,11 +1,18 @@
 :root {
-  --primary-background: #393639; /* Light Beige */
-  --secondary-background: #575657; /* Light Orange */
-  --primary-text: #ec538d; /* Dark Brown */
-  --secondary-text: #fad420; /* Dark Orange */
-  --primary-button: #fad420; /* Bright Orange */
-  --secondary-button: #ec538d; /* Dark Orange */
-  --accent-color: #1699e7; /* Light Orange */
+  --primary-background: #f6f9f8; /* Light Beige */
+  --secondary-background: #d5d9dc; /* Light Orange */
+  --primary-text: #084479; /* Dark Brown */
+  --secondary-text: #fa5366; /* Dark Orange */
+  --primary-button: #fa5366; /* Bright Orange */
+  --secondary-button: #084479; /* Dark Orange */
+  --accent-color: #084479; /* Light Orange */
+  --dark-primary-background: #393639; /* Light Beige */
+  --dark-secondary-background: #575657; /* Light Orange */
+  --dark-primary-text: #ec538d; /* Dark Brown */
+  --dark-secondary-text: #fad420; /* Dark Orange */
+  --dark-primary-button: #fad420; /* Bright Orange */
+  --dark-secondary-button: #ec538d; /* Dark Orange */
+  --dark-accent-color: #1699e7; /* Light Orange */
 }
 
 
@@ -42,13 +49,6 @@ li a:hover {
   background-color: var(--primary-background);
 }
 
-body.dark-mode ul {
-  background-color: var(--primary-background);
-}
-
-body.dark-mode ul.branchesclass {
-  background-color: rgb(16, 16, 16);
-}
 
 /* Custom checkbox styling */
 .branchesclass li {
@@ -714,19 +714,7 @@ textarea {
   }
 }
 
-body.dark-mode .sidebar {
-  background-color: rgba(32, 32, 32, 0.5);
-}
 
-body.dark-mode .view-button.active {
-  background-color: rgb(106, 92, 92);
-  color: var(--primary-text);
-}
-
-body.dark-mode .view-button {
-  background-color: var(--primary-background);
-  color: var(--primary-text);
-}
 
 /* Add this new class to align the sidebar items to the top */
 .sidebar-content {
@@ -783,19 +771,7 @@ body.dark-mode .view-button {
   box-sizing: border-box;
 }
 
-body.dark-mode .events-section {
-  background-color: var(--primary-background);
-}
 
-body.dark-mode .create-login-container {
-  background-color: var(--primary-background);
-  border: 1px solid var(--primary-text);
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
-}
-
-body.dark-mode label {
-  color: var(--primary-text);
-}
 
 .events-update {
   display: flex;
@@ -898,9 +874,6 @@ main {
   border-radius: 5px 5px 0 0;
 }
 
-body.dark-mode .upvote{
-  border:1px solid white;
-}
 
 .downvote{
   padding: 5px;
@@ -910,11 +883,6 @@ body.dark-mode .upvote{
   border-radius: 0 0 5px 5px;
 }
 
-body.dark-mode .downvote{
-  border-right: 1px solid white;
-  border-left: 1px solid white;
-  border-bottom: 1px solid white;
-}
 
 .upvote button {
   color: green;
@@ -1568,98 +1536,7 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-body.dark-mode {
-  background-color: var(--primary-background);
-}
 
-body.dark-mode nav {
-  background-color: var(--primary-background);
-  border-bottom: 2px solid var(--primary-text);
-}
-
-body.dark-mode .aboutus {
-  color: var(--primary-text);
-}
-
-body.dark-mode p {
-  color: var(--primary-text);
-}
-
-body.dark-mode h1 {
-  color: var(--primary-text);
-}
-
-body.dark-mode td {
-  background-color: var(--primary-background);
-  color: var(--primary-text);
-}
-
-body.dark-mode .update {
-  background-color: var(--primary-background);
-  color: var(--primary-text);
-}
-
-body.dark-mode hr {
-  background-color: var(--primary-text);
-  height: 1px;
-}
-
-body.dark-mode .modal-content {
-  background-color: var(--primary-background);
-  color: var(--primary-text);
-}
-
-body.dark-mode .accessibility-button {
-  border-left: 2px solid var(--primary-text);
-  border-top: 2px solid var(--primary-text);
-  border-bottom: 2px solid var(--primary-text);
-}
-
-body.dark-mode ul {
-  color: var(--primary-text);
-}
-
-body.dark-mode h2 {
-  color: var(--primary-text);
-}
-
-body.dark-mode .events-update {
-  color: var(--primary-text);
-  background-color: var(--primary-background);
-  border: 1px solid var(--primary-text);
-}
-
-body.dark-mode h3 {
-  color: var(--primary-text);
-}
-
-body.dark-mode .calendar-events {
-  border: 1px solid var(--primary-text);
-}
-
-body.dark-mode .single-event {
-  background-color: var(--primary-background);
-  color: var(--primary-text);
-}
-
-body.dark-mode .calendar-div {
-  background-color: var(--primary-background);
-  color: var(--primary-text);
-  border: 1px solid var(--primary-text);
-}
-
-body.dark-mode .branches-welcome {
-  color: var(--primary-text);
-}
-
-body.dark-mode .login-container {
-  background-color: var(--primary-background);
-  color: var(--primary-text);
-}
-
-body.dark-mode #Reason_for_Query {
-  border: 1px solid var(--primary-text);
-}
 
 /* Dropdown button - displays logged in user's email */
 .user-dropdown-button {
