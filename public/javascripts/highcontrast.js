@@ -6,6 +6,29 @@ function toggleDarkMode() {
     const body = document.body;
     body.classList.toggle('dark-mode'); // Add/remove 'dark-mode' class to the body
 
+    const currentBackground = getComputedStyle(document.documentElement).getPropertyValue('--primary-background').trim();
+
+    if (currentBackground === '#f6f9f8') {
+        // Switch to dark mode colors
+        document.documentElement.style.setProperty('--primary-background', '#393639'); // Dark Brown
+        document.documentElement.style.setProperty('--secondary-background', '#575657'); // Dark Orange
+        document.documentElement.style.setProperty('--primary-text', '#ec538d'); // Light Beige
+        document.documentElement.style.setProperty('--secondary-text', '#fad420'); // Light Orange
+        document.documentElement.style.setProperty('--primary-button', '#fad420'); // Bright Orange
+        document.documentElement.style.setProperty('--secondary-button', '#ec538d'); // Dark Orange
+        document.documentElement.style.setProperty('--accent-color', '#1699e7'); // Light Orange
+    } else {
+        // Switch to light mode colors
+        document.documentElement.style.setProperty('--primary-background', '#f6f9f8'); // Light Beige
+        document.documentElement.style.setProperty('--secondary-background', '#d5d9dc'); // Light Orange
+        document.documentElement.style.setProperty('--primary-text', '#084479'); // Dark Brown
+        document.documentElement.style.setProperty('--secondary-text', '#fa5366'); // Dark Orange
+        document.documentElement.style.setProperty('--primary-button', '#fa5366'); // Bright Orange
+        document.documentElement.style.setProperty('--secondary-button', '#084479'); // Dark Orange
+        document.documentElement.style.setProperty('--accent-color', '#084479'); // Light Orange
+    }
+
+
     // Store the dark mode preference in local storage
     localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
 
