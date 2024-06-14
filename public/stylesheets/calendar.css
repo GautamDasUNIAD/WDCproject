@@ -513,6 +513,11 @@
     text-align: center;
     margin-bottom: 20px;
   }
+  
+  .events-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
   .calendar-div {
     display: flex;
