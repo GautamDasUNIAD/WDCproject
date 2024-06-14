@@ -89,9 +89,9 @@ router.post('/organization/:organizationId/updates', isAuthenticated, isManager,
             db.query(
                 `SELECT Users.email FROM Users
                  JOIN UserOrganizations ON Users.id = UserOrganizations.user_id
-                 LEFT JOIN EmailNotifications ON Users.id = EmailNotifications.user_id AND EmailNotifications.organization_id = ?
-                 WHERE UserOrganizations.organization_id = ? AND (EmailNotifications.notification_type = 'updates' OR EmailNotifications.notification_type IS NULL)`,
-                [organizationId, organizationId],
+                 JOIN EmailNotifications ON Users.id = EmailNotifications.user_id
+                 WHERE UserOrganizations.organization_id = ? AND EmailNotifications.notification_type = 'updates'`,
+                [organizationId],
                 (err, members) => {
                     if (err) {
                         console.error('Error fetching members:', err);

@@ -22,7 +22,7 @@
             <li><a href="/events">Events</a></li>
             <li><a href="/branches">Branches</a></li>
         </ul>
-        <div class="dropdown" id = "organizations-dropdown-div">
+        <div class="dropdown" id="organizations-dropdown-div">
             <div class="organizations-dropdown-button">Select an organization...</div>
             <div class="dropdown-content" id="organization-dropdown">
                 <!-- Options will be populated dynamically -->
@@ -43,7 +43,8 @@
         </div>
         <div class="carousel-overlay">
             <p class="carousel-text">Name here</p>
-            <button type="button" class="join-btn" onclick = "window.open('/signup')">Join Now</button>
+            <button type="button" id="joinBtn" class="join-btn" onclick="handleJoinClick()">Join Now</button>
+
         </div>
         <button type="button" class="prev">❮</button>
         <button type="button" class="next">❯</button>
@@ -51,24 +52,24 @@
 
 
 
-    <button type = "button" id = "myBtn" class="accessibility-button">
+    <button type="button" id="myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
     </button>
     <!-- The Modal -->
-    <div id="myModal" class="modal" style = "display:none">
+    <div id="myModal" class="modal" style="display:none">
         <div class="modal-content">
-          <span class="close">&times;</span>
-          <div style="display: flex; align-items: center;">
-            <h2 style="margin-right: auto; position:relative;">Dark Mode</h2>
-              <label style = "position:relative; margin-right:auto;" class="switch">
-              <input type="checkbox">
-              <span class="slider round"></span>
-            </label>
-          </div>
+            <span class="close">&times;</span>
+            <div style="display: flex; align-items: center;">
+                <h2 style="margin-right: auto; position:relative;">Dark Mode</h2>
+                <label style="position:relative; margin-right:auto;" class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
     </div>
 
-    <div class="updates-section" id = "updatessectionID">
+    <div class="updates-section" id="updatessectionID">
         <h2>Daily Updates</h2>
         <!-- <div class="update">
             <img src="images/update.jpg" alt="Update 1">
@@ -86,8 +87,8 @@
         </div> -->
         <!-- Add more updates as needed -->
     </div>
-    <div class = "button-container">
-        <button type = "button" id="readMoreButton" class="read-more-button">Read More</button>
+    <div class="button-container">
+        <button type="button" id="readMoreButton" class="read-more-button">Read More</button>
     </div>
     <footer>
         <div class="footer-content">
@@ -116,22 +117,23 @@
     <script src="javascripts/adjustnav.js"></script>
 
     <script>
-         document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger');
-    const menus = document.querySelectorAll('.menu'); // Select all elements with class 'menu'
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.querySelector('.hamburger');
+            const menus = document.querySelectorAll('.menu'); // Select all elements with class 'menu'
 
-    hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
+            hamburger.addEventListener('click', function () {
+                hamburger.classList.toggle('active');
 
-        // Toggle 'active' class for each menu element
-        menus.forEach(menu => {
-            menu.classList.toggle('active');
+                // Toggle 'active' class for each menu element
+                menus.forEach(menu => {
+                    menu.classList.toggle('active');
+                });
+            });
         });
-    });
-});
 
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', async function () {
             var selectedOrgId = getCookie('selectedOrgId');
+            const joinBtn = document.getElementById('joinBtn');
             const urlParams = new URLSearchParams(window.location.search);
             const eventList = document.getElementById('updatessectionID');
             const readMoreButton = document.getElementById('readMoreButton');
@@ -139,6 +141,27 @@
             let displayedUpdates = 4; // Number of initially displayed updates
 
             try {
+                const selectedOrgId = getCookie('selectedOrgId');
+                var name = getCookie('first_name');
+                var isLoggedIn = name != undefined;
+                let isMember = false;
+                console.log("user is logged in: ", isLoggedIn);
+
+                if (isLoggedIn && organizationId) {
+                    var user_id = getCookie('id');
+                    console.log("user id is: ", user_id);
+                    const orgResponse = await fetch(`/userorganizations/isMember/${organizationId}`);
+                    const orgUser = await orgResponse.json();
+                    isMember = orgUser.isMember;
+                }
+
+                console.log("user is member", isMember);
+
+                if (!isLoggedIn || !isMember) {
+                    joinBtn.style.display = joinBtn.style.display;
+                } else {
+                    joinBtn.style.display = 'none';
+                }
                 const response = await fetch(`/updates/organization/${organizationId}/updates/public`);
                 const publicUpdates = await response.json();
 
@@ -179,7 +202,7 @@
 
                 displayUpdates(0, displayedUpdates);
 
-                readMoreButton.addEventListener('click', function() {
+                readMoreButton.addEventListener('click', function () {
                     const previousUpdatesCount = displayedUpdates;
                     displayedUpdates += 4; // Increase the number of displayed updates
                     displayUpdates(previousUpdatesCount, displayedUpdates);
@@ -201,7 +224,47 @@
             }
         });
 
-</script>
+        async function handleJoinClick() {
+            const selectedOrgId = getCookie('selectedOrgId');
+            var name = getCookie('first_name');
+            var isLoggedIn = name != undefined;
+            console.log("user is logged in: ", isLoggedIn);
+            if (!isLoggedIn) {
+                window.location.href = '/login';
+            } else {
+                joinOrganization(selectedOrgId);
+            }
+        }
+
+        async function joinOrganization(organizationId) {
+            try {
+                const response = await fetch('/userorganizations/join', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ organization_id: organizationId })
+                });
+
+                if (response.status === 401) {
+                    document.getElementById('accessMessage').textContent = 'You need to be logged in to perform this action.';
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    document.getElementById('responseMessage').textContent = 'Error joining organization: ' + errorText;
+                    return;
+                }
+
+                document.getElementById('responseMessage').textContent = 'Successfully joined the organization';
+                showOrganizationActions(organizationId, document.getElementById('organizationName').textContent);
+            } catch (error) {
+                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
+            }
+        }
+
+    </script>
 
 
 

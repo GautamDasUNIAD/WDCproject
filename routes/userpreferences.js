@@ -32,7 +32,7 @@ router.get('/preferences', isAuthenticated, (req, res) => {
 router.post('/preferences', isAuthenticated, (req, res) => {
     const userId = req.user.id;
     const { organizationId, notificationType, enabled } = req.body;
-
+    console.log("notification type" , notificationType);
     if (enabled) {
         db.query(
             'INSERT INTO EmailNotifications (user_id, organization_id, notification_type) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE notification_type = ?',

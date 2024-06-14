@@ -82,6 +82,7 @@ router.get('/return-cookies', isAuthenticated, function(req, res, next) {
   res.cookie('first_name', req.user.first_name);
   res.cookie('last_name', req.user.last_name);
   res.cookie('role', req.user.role);
+  res.cookie('id', req.user.id);
   res.redirect('/');
 });
 

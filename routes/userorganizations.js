@@ -76,6 +76,28 @@ router.get('/check', isAuthenticated, (req, res) => {
     );
 });
 
+// Check if the user is a member of an organization
+router.get('/isMember/:organizationId', isAuthenticated, (req, res) => {
+    const userId = req.user.id;
+    const { organizationId } = req.params;
+
+    db.query(
+        'SELECT * FROM UserOrganizations WHERE user_id = ? AND organization_id = ?',
+        [userId, organizationId],
+        (err, results) => {
+            if (err) {
+                console.error('Error checking membership:', err);
+                return res.status(500).send('Internal server error');
+            }
+            if (results.length > 0) {
+                res.json({ isMember: true });
+            } else {
+                res.json({ isMember: false });
+            }
+        }
+    );
+});
+
 // Join organization route
 router.post('/join', isAuthenticated, (req, res) => {
     const userId = req.user.id;
@@ -90,13 +112,18 @@ router.post('/join', isAuthenticated, (req, res) => {
         [userId, organization_id],
         (err, results) => {
             if (err) {
-                console.error('Error joining organization:', err);
-                return res.status(500).send('Internal server error');
+                if (err.code === 'ER_DUP_ENTRY') {
+                    return res.status(409).send('User already a member of the organization');
+                } else {
+                    console.error('Error joining organization:', err);
+                    return res.status(500).send('Internal server error');
+                }
             }
             res.status(201).send('Successfully joined the organization');
         }
     );
 });
+
 
 // Leave organization route
 router.post('/leave', isAuthenticated, (req, res) => {
