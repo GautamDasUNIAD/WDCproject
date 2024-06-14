@@ -13,7 +13,7 @@ router.get('/users', isAdmin, (req, res) => {
         FROM Users
         LEFT JOIN OrganisationManagers ON Users.id = OrganisationManagers.manager_id
         LEFT JOIN VolunteerOrganizations ON OrganisationManagers.organization_id = VolunteerOrganizations.id
-        GROUP BY Users.id, Users.first_name, Users.last_name, Users.email, Users.save;
+        GROUP BY Users.id, Users.first_name, Users.last_name, Users.email, Users.role;
     `;
 
     db.query(query, (err, results) => {
