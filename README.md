@@ -1,4 +1,4 @@
-# Template Repository for COMP SCI 2207/7207 Web & Database Computing (2023 Semester 1)
+# COMP SCI 2207/7207 Web & Database Computing - GROUP PROJECT 104
 
 1. Run the command npm install in the terminal to install all necessary dependencies.
 2. Create a file called .env with the following info.
