@@ -1,0 +1,65 @@
+.map-section {
+    position: relative;
+    overflow: hidden;
+    min-height: 100%;
+}
+
+.map-section h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.map-section h2 {
+    margin-left: 10%;
+}
+
+.map-section p {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.map i {
+    position: absolute;
+    color: var(--accent-color);
+    transition: 0.2s ease;
+    cursor: pointer;
+    font-size: 2vw;
+    transform: translate(-50%, -100%);
+}
+
+.map i:hover {
+    color: rgb(201, 53, 19);
+}
+
+.map {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 45%;
+}
+
+.branches-welcome {
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+    width: 100%;
+    text-align: center;
+}
+
+.map-container {
+    position: relative;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.map-container img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

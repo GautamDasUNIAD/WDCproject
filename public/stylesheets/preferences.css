@@ -1,0 +1,58 @@
+.preferences-section {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: var(--secondary-background);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.preferences-section button{
+    background-color: var(--primary-button);
+    color: var(--primary-background);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: sans-serif;
+    display: block;
+    margin: 20px auto; /* Center horizontally */
+    padding: 10px 20px;
+    width: 90%;
+
+}
+
+.preferences-section select,
+.preferences-section input[type="checkbox"],
+.preferences-section input[type="datetime-local"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.preferences-section label {
+  display: inline-flex;
+}
+
+.preferences-section input[type="checkbox"] {
+  transform: scale(1.4); /* Increase the size of the checkbox */
+  margin-left: 10px;
+}
+
+#preferencesForm {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.preferences-section input[type="submit"] {
+  padding: 10px;
+  background-color: var(--primary-button);
+  color: var(--primary-background);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: sans-serif;
+}

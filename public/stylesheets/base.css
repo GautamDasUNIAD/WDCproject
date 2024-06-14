@@ -1,0 +1,494 @@
+:root {
+    --primary-background: #f6f9f8;
+    --secondary-background: #d5d9dc;
+    --primary-text: #084479;
+    --secondary-text: #fa5366;
+    --primary-button: #fa5366;
+    --secondary-button: #084479;
+    --accent-color: #084479;
+    --dark-primary-background: #393639;
+    --dark-secondary-background: #575657;
+    --dark-primary-text: #ec538d;
+    --dark-secondary-text: #fad420;
+    --dark-primary-button: #fad420;
+    --dark-secondary-button: #ec538d;
+    --dark-accent-color: #1699e7;
+}
+
+body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: sans-serif;
+}
+
+
+
+
+/* Navigation Banner */
+a {
+  color: var(--accent-color);
+}
+
+li {
+  float: left;
+  margin-right: 10px;
+}
+
+li a {
+  display: block;
+  color: var(--primary-text);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+li a:hover {
+  background-color: var(--secondary-background);
+}
+
+.button2 li a:hover {
+  background-color: var(--primary-background);
+}
+
+nav {
+  background-color: var(--primary-background);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5vh 3vh;
+  z-index: 10000000;
+  top: 0;
+  max-height: 10%;
+  position: relative; /* Ensure the pseudo-element is positioned relative to the nav */
+}
+
+nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 5%; /* Leave 5% space on the left */
+  width: 90%; /* Make the border span 90% of the width, leaving 5% on either side */
+  border-bottom: 2px solid var(--accent-color); /* Adjust the thickness as needed */
+}
+
+li {
+  float: left;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--primary-background);
+  position: relative;
+  font-size: 15px;
+}
+
+.button2 {
+  display: inline-block;
+  background-color: var(--primary-button);
+  color: var(--primary-background);
+  text-decoration: none;
+  border-radius: 2px;
+  margin-top: 2px;
+}
+
+.button3 {
+  background-color: var(--primary-button);
+  color: var(--primary-background);
+  text-decoration: none;
+  border-radius: 2px;
+  margin-top: 2px;
+  margin-right: 8px;
+  float: right;
+}
+
+.preferences-button {
+  display: inline-block;
+  background-color: var(--primary-button);
+  color: var(--primary-background);
+  text-decoration: none;
+  border-radius: 2px;
+}
+
+.user-dropdown-button { /* Dropdown button - displays logged in user's email */
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.dropdown {
+  display: inline-block;
+  z-index: 10000;
+}
+
+#organizations-dropdown-div {
+  margin-right: 1%;
+}
+
+.organizations-dropdown-button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 30vw; /* Set a fixed width */
+  box-sizing: border-box; /* Ensure padding and border are included in the width */
+  text-align: center; /* Align text to the left */
+  border-radius: 2px;
+  margin-right: 10px;
+  margin-top: 2px;
+  position: relative;
+}
+
+.menu li.floatright {
+  margin-left: auto; /* Pushes item to the right */
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--secondary-background);
+  min-width: 100px;
+  cursor: pointer;
+}
+
+.dropdown-content a { /* Buttons inside dropdown - logout */
+  color: var(--primary-text);
+  padding: 12px 16px;
+  display: block;
+}
+
+.dropdown-content :hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+.hamburger { /* Basic styling for the hamburger menu */
+  display: none; /* Hide by default on larger screens */
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: var(--primary-text);
+  margin: 5px;
+  transition: 0.4s;
+}
+
+.hamburger.active span:nth-child(1) { /* Rotate animation when menu is active */
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
+
+@media screen and (max-width: 768px) { /* Media query for smaller screens */
+  .hamburger {
+    display: block; /* Show hamburger menu on smaller screens */
+  }
+
+  .menu {
+    display: none; /* Hide the regular menu items */
+    flex-direction: column; /* Stack items vertically */
+    background-color: var(--primary-background);
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .menu.active {
+    display: flex; /* Show menu items when hamburger menu is active */
+  }
+
+  .menu:last-child {
+    top: 120px; /* Adjust top position for the second menu */
+  }
+
+  .menu li {
+    text-align: center;
+    padding: 10px;
+  }
+}
+
+
+
+
+/* Accessibility Button */
+.accessibility-button {
+  position: fixed;
+  right: 0;
+  top: 20%;
+  background-color: var(--primary-button);
+  color: var(--primary-background);
+  width: 40px;
+  height: 40px;
+  border-left: 2px solid var(--primary-text);
+  border-top: 2px solid var(--primary-text);
+  border-bottom: 2px solid var(--primary-text);
+  border-right: 0px solid var(--primary-text);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1000000000;
+}
+
+
+
+
+/* Footer */
+footer {
+  width: 100%;
+  padding: 20px 0;
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  text-align: center;
+  margin-top: auto;
+  position: relative; /* Ensure the pseudo-element is positioned relative to the footer */
+  z-index:1000000;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 5%; /* Leave 5% space on the left */
+  width: 90%; /* Make the border span 90% of the width, leaving 5% on either side */
+  border-top: 2px solid var(--accent-color); /* Adjust the thickness as needed */
+}
+
+.footer-content {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-media-links a {
+  margin: 0 10px;
+  color: var(--primary-text);
+}
+
+.footer-logo img {
+  margin: 20px 0;
+  width: 120px;
+  height: auto;
+}
+
+.footer-links a {
+  margin: 0 10px;
+  color: var(--primary-text);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+/* Scroll To Top Button */
+#scrollToTopBtn {
+  /* display: none; */
+  position: fixed;
+  bottom: 4%;
+  right: 2%;
+  z-index: 1000;
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  border: 1px solid var(--primary-text);
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#scrollToTopBtn:hover {
+  background-color: #555;
+}
+
+
+
+
+/* Modal */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000000000000;
+}
+
+.modal-content {
+  background-color: var(--primary-background);
+  padding: 20px;
+  border: 1px solid var(--primary-text);
+  width: 80%; /* Adjust width as needed */
+  max-width: 400px; /* Maximum width */
+  border-radius: 34px;
+  box-sizing: border-box;
+}
+
+.close {
+  color: var(--primary-text);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: var(--primary-text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px; /* 3% of the viewport width */
+  height: 34px; /* 2% of the viewport height */
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: var(--primary-background);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-button);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--primary-button);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
+/* Breadcrumbs */
+.breadcrumbs {
+  padding: 20px;
+}
+
+
+
+
+/* Container */
+.main-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: var(--primary-background);
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 0px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: var(--secondary-button);
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.button-container button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
