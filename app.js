@@ -8,6 +8,7 @@ const session = require('express-session');
 const passport = require('./utils/passport-config');
 require('dotenv').config();
 var flash = require('connect-flash');
+const { body, validationResult } = require('express-validator');
 
 
 
@@ -66,12 +67,12 @@ app.use('/userpreferences', userpreferencesRouter);
 // OAuth routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('/');
+    res.redirect('/users/return-cookies');
 });
 
 app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('/');
+    res.redirect('/users/return-cookies');
 });
 
 

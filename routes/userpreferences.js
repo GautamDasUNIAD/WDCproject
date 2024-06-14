@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { body, validationResult } = require('express-validator');
 
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
@@ -29,10 +30,19 @@ router.get('/preferences', isAuthenticated, (req, res) => {
 });
 
 // Update user preferences
-router.post('/preferences', isAuthenticated, (req, res) => {
+router.post('/preferences', isAuthenticated, [
+    body('organizationId').isInt().withMessage('Organization ID must be an integer'),
+    body('notificationType').isString().withMessage('Notification Type must be a string'),
+    body('enabled').isBoolean().withMessage('Enabled must be a boolean')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const userId = req.user.id;
     const { organizationId, notificationType, enabled } = req.body;
-    console.log("notification type" , notificationType);
+
     if (enabled) {
         db.query(
             'INSERT INTO EmailNotifications (user_id, organization_id, notification_type) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE notification_type = ?',

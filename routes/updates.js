@@ -2,6 +2,7 @@ const express = require('express');
 const nodemailer = require('nodemailer');
 const router = express.Router();
 const db = require('../db');
+const { param, body, validationResult } = require('express-validator');
 
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
@@ -66,12 +67,22 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
-        pass: "mbtu uuro awya fvul"
+        pass: process.env.EMAIL_PASS
     }
 });
 
 // Post an update
-router.post('/organization/:organizationId/updates', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
+router.post('/organization/:organizationId/updates', isAuthenticated, isManager, isManagerForOrg, [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer'),
+    body('title').trim().notEmpty().withMessage('Title is required').escape(),
+    body('description').trim().notEmpty().withMessage('Description is required').escape(),
+    body('is_private').optional().isBoolean().withMessage('is_private must be a boolean')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { organizationId } = req.params;
     const { title, description, is_private } = req.body;
     const date = new Date();
@@ -124,9 +135,15 @@ router.post('/organization/:organizationId/updates', isAuthenticated, isManager,
     );
 });
 
-
 // Get public updates
-router.get('/organization/:organizationId/updates/public', (req, res) => {
+router.get('/organization/:organizationId/updates/public', [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { organizationId } = req.params;
 
     db.query(
@@ -143,7 +160,14 @@ router.get('/organization/:organizationId/updates/public', (req, res) => {
 });
 
 // Get member-only updates
-router.get('/organization/:organizationId/updates/member', isAuthenticated, (req, res) => {
+router.get('/organization/:organizationId/updates/member', isAuthenticated, [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const userId = req.user.id;
     const { organizationId } = req.params;
 

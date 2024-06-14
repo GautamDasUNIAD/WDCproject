@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { param, body, validationResult } = require('express-validator');
 
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
@@ -61,7 +62,14 @@ router.get('/myorganizations', isAuthenticated, (req, res) => {
 });
 
 // Get events for an organization
-router.get('/organization/:organizationId/events', isAuthenticated, (req, res) => {
+router.get('/organization/:organizationId/events', isAuthenticated, [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { organizationId } = req.params;
 
     db.query(
@@ -78,7 +86,14 @@ router.get('/organization/:organizationId/events', isAuthenticated, (req, res) =
 });
 
 // Get branches for an organization
-router.get('/organization/:organizationId/branches', isAuthenticated, (req, res) => {
+router.get('/organization/:organizationId/branches', isAuthenticated, [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { organizationId } = req.params;
 
     db.query(
@@ -95,7 +110,14 @@ router.get('/organization/:organizationId/branches', isAuthenticated, (req, res)
 });
 
 // Get events for a branch
-router.get('/branch/:branchId/events', isAuthenticated, (req, res) => {
+router.get('/branch/:branchId/events', isAuthenticated, [
+    param('branchId').isInt().withMessage('Branch ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { branchId } = req.params;
 
     db.query(
@@ -112,7 +134,14 @@ router.get('/branch/:branchId/events', isAuthenticated, (req, res) => {
 });
 
 // RSVP for an event
-router.post('/rsvp', isAuthenticated, (req, res) => {
+router.post('/rsvp', isAuthenticated, [
+    body('eventId').isInt().withMessage('Event ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const userId = req.user.id;
     const { eventId } = req.body;
 
@@ -133,7 +162,16 @@ router.post('/rsvp', isAuthenticated, (req, res) => {
 });
 
 // Get RSVPs for an event
-router.get('/organization/:organizationId/branch/:branchId/event/:eventId/rsvps', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
+router.get('/organization/:organizationId/branch/:branchId/event/:eventId/rsvps', isAuthenticated, isManager, isManagerForOrg, [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer'),
+    param('branchId').isInt().withMessage('Branch ID must be an integer'),
+    param('eventId').isInt().withMessage('Event ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { eventId } = req.params;
 
     db.query(
