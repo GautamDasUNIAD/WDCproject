@@ -29,7 +29,7 @@
 
     <div class="main-container">
         <div class="preferences-section">
-            <h2 style = "text-align:center; font-size: 25px;text-decoration: underline;">User Preferences</h2>
+            <h2 style="text-align:center; font-size: 25px;text-decoration: underline;">User Preferences</h2>
             <form id="preferencesForm">
                 <label for="organization">Organization:</label>
                 <select id="organization" name="organization" required></select>
@@ -38,12 +38,9 @@
                     <input type="checkbox" id="notificationType" name="notificationType">
                 </label>
 
-
-
-
-
                 <input type="submit" value="Update preferences">
             </form>
+            <button type="button" id="leaveOrganizationBtn">Leave Organization</button>
             <div id="responseMessage"></div>
         </div>
     </div>
@@ -108,7 +105,45 @@
             }
         }
 
+        async function leaveOrganization(organizationId) {
+            try {
+                const response = await fetch('/userorganizations/leave', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ organization_id: organizationId })
+                });
+
+                if (response.status === 401) {
+                    document.getElementById('responseMessage').textContent = 'You need to be logged in to perform this action.';
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    document.getElementById('responseMessage').textContent = 'Error leaving organization: ' + errorText;
+                    return;
+                }
+
+                document.getElementById('responseMessage').textContent = 'Successfully left the organization';
+                document.getElementById('organization').value = "";
+                document.getElementById('notificationType').checked = false;
+                window.location.href="/";
+            } catch (error) {
+                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
+            }
+        }
+
         document.getElementById('preferencesForm').addEventListener('submit', updateUserPreferences);
+        document.getElementById('leaveOrganizationBtn').addEventListener('click', function() {
+            const organizationId = document.getElementById('organization').value;
+            if (organizationId) {
+                leaveOrganization(organizationId);
+            } else {
+                document.getElementById('responseMessage').textContent = 'Please select an organization to leave';
+            }
+        });
         document.addEventListener('DOMContentLoaded', fetchUserPreferences);
     </script>
 </body>

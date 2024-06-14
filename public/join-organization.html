@@ -1,116 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Join or Leave Organization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Preferences</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
 </head>
+
 <body>
-    <div class="search-organization-container">
-        <h1>Join or Leave Organization</h1>
-        <form id="searchOrganizationForm">
-            <label for="query">Search Organization:</label>
-            <input type="text" id="query" name="query" required>
-            <input type="submit" value="Search">
-        </form>
-        <div id="searchResults"></div>
+    <nav>
+        <ul>
+            <li><a class="active" href="/">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
+        </ul>
+        <div class="dropdown" id="organizations-dropdown-div">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
+        <ul>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-container">
+        <div class="preferences-section">
+            <h2 style="text-align:center; font-size: 25px;text-decoration: underline;">User Preferences</h2>
+            <form id="preferencesForm">
+                <label for="organization">Organization:</label>
+                <select id="organization" name="organization" required></select>
+
+                <label for="notificationType">Receive Email Notifications:
+                    <input type="checkbox" id="notificationType" name="notificationType">
+                </label>
+
+                <input type="submit" value="Update preferences">
+            </form>
+            <button type="button" id="leaveOrganizationBtn">Leave Organization</button>
+            <div id="responseMessage"></div>
+        </div>
     </div>
 
-    <div id="organizationActions" style="display: none;">
-        <h2>Organization Actions</h2>
-        <p id="organizationName"></p>
-        <p id="organizationStatus"></p>
-        <button type="button" id="joinButton" style="display: none;">Join Organization</button>
-        <button type="button" id="leaveButton" style="display: none;">Leave Organization</button>
-        <div id="responseMessage"></div>
-    </div>
-
-    <div id="accessMessage" class="message" style="color: red;"></div>
+    <script src="javascripts/whoami.js"></script>
 
     <script>
-        async function searchOrganization(event) {
-            event.preventDefault();
-            const query = document.getElementById('query').value;
-
+        async function fetchUserPreferences() {
             try {
-                const response = await fetch(`/userorganizations/search?query=${encodeURIComponent(query)}`);
-                if (response.status === 401) {
-                    document.getElementById('accessMessage').textContent = 'You need to be logged in to perform this action.';
-                    return;
-                }
+                const responseOrg = await fetch('/userpreferences/organizations');
+                const organizations = await responseOrg.json();
+                const orgSelect = document.getElementById('organization');
 
-                const organizations = await response.json();
-                const searchResults = document.getElementById('searchResults');
-                searchResults.innerHTML = '';
                 organizations.forEach(org => {
-                    const button = document.createElement('button');
-                    button.textContent = org.name;
-                    button.onclick = () => showOrganizationActions(org.id, org.name);
-                    searchResults.appendChild(button);
+                    const option = document.createElement('option');
+                    option.value = org.id;
+                    option.textContent = org.name;
+                    orgSelect.appendChild(option);
+                });
+
+                const responsePref = await fetch('/userpreferences/preferences');
+                const preferences = await responsePref.json();
+
+                const notificationCheckbox = document.getElementById('notificationType');
+
+                preferences.forEach(preference => {
+                    if (preference.notification_type === 'updates') {
+                        notificationCheckbox.checked = true;
+                    }
                 });
             } catch (error) {
-                console.error('Error searching organizations:', error);
+                console.error('Error fetching user preferences:', error);
             }
         }
 
-        async function showOrganizationActions(organizationId, organizationName) {
-            document.getElementById('organizationActions').style.display = 'block';
-            document.getElementById('organizationName').textContent = `Organization: ${organizationName}`;
-            document.getElementById('responseMessage').textContent = '';
-            document.getElementById('accessMessage').textContent = '';
+        async function updateUserPreferences(event) {
+            event.preventDefault();
+
+            const organizationId = document.getElementById('organization').value;
+            const notificationType = 'updates';
+            const enabled = document.getElementById('notificationType').checked;
 
             try {
-                const response = await fetch(`/userorganizations/check?organization_id=${organizationId}`);
-                if (response.status === 401) {
-                    document.getElementById('accessMessage').textContent = 'You need to be logged in to perform this action.';
-                    return;
-                }
-
-                const { joined } = await response.json();
-                const statusText = document.getElementById('organizationStatus');
-                const joinButton = document.getElementById('joinButton');
-                const leaveButton = document.getElementById('leaveButton');
-
-                if (joined) {
-                    statusText.textContent = 'You are already a member of this organization.';
-                    joinButton.style.display = 'none';
-                    leaveButton.style.display = 'block';
-                    leaveButton.onclick = () => leaveOrganization(organizationId);
-                } else {
-                    statusText.textContent = 'You are not a member of this organization.';
-                    joinButton.style.display = 'block';
-                    leaveButton.style.display = 'none';
-                    joinButton.onclick = () => joinOrganization(organizationId);
-                }
-            } catch (error) {
-                console.error('Error checking organization membership:', error);
-            }
-        }
-
-        async function joinOrganization(organizationId) {
-            try {
-                const response = await fetch('/userorganizations/join', {
+                const response = await fetch('/userpreferences/preferences', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ organization_id: organizationId })
+                    body: JSON.stringify({ organizationId, notificationType, enabled })
                 });
 
+                const message = await response.text();
+                document.getElementById('responseMessage').textContent = message;
+
                 if (response.status === 401) {
-                    document.getElementById('accessMessage').textContent = 'You need to be logged in to perform this action.';
+                    alert('You need to be logged in to update preferences.');
+                    window.location.href = '/login';
                     return;
                 }
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    document.getElementById('responseMessage').textContent = 'Error joining organization: ' + errorText;
-                    return;
-                }
-
-                document.getElementById('responseMessage').textContent = 'Successfully joined the organization';
-                showOrganizationActions(organizationId, document.getElementById('organizationName').textContent);
             } catch (error) {
-                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
+                console.error('Error updating preferences:', error);
             }
         }
 
@@ -125,7 +116,7 @@
                 });
 
                 if (response.status === 401) {
-                    document.getElementById('accessMessage').textContent = 'You need to be logged in to perform this action.';
+                    document.getElementById('responseMessage').textContent = 'You need to be logged in to perform this action.';
                     return;
                 }
 
@@ -136,13 +127,24 @@
                 }
 
                 document.getElementById('responseMessage').textContent = 'Successfully left the organization';
-                showOrganizationActions(organizationId, document.getElementById('organizationName').textContent);
+                document.getElementById('organization').value = "";
+                document.getElementById('notificationType').checked = false;
             } catch (error) {
                 document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
             }
         }
 
-        document.getElementById('searchOrganizationForm').addEventListener('submit', searchOrganization);
+        document.getElementById('preferencesForm').addEventListener('submit', updateUserPreferences);
+        document.getElementById('leaveOrganizationBtn').addEventListener('click', function() {
+            const organizationId = document.getElementById('organization').value;
+            if (organizationId) {
+                leaveOrganization(organizationId);
+            } else {
+                document.getElementById('responseMessage').textContent = 'Please select an organization to leave';
+            }
+        });
+        document.addEventListener('DOMContentLoaded', fetchUserPreferences);
     </script>
 </body>
+
 </html>
