@@ -10,6 +10,21 @@
   border-radius: 4px;
 }
 
+.login-container input[type="text"]{
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-container textarea {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none; 
+}
+
 .login-container input[type="submit"] {
   padding: 10px;
   background-color: var(--primary-button);
@@ -18,4 +33,16 @@
   border-radius: 4px;
   cursor: pointer;
   font-family: sans-serif;
+
+}
+.main-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 0px;
+  width: 100%;
+  background-color: var(--primary-background);
 }

@@ -10,8 +10,13 @@
 </head>
 
 <body>
-    <nav>
-        <ul>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
             <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
             <li><a href="/branches">Branches</a></li>
@@ -49,42 +54,49 @@
     <script src="javascripts/whoami.js"></script>
 
     <script>
+        // Function to fetch user's organizations and preferences
         async function fetchUserPreferences() {
             try {
+                // Fetch user's organizations
                 const responseOrg = await fetch('/userpreferences/organizations');
-                const organizations = await responseOrg.json();
-                const orgSelect = document.getElementById('organization');
+                const organizations = await responseOrg.json(); // Parse JSON response
+                const orgSelect = document.getElementById('organization'); // Select dropdown element
 
+                // Populate organization select dropdown
                 organizations.forEach(org => {
-                    const option = document.createElement('option');
-                    option.value = org.id;
-                    option.textContent = org.name;
-                    orgSelect.appendChild(option);
+                    const option = document.createElement('option'); // Create option element
+                    option.value = org.id; // Set option value to organization ID
+                    option.textContent = org.name; // Set option text to organization name
+                    orgSelect.appendChild(option); // Append option to select dropdown
                 });
 
+                // Fetch user's preferences
                 const responsePref = await fetch('/userpreferences/preferences');
-                const preferences = await responsePref.json();
+                const preferences = await responsePref.json(); // Parse JSON response
 
+                // Update notification checkbox based on preferences
                 const notificationCheckbox = document.getElementById('notificationType');
-
                 preferences.forEach(preference => {
                     if (preference.notification_type === 'updates') {
-                        notificationCheckbox.checked = true;
+                        notificationCheckbox.checked = true; // Check notification checkbox if updates are preferred
                     }
                 });
             } catch (error) {
-                console.error('Error fetching user preferences:', error);
+                console.error('Error fetching user preferences:', error); // Log error if fetch fails
             }
         }
 
+        // Function to handle form submission to update user preferences
         async function updateUserPreferences(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent default form submission behavior
 
+            // Retrieve form data
             const organizationId = document.getElementById('organization').value;
-            const notificationType = 'updates';
-            const enabled = document.getElementById('notificationType').checked;
+            const notificationType = 'updates'; // Fixed notification type for updates
+            const enabled = document.getElementById('notificationType').checked; // Whether notification is enabled
 
             try {
+                // Send POST request to update user preferences
                 const response = await fetch('/userpreferences/preferences', {
                     method: 'POST',
                     headers: {
@@ -93,21 +105,24 @@
                     body: JSON.stringify({ organizationId, notificationType, enabled })
                 });
 
-                const message = await response.text();
-                document.getElementById('responseMessage').textContent = message;
+                const message = await response.text(); // Get response message text
+                document.getElementById('responseMessage').textContent = message; // Display response message
 
+                // Handle unauthorized (401) status
                 if (response.status === 401) {
-                    alert('You need to be logged in to update preferences.');
-                    window.location.href = '/login';
+                    alert('You need to be logged in to update preferences.'); // Alert user to log in
+                    window.location.href = '/login'; // Redirect to login page
                     return;
                 }
             } catch (error) {
-                console.error('Error updating preferences:', error);
+                console.error('Error updating preferences:', error); // Log error if update fails
             }
         }
 
+        // Function to leave organization
         async function leaveOrganization(organizationId) {
             try {
+                // Send POST request to leave organization
                 const response = await fetch('/userorganizations/leave', {
                     method: 'POST',
                     headers: {
@@ -116,37 +131,46 @@
                     body: JSON.stringify({ organization_id: organizationId })
                 });
 
+                // Handle unauthorized (401) status
                 if (response.status === 401) {
-                    document.getElementById('responseMessage').textContent = 'You need to be logged in to perform this action.';
+                    document.getElementById('responseMessage').textContent = 'You need to be logged in to perform this action.'; // Display error message
                     return;
                 }
 
+                // Handle other errors
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    document.getElementById('responseMessage').textContent = 'Error leaving organization: ' + errorText;
+                    const errorText = await response.text(); // Get error message
+                    document.getElementById('responseMessage').textContent = 'Error leaving organization: ' + errorText; // Display error message
                     return;
                 }
 
+                // Display success message and reset form elements
                 document.getElementById('responseMessage').textContent = 'Successfully left the organization';
-                document.getElementById('organization').value = "";
-                document.getElementById('notificationType').checked = false;
-                window.location.href="/";
+                document.getElementById('organization').value = ""; // Clear selected organization
+                document.getElementById('notificationType').checked = false; // Uncheck notification checkbox
+                window.location.href="/"; // Redirect to homepage
             } catch (error) {
-                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
+                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message; // Display error message
             }
         }
 
+        // Event listener for form submission to update preferences
         document.getElementById('preferencesForm').addEventListener('submit', updateUserPreferences);
+
+        // Event listener for button click to leave organization
         document.getElementById('leaveOrganizationBtn').addEventListener('click', function() {
             const organizationId = document.getElementById('organization').value;
             if (organizationId) {
-                leaveOrganization(organizationId);
+                leaveOrganization(organizationId); // Call leaveOrganization function if organization ID is selected
             } else {
-                document.getElementById('responseMessage').textContent = 'Please select an organization to leave';
+                document.getElementById('responseMessage').textContent = 'Please select an organization to leave'; // Display message if no organization is selected
             }
         });
+
+        // Event listener when DOM content is loaded to fetch user preferences
         document.addEventListener('DOMContentLoaded', fetchUserPreferences);
     </script>
+
 </body>
 
 </html>

@@ -47,14 +47,14 @@
     display: inline-block;
     text-align: center;
     max-width: calc(46.5%);
-    min-width: calc(46.5%); /* Minimum width for the buttons */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    min-width: calc(46.5%);
+    box-sizing: border-box;
 }
 
 .loginsdiv {
     display: flex;
-    justify-content: center; /* Center the buttons horizontally */
-    gap: 10px; /* Space between the buttons */
+    justify-content: center;
+    gap: 10px;
 }
 
 .login-container form {

@@ -1,12 +1,12 @@
 .sidebar {
-  float: left; /* Keep sidebar floating by default */
+  float: left;
   background-color: var(--secondary-background);
   padding: 20px;
   width: 22%;
   box-sizing: border-box;
-  min-height: 400px; /* Adjust the value based on your footer height */
+  min-height: 400px;
   align-items: stretch;
-  border-right: 1px solid var(--primary-text); /* Add a border to visually separate sidebar content */
+  border-right: 1px solid var(--primary-text);
 }
 
 .events-update {
@@ -21,8 +21,8 @@
   margin-right: auto;
   border: 1px solid var(--primary-text);
   min-height: 90px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .vote {
@@ -31,7 +31,7 @@
   align-items: center;
   justify-content: center;
   padding: 10px;
-  width: 100px; /* Set a fixed width */
+  width: 100px;
 }
 
 .vote div {
@@ -42,8 +42,8 @@
 }
 
 .vote .upvote, .vote .downvote {
-  width: 100%; /* Ensure both upvote and downvote have the same width */
-  text-align: center; /* Center content */
+  width: 100%;
+  text-align: center;
 }
 
 .vote .upvote button, .vote .downvote button {
@@ -60,7 +60,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px; /* Set a fixed width */
+  width: 100px;
 }
 
 .rsvp-button {
@@ -83,18 +83,18 @@
   color: #ffffff;
 }
 
-/* Media query for screens smaller than 768px (typical mobile phones) */
+
 @media (max-width: 768px) {
   .sidebar {
-      float: none; /* Remove float */
-      width: 100%; /* Take full width */
-      border-right: none; /* Remove border */
+      float: none;
+      width: 100%;
+      border-right: none;
   }
 
   .calendar-div {
-      float: none; /* Remove float */
-      min-width: 94%; /* Take full width */
-      border-right: none; /* Remove border */
+      float: none;
+      min-width: 94%;
+      border-right: none;
   }
 
   .calendar-events {
@@ -121,7 +121,9 @@
 }
 
 .sidebar, .rsvps-section, .events-section {
-  padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+
   box-sizing: border-box;
 }
 
@@ -182,7 +184,7 @@
   margin-bottom: 10px;
 }
 
-/* Add this new class to align the sidebar items to the top */
+
 .sidebar-content {
   flex-grow: 1;
 }
@@ -191,7 +193,7 @@
   display: flex;
   border: 1px solid var(--primary-text);
   border-radius: 5px;
-  /* overflow: hidden; */
+
 }
 
 .vote-button {
@@ -255,9 +257,9 @@
 
 .events-section {
   width: 100%;
-  padding: 20px;
   min-height: 400px;
   box-sizing: border-box;
+  min-width: 300px;
 }
 
 main {
@@ -366,7 +368,7 @@ main {
   justify-content: left;
   margin-bottom: 20px;
   max-width: 75%;
-  margin-left: auto;
+  margin-left: 20px;
   margin-right: auto;
   border: 1px solid var(--primary-text);
   min-height: 50px;

@@ -43,28 +43,41 @@
     </div>
 
     <script>
+        // Function to fetch branches associated with a specific organization
         async function fetchBranches() {
+            // Extract organizationId from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const organizationId = urlParams.get('organizationId');
 
+            // Check if organizationId is missing
             if (!organizationId) {
                 document.getElementById('message').textContent = 'Organization ID is required.';
                 return;
             }
 
             try {
+                // Fetch branches for the specified organization
                 const response = await fetch(`/branches/${organizationId}/branches`);
+
+                // Handle 403 Forbidden status
                 if (response.status === 403) {
                     document.getElementById('message').textContent = 'You do not have permission to view this information.';
                     return;
                 }
+
+                // Handle other HTTP errors
                 if (!response.ok) {
                     throw new Error('Failed to fetch branches');
                 }
+
+                // Parse response JSON data
                 const branches = await response.json();
+
+                // Select table body to populate branches
                 const tableBody = document.getElementById('branchesTable').querySelector('tbody');
                 tableBody.innerHTML = '';
 
+                // Iterate through branches and create table rows
                 branches.forEach(branch => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -75,6 +88,7 @@
                     tableBody.appendChild(row);
                 });
             } catch (error) {
+                // Handle errors during fetch operation
                 console.error('Error:', error);
                 document.getElementById('message').textContent = 'An error occurred while fetching branches.';
             }
@@ -83,5 +97,6 @@
         // Fetch branches when the page loads
         window.onload = fetchBranches;
     </script>
+
 </body>
 </html>

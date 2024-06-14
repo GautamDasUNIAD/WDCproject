@@ -16,7 +16,7 @@
     cursor: pointer;
     font-family: sans-serif;
     display: block;
-    margin: 20px auto; /* Center horizontally */
+    margin: 20px auto;
     padding: 10px 20px;
     width: 90%;
 
@@ -37,7 +37,7 @@
 }
 
 .preferences-section input[type="checkbox"] {
-  transform: scale(1.4); /* Increase the size of the checkbox */
+  transform: scale(1.4);
   margin-left: 10px;
 }
 

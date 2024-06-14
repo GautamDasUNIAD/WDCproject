@@ -35,12 +35,14 @@
 
     <script src="javascripts/whoami.js"></script>
     <script>
+        // Event Listener for when Dom content Loads.
         document.addEventListener('DOMContentLoaded', () => {
             const image = document.getElementById('clickableImage');
             const coordinatesPin = document.getElementById('coordinates');
             const xCoordinateInput = document.getElementById('xCoordinate');
             const yCoordinateInput = document.getElementById('yCoordinate');
 
+            // Event listener for clicking on the map image
             image.addEventListener('click', (event) => {
                 const rect = image.getBoundingClientRect();
                 const x = (event.clientX - rect.left) / rect.width * 100 // x coordinate relative to the image
@@ -51,16 +53,18 @@
                 coordinatesPin.style.top = `${y}%`;
                 coordinatesPin.style.display = 'block';
 
+                // Update hidden input fields with the coordinates
                 xCoordinateInput.value = x;
                 yCoordinateInput.value = y;
             });
         });
 
+        // Function to handle form submission and create a branch
         async function createBranch(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent the default form submission behavior
 
             const urlParams = new URLSearchParams(window.location.search);
-            const organizationId = getCookie('selectedOrgId');
+            const organizationId = getCookie('selectedOrgId'); // Get the selected organization ID from cookies
 
             if (!organizationId) {
                 document.getElementById('responseMessage').textContent = 'Organization ID is required.';
@@ -97,7 +101,7 @@
                 document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
             }
         }
-
+        // Add event listener to the form submission
         document.getElementById('createBranchForm').addEventListener('submit', createBranch);
     </script>
 </body>

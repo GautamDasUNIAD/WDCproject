@@ -34,7 +34,7 @@
     <button type = "button" id = "myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
     </button>
-    <!-- The Modal -->
+
     <div id="myModal" class="modal" style = "display:none">
         <div class="modal-content">
           <span class="close">&times;</span>
@@ -77,40 +77,55 @@
     </div>
 
     <script>
+        // Event listener for form submission on signupForm
         document.getElementById('signupForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent default form submission behavior
 
+            // Retrieve input values from form fields
             const firstName = document.getElementById('FirstName').value;
             const lastName = document.getElementById('LastName').value;
             const email = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
+            // Select and clear signupResponseMessage element
             const signupResponseMessage = document.getElementById('signupResponseMessage');
             signupResponseMessage.textContent = '';
 
             try {
+                // Send POST request to register user
                 const response = await fetch('/users/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ first_name: firstName, last_name: lastName, email, password, role: 'Regular', social_media_linked: false })
+                    body: JSON.stringify({
+                        first_name: firstName,
+                        last_name: lastName,
+                        email,
+                        password,
+                        role: 'Regular', // Default role for new users
+                        social_media_linked: false // Indicates if social media is linked (default: false)
+                    })
                 });
 
                 if (response.ok) {
-                    const data = await response.text();
-                    signupResponseMessage.textContent = 'Signup successful: ' + data;
+                    // Handle successful signup
+                    const data = await response.text(); // Extract response data
+                    signupResponseMessage.textContent = 'Signup successful: ' + data; // Display success message
                     // Redirect to the home page or handle signup success
                     window.location.href = '/';
                 } else {
-                    const error = await response.text();
-                    signupResponseMessage.textContent = 'Signup failed: ' + error;
+                    // Handle failed signup
+                    const error = await response.text(); // Extract error message from response
+                    signupResponseMessage.textContent = 'Signup failed: ' + error; // Display error message
                 }
             } catch (error) {
-                signupResponseMessage.textContent = 'An error occurred: ' + error.message;
+                // Handle network or server errors
+                signupResponseMessage.textContent = 'An error occurred: ' + error.message; // Display error message
             }
         });
     </script>
+
 
     <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
 

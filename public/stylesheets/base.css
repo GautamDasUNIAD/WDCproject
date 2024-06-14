@@ -33,14 +33,14 @@ html {
 
 
 
-/* Navigation Banner */
+
 a {
   color: var(--accent-color);
 }
 
 li {
   float: left;
-  margin-right: 10px;
+  margin-right: 11px;
 }
 
 li a {
@@ -69,16 +69,16 @@ nav {
   z-index: 10000000;
   top: 0;
   max-height: 10%;
-  position: relative; /* Ensure the pseudo-element is positioned relative to the nav */
+  position: relative;
 }
 
 nav::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 5%; /* Leave 5% space on the left */
-  width: 90%; /* Make the border span 90% of the width, leaving 5% on either side */
-  border-bottom: 2px solid var(--accent-color); /* Adjust the thickness as needed */
+  left: 5%;
+  width: 90%;
+  border-bottom: 2px solid var(--accent-color);
 }
 
 li {
@@ -122,7 +122,7 @@ ul {
   border-radius: 2px;
 }
 
-.user-dropdown-button { /* Dropdown button - displays logged in user's email */
+.user-dropdown-button {
   background-color: #04AA6D;
   color: white;
   padding: 16px;
@@ -146,9 +146,9 @@ ul {
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
-  width: 30vw; /* Set a fixed width */
-  box-sizing: border-box; /* Ensure padding and border are included in the width */
-  text-align: center; /* Align text to the left */
+  width: 30vw;
+  box-sizing: border-box;
+  text-align: center;
   border-radius: 2px;
   margin-right: 10px;
   margin-top: 2px;
@@ -156,7 +156,7 @@ ul {
 }
 
 .menu li.floatright {
-  margin-left: auto; /* Pushes item to the right */
+  margin-left: auto;
 }
 
 .dropdown-content {
@@ -167,7 +167,7 @@ ul {
   cursor: pointer;
 }
 
-.dropdown-content a { /* Buttons inside dropdown - logout */
+.dropdown-content a {
   color: var(--primary-text);
   padding: 12px 16px;
   display: block;
@@ -185,8 +185,8 @@ ul {
   background-color: #3e8e41;
 }
 
-.hamburger { /* Basic styling for the hamburger menu */
-  display: none; /* Hide by default on larger screens */
+.hamburger {
+  display: none;
   cursor: pointer;
 }
 
@@ -199,7 +199,7 @@ ul {
   transition: 0.4s;
 }
 
-.hamburger.active span:nth-child(1) { /* Rotate animation when menu is active */
+.hamburger.active span:nth-child(1) {
   transform: rotate(-45deg) translate(-5px, 6px);
 }
 
@@ -211,14 +211,14 @@ ul {
   transform: rotate(45deg) translate(-5px, -6px);
 }
 
-@media screen and (max-width: 768px) { /* Media query for smaller screens */
+@media screen and (max-width: 768px) {
   .hamburger {
-    display: block; /* Show hamburger menu on smaller screens */
+    display: block;
   }
 
   .menu {
-    display: none; /* Hide the regular menu items */
-    flex-direction: column; /* Stack items vertically */
+    display: none;
+    flex-direction: column;
     background-color: var(--primary-background);
     position: absolute;
     top: 80px;
@@ -229,11 +229,11 @@ ul {
   }
 
   .menu.active {
-    display: flex; /* Show menu items when hamburger menu is active */
+    display: flex;
   }
 
   .menu:last-child {
-    top: 120px; /* Adjust top position for the second menu */
+    top: 120px;
   }
 
   .menu li {
@@ -245,7 +245,7 @@ ul {
 
 
 
-/* Accessibility Button */
+
 .accessibility-button {
   position: fixed;
   right: 0;
@@ -270,7 +270,7 @@ ul {
 
 
 
-/* Footer */
+
 footer {
   width: 100%;
   padding: 20px 0;
@@ -278,7 +278,7 @@ footer {
   color: var(--primary-text);
   text-align: center;
   margin-top: auto;
-  position: relative; /* Ensure the pseudo-element is positioned relative to the footer */
+  position: relative;
   z-index:1000000;
 }
 
@@ -286,9 +286,9 @@ footer::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 5%; /* Leave 5% space on the left */
-  width: 90%; /* Make the border span 90% of the width, leaving 5% on either side */
-  border-top: 2px solid var(--accent-color); /* Adjust the thickness as needed */
+  left: 5%;
+  width: 90%;
+  border-top: 2px solid var(--accent-color);
 }
 
 .footer-content {
@@ -323,9 +323,9 @@ footer::before {
 
 
 
-/* Scroll To Top Button */
+
 #scrollToTopBtn {
-  /* display: none; */
+
   position: fixed;
   bottom: 4%;
   right: 2%;
@@ -345,16 +345,16 @@ footer::before {
 
 
 
-/* Modal */
+
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -365,8 +365,8 @@ footer::before {
   background-color: var(--primary-background);
   padding: 20px;
   border: 1px solid var(--primary-text);
-  width: 80%; /* Adjust width as needed */
-  max-width: 400px; /* Maximum width */
+  width: 80%;
+  max-width: 400px;
   border-radius: 34px;
   box-sizing: border-box;
 }
@@ -385,12 +385,12 @@ footer::before {
   cursor: pointer;
 }
 
-/* The switch - the box around the slider */
+
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px; /* 3% of the viewport width */
-  height: 34px; /* 2% of the viewport height */
+  width: 60px;
+  height: 34px;
 }
 
 .switch input {
@@ -448,7 +448,7 @@ input:checked + .slider:before {
 
 
 
-/* Breadcrumbs */
+
 .breadcrumbs {
   padding: 20px;
 }
@@ -456,7 +456,7 @@ input:checked + .slider:before {
 
 
 
-/* Container */
+
 .main-container {
   display: flex;
   flex-direction: row;

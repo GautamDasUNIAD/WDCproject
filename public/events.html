@@ -97,12 +97,14 @@
     <script src="javascripts/whoami.js"></script>
     <script src="javascripts/adjustnav.js"></script>
     <script>
+        // Function to retrieve a specific cookie value by name
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
+        // Function to handle RSVP for an event using XMLHttpRequest
         function rsvpForEvent(eventId) {
             const xhr = new XMLHttpRequest();
             xhr.open('POST', '/userevents/rsvp', true);
@@ -121,40 +123,44 @@
                 }
             };
 
-            xhr.onerror = function () {
+            xhr.onerror = function () { // log network errors
                 console.error('Network error while RSVPing for event.');
             };
 
-            xhr.send(JSON.stringify({ eventId }));
+            xhr.send(JSON.stringify({ eventId }));  // Send eventId in JSON format
         }
 
 
-
+        // Event Listener for when DOM content is loaded
         document.addEventListener('DOMContentLoaded', async function () {
             const eventList = document.getElementById('eventList');
             const eventsContainer = document.getElementById('eventsContainer');
             const readMoreButton = document.getElementById('readMoreButton');
             const branchesList = document.getElementById('branchesList');
             const sidebar = document.querySelector('.sidebar');
-            let displayedEvents = 4;
+            let displayedEvents = 4; // Number of initially displayed events
 
             try {
                 const selectedOrgId = getCookie('selectedOrgId');
                 if (!selectedOrgId) {
-                    console.error('No selected organization ID found in cookies.');
+                    console.error('No selected organization ID found in cookies.'); // Log error if no org ID found
                     return;
                 }
 
+                // Fetch events for the selected organization
                 const response = await fetch(`/events/organization/${selectedOrgId}`);
                 const events = await response.json();
 
-
+                // Set to store unique branch locations
                 const uniqueLocations = new Set();
+
+                // Populate unique branch locations for filtering
 
                 events.forEach(event => {
                     uniqueLocations.add(event.location);
                 });
 
+                // Dynamically create checkboxes for each branch location
                 uniqueLocations.forEach(location => {
                     const newBranch = document.createElement('li');
                     newBranch.innerHTML = `
@@ -164,12 +170,14 @@
                     branchesList.appendChild(newBranch);
                 });
 
+                // Function to format date from ISO string
                 function formatDate(isoDate) {
                     const date = new Date(isoDate);
                     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
                     return date.toLocaleDateString('en-US', options);
                 }
 
+                // Function to display events in the UI
                 function displayEvents(filteredEvents) {
                     eventsContainer.innerHTML = '';
                     filteredEvents.slice(0, displayedEvents).forEach(event => {
@@ -206,6 +214,8 @@
 
                     adjustSidebarHeight();
 
+                     // Show 'Read More' button if there are more events to display
+
                     if (filteredEvents.length > displayedEvents) {
                         readMoreButton.style.display = 'block';
                     } else {
@@ -213,23 +223,25 @@
                     }
                 }
 
+                // Function to filter events based on selected branches
                 function filterEvents() {
                     const selectedBranches = Array.from(document.querySelectorAll('.branchesclass input[type="checkbox"]:checked')).map(checkbox => checkbox.id);
                     const filteredEvents = selectedBranches.length ? events.filter(event => selectedBranches.includes(event.location)) : events;
                     displayEvents(filteredEvents);
                 }
-
                 displayEvents(events);
 
+                 // Event listener for branch filter checkboxes
                 document.querySelectorAll('.branchesclass input[type="checkbox"]').forEach(checkbox => {
                     checkbox.addEventListener('change', filterEvents);
                 });
 
+                // Event listener for 'Read More' button to load more events
                 readMoreButton.addEventListener('click', function () {
                     displayedEvents += 3;
                     filterEvents();
                 });
-
+                // Function to adjust sidebar height based on events section height
                 function adjustSidebarHeight() {
                     const eventsSectionHeight = document.querySelector('#eventsContainer').clientHeight;
                     sidebar.style.height = eventsSectionHeight + 'px';

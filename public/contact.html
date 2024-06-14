@@ -12,11 +12,16 @@
 </head>
 
 <body>
-    <nav>
-        <ul>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
             <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
-            <li><a href="/branches" >Branches</a></li>
+            <li><a href="/branches">Branches</a></li>
         </ul>
         <div class="dropdown" id="organizations-dropdown-div">
             <div class="organizations-dropdown-button">Select an organization...</div>
@@ -25,8 +30,8 @@
             </div>
         </div>
         <ul>
-            <li><a href="/login" class = button2>Login</a></li>
-            <li><a href="/signup" class = button3>Signup</a></li>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
         </ul>
     </nav>
     <br>
@@ -49,20 +54,21 @@
 
     <h1 style="text-align: center;">Contact Us</h1>
 
-    <p style="text-align: center;">Please fill in the form below for any queries and we will get back to you as soon as possible!</p>
 
-    <div class="login-container">
-        <form action="/">
-            <label for="Email">Email:</label>
-            <input type="text" id="Email" name="Email" required>
-            <label for="Reason for Query">Reason for Query:</label>
-            <input type="text" id="Reason_for_Query" name="Reason_for_Query" required>
-            <label for="Description">Description:</label>
-            <textarea id="Description" name="Description" required rows="4" cols="50"></textarea><br>
-
-            <input type="submit" value="Submit Query">
-        </form>
-    </div>
+    <div class = "main-container">
+        <div class="login-container">
+            <p style="text-align: center; padding-bottom: 10px">Please fill in the form below for any queries and we will get back to you as soon as possible!</p>
+            <form action="/">
+                <label for="Email">Email:</label>
+                <input type="text" id="Email" name="Email" required>
+                <label for="Reason for Query">Reason for Query:</label>
+                <input type="text" id="Reason_for_Query" name="Reason_for_Query" required>
+                <label for="Description">Description:</label>
+                <textarea id="Description" name="Description" required rows="4" cols="50"></textarea><br>
+                <input type="submit" value="Submit Query">
+            </form>
+        </div>
+</div>
 
     <footer>
         <div class="footer-content">

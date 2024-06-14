@@ -61,37 +61,55 @@
     </div>
 
     <script>
+        // Function to fetch branches from the server
         async function fetchBranches() {
             try {
+                // Fetch branches data from the '/userbranches/branches' endpoint
                 const response = await fetch('/userbranches/branches');
+
+                // Check if the user is not logged in (status code 401)
                 if (response.status === 401) {
                     document.getElementById('message').textContent = 'You need to be logged in to view and join branches.';
                     return;
                 }
+
+                // Check if the response is not okay (HTTP status not in the range 200-299)
                 if (!response.ok) {
                     throw new Error('Failed to fetch branches');
                 }
+
+                // Parse the JSON response body to get the branches data
                 const branches = await response.json();
+
+                // Get the table body element where branches will be displayed
                 const tableBody = document.getElementById('branchesTable').querySelector('tbody');
+
+                // Clear existing content in the table body
                 tableBody.innerHTML = '';
 
+                // Iterate over each branch and create a table row for it
                 branches.forEach(branch => {
-                    const row = document.createElement('tr');
+                    const row = document.createElement('tr'); // Create a new table row element
+
+                    // Populate the table row with branch data
                     row.innerHTML = `
                         <td>${branch.id}</td>
                         <td>${branch.location}</td>
                         <td>${branch.organization_id}</td>
                         <td><button onclick="joinBranch(${branch.id})">Join</button></td>
                     `;
-                    tableBody.appendChild(row);
+
+                    tableBody.appendChild(row); // Append the row to the table body
                 });
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error:', error); // Log any errors that occur during fetching or processing
             }
         }
 
+        // Function to join a branch
         async function joinBranch(branchId) {
             try {
+                // Send a POST request to '/userbranches/join' to join the specified branch
                 const response = await fetch('/userbranches/join', {
                     method: 'POST',
                     headers: {
@@ -100,24 +118,28 @@
                     body: JSON.stringify({ branch_id: branchId })
                 });
 
+                // Check if the user is not logged in (status code 401)
                 if (response.status === 401) {
                     alert('You need to be logged in to join a branch.');
                     return;
                 }
 
+                // Check if the response is not okay (HTTP status not in the range 200-299)
                 if (!response.ok) {
                     throw new Error('Failed to join branch');
                 }
 
+                // Alert the user that joining the branch was successful
                 alert('Successfully joined the branch');
             } catch (error) {
-                console.error('Error:', error);
-                alert('Error joining the branch');
+                console.error('Error:', error); // Log any errors that occur during joining the branch
+                alert('Error joining the branch'); // Alert the user about the error
             }
         }
 
         // Fetch branches when the page loads
         window.onload = fetchBranches;
     </script>
+
 </body>
 </html>

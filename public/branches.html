@@ -102,19 +102,25 @@
     <script src="javascripts/adjustnav.js"></script>
 
     <script>
+        // Add event listener for when Dom Content Loads.
         document.addEventListener('DOMContentLoaded', function () {
+            // Get the selected organization ID from the cookies
             var selectedOrgId = getCookie('selectedOrgId');
+
+            // Fetch branches data for the selected organization
             fetch(`/branches/${selectedOrgId}/branches`)
-                .then(response => response.json())
+                .then(response => response.json()) // Parse the JSON response
                 .then(branchesData => {
-                    console.log('Fetched Branches:', branchesData); // Log fetched data
+                    console.log('Fetched Branches:', branchesData); // Log fetched data.
+
+                    // Add each branch to the map.
                     branchesData.forEach(branch => {
-                        console.log('Adding branch:', branch); // Log each branch being added
+                        console.log('Adding branch:', branch);
                         mapdiv.addBranch(branch);
                     });
                 })
                 .catch(error => {
-                    console.error('Error fetching branches:', error);
+                    console.error('Error fetching branches:', error); // Log any errors
                 });
         });
     </script>

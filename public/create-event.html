@@ -45,10 +45,12 @@
 
 
     <script>
+        // Event listener for form submission
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('createEventForm').addEventListener('submit', async function(event) {
-                event.preventDefault();
+                event.preventDefault(); // Prevent default form submission
 
+                // Retrieve form data
                 const name = document.getElementById('name').value;
                 const location = document.getElementById('location').value;
                 const description = document.getElementById('description').value;
@@ -58,11 +60,12 @@
                 const branch_id = document.getElementById('branch_id').value;
                 const date = document.getElementById('date').value;
 
-
+                // Clear previous response message
                 const responseMessage = document.getElementById('responseMessage');
                 responseMessage.textContent = '';
 
                 try {
+                    // Send a POST request to create a new event
                     const response = await fetch('/events/create', {
                         method: 'POST',
                         headers: {
@@ -72,16 +75,18 @@
                     });
 
                     if (response.ok) {
+                        // Display success message if event creation is successful
                         responseMessage.textContent = 'Event created successfully';
                         responseMessage.style.color = 'green';
 
-
                     } else {
+                        // Display error message if there's an issue with event creation
                         const error = await response.text();
                         responseMessage.textContent = 'Error creating event: ' + error;
                         responseMessage.style.color = 'red';
                     }
                 } catch (error) {
+                    // Display error message if an exception occurs during fetch
                     responseMessage.textContent = 'An error occurred: ' + error.message;
                     responseMessage.style.color = 'red';
                 }

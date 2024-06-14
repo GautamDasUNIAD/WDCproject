@@ -1,10 +1,4 @@
-# Template Repository for COMP SCI 2207/7207 Web & Database Computing (2023 Semester 1)
-
-Contains environment files for WDC 2023. Copy this template for a general sandbox.
-
-Auto commit/push/sync to Github is disabled by default in this template repository.
-Enable the GitDoc extension to use this fucntionality (either in your VSCode settings, or in the Dev Container settings)
-
+# COMP SCI 2207/7207 Web & Database Computing - GROUP PROJECT 104
 
 1. Run the command npm install in the terminal to install all necessary dependencies.
 2. Create a file called .env with the following info.
@@ -24,3 +18,4 @@ SALT_ROUNDS=10
 6. Run the command exit.
 7. Run the command mysql volunteer_db < volunteer_db.sql.
 8. Run the command npm start.
+

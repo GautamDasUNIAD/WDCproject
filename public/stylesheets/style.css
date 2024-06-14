@@ -1,18 +1,18 @@
 :root {
-  --primary-background: #f6f9f8; /* Ligmt Beige */
-  --secondary-background: #d5d9dc; /* Light Orange */
-  --primary-text: #084479; /* Dark Brown */
-  --secondary-text: #fa5366; /* Dark Orange */
-  --primary-button: #fa5366; /* Bright Orange */
-  --secondary-button: #084479; /* Dark Orange */
-  --accent-color: #084479; /* Light Orange */
-  --dark-primary-background: #393639; /* Light Beige */
-  --dark-secondary-background: #575657; /* Light Orange */
-  --dark-primary-text: #ec538d; /* Dark Brown */
-  --dark-secondary-text: #fad420; /* Dark Orange */
-  --dark-primary-button: #fad420; /* Bright Orange */
-  --dark-secondary-button: #ec538d; /* Dark Orange */
-  --dark-accent-color: #1699e7; /* Light Orange */
+  --primary-background: #f6f9f8;
+  --secondary-background: #d5d9dc;
+  --primary-text: #084479;
+  --secondary-text: #fa5366;
+  --primary-button: #fa5366;
+  --secondary-button: #084479;
+  --accent-color: #084479;
+  --dark-primary-background: #393639;
+  --dark-secondary-background: #575657;
+  --dark-primary-text: #ec538d;
+  --dark-secondary-text: #fad420;
+  --dark-primary-button: #fad420;
+  --dark-secondary-button: #ec538d;
+  --dark-accent-color: #1699e7;
 }
 
 
@@ -50,7 +50,7 @@ li a:hover {
 }
 
 
-/* Custom checkbox styling */
+
 .branchesclass li {
   list-style: none;
   display: inline-block;
@@ -255,7 +255,7 @@ footer {
   color: var(--primary-text);
   text-align: center;
   margin-top: auto;
-  position: relative; /* Ensure the pseudo-element is positioned relative to the footer */
+  position: relative;
   z-index:1000000;
 }
 
@@ -263,9 +263,9 @@ footer::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 5%; /* Leave 5% space on the left */
-  width: 90%; /* Make the border span 90% of the width, leaving 5% on either side */
-  border-top: 2px solid var(--accent-color); /* Adjust the thickness as needed */
+  left: 5%;
+  width: 90%;
+  border-top: 2px solid var(--accent-color);
 }
 
 
@@ -300,7 +300,7 @@ footer::before {
 }
 
 #scrollToTopBtn {
-  /* display: none; */
+
   position: fixed;
   bottom: 4%;
   right: 2%;
@@ -375,26 +375,26 @@ nav {
   z-index: 10000000;
   top: 0;
   max-height: 10%;
-  position: relative; /* Ensure the pseudo-element is positioned relative to the nav */
+  position: relative;
 }
 
 nav::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 5%; /* Leave 5% space on the left */
-  width: 90%; /* Make the border span 90% of the width, leaving 5% on either side */
-  border-bottom: 2px solid var(--accent-color); /* Adjust the thickness as needed */
+  left: 5%;
+  width: 90%;
+  border-bottom: 2px solid var(--accent-color);
 }
 
 .search-form {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-grow: 0; /* Prevents the form from growing */
-  flex-shrink: 0; /* Prevents the form from shrinking */
+  flex-grow: 0;
+  flex-shrink: 0;
   max-width: 400px;
-  margin: 0 auto; /* Centers the form horizontally */
+  margin: 0 auto;
 }
 
 .search-form input[type="text"] {
@@ -552,7 +552,7 @@ nav::after {
   cursor: pointer;
   font-family: sans-serif;
   display: block;
-  margin: 20px auto; /* Center horizontally */
+  margin: 20px auto;
   padding: 10px 20px;
   width: 90%;
 
@@ -576,12 +576,12 @@ nav::after {
 }
 
 .preferences-section input[type="checkbox"] {
-  transform: scale(1.4); /* Increase the size of the checkbox */
+  transform: scale(1.4);
   margin-left: 10px;
 }
 
 .post-update-section input[type="checkbox"] {
-  transform: scale(1.4); /* Increase the size of the checkbox */
+  transform: scale(1.4);
   margin-left: 10px;
   margin-bottom: 20px;
 }
@@ -613,7 +613,7 @@ nav::after {
   display: flex;
 }
 
-/* Base styles for the buttons */
+
 .logins,
 .signups {
   padding: 10px 20px 10px 20px;
@@ -627,14 +627,14 @@ nav::after {
   display: inline-block;
   text-align: center;
   max-width: calc(46.5%);
-  min-width: calc(46.5%); /* Minimum width for the buttons */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  min-width: calc(46.5%);
+  box-sizing: border-box;
 }
 
 .loginsdiv {
   display: flex;
-  justify-content: center; /* Center the buttons horizontally */
-  gap: 10px; /* Space between the buttons */
+  justify-content: center;
+  gap: 10px;
 }
 
 .login-container form {
@@ -692,14 +692,14 @@ textarea {
 }
 
 .sidebar {
-  float: left; /* Keep sidebar floating by default */
+  float: left;
   background-color: var(--secondary-background);
   padding: 20px;
   width: 22%;
   box-sizing: border-box;
-  min-height: 400px; /* Adjust the value based on your footer height */
+  min-height: 400px;
   align-items: stretch;
-  border-right: 1px solid var(--primary-text); /* Add a border to visually separate sidebar content */
+  border-right: 1px solid var(--primary-text);
 }
 
 .events-update {
@@ -714,8 +714,8 @@ textarea {
   margin-right: auto;
   border: 1px solid black;
   min-height: 90px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .vote {
@@ -724,7 +724,7 @@ textarea {
   align-items: center;
   justify-content: center;
   padding: 10px;
-  width: 100px; /* Set a fixed width */
+  width: 100px;
 }
 
 .vote div {
@@ -735,8 +735,8 @@ textarea {
 }
 
 .vote .upvote, .vote .downvote {
-  width: 100%; /* Ensure both upvote and downvote have the same width */
-  text-align: center; /* Center content */
+  width: 100%;
+  text-align: center;
 }
 
 .vote .upvote button, .vote .downvote button {
@@ -753,7 +753,7 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px; /* Set a fixed width */
+  width: 100px;
 }
 
 .rsvp-button {
@@ -776,12 +776,12 @@ textarea {
   color: #ffffff;
 }
 
-/* Media query for screens smaller than 768px (typical mobile phones) */
+
 @media (max-width: 768px) {
   .sidebar {
-    float: none; /* Remove float */
-    width: 100%; /* Take full width */
-    border-right: none; /* Remove border */
+    float: none;
+    width: 100%;
+    border-right: none;
   }
 }
 
@@ -793,9 +793,9 @@ textarea {
 
 @media (max-width: 768px) {
   .calendar-div {
-    float: none; /* Remove float */
-    min-width: 94%; /* Take full width */
-    border-right: none; /* Remove border */
+    float: none;
+    min-width: 94%;
+    border-right: none;
   }
   .calendar-events {
     min-width: 100%;
@@ -876,7 +876,7 @@ textarea {
 }
 
 
-/* Add this new class to align the sidebar items to the top */
+
 .sidebar-content {
   flex-grow: 1;
 }
@@ -885,7 +885,7 @@ textarea {
   display: flex;
   border: 1px solid var(--primary-text);
   border-radius: 5px;
-  /* overflow: hidden; */
+
 }
 
 .vote-button {
@@ -969,8 +969,8 @@ textarea {
   margin-right: auto;
   border: 1px solid var(--primary-text);
   min-height: 90px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .vote {
@@ -979,7 +979,7 @@ textarea {
   align-items: center;
   justify-content: center;
   padding: 10px;
-  width: 100px; /* Set a fixed width */
+  width: 100px;
 }
 
 .vote div {
@@ -990,8 +990,8 @@ textarea {
 }
 
 .vote .upvote, .vote .downvote {
-  width: 100%; /* Ensure both upvote and downvote have the same width */
-  text-align: center; /* Center content */
+  width: 100%;
+  text-align: center;
 }
 
 .vote .upvote button, .vote .downvote button {
@@ -1008,7 +1008,7 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px; /* Set a fixed width */
+  width: 100px;
 }
 
 .rsvp-button {
@@ -1651,14 +1651,14 @@ main {
 }
 
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1669,8 +1669,8 @@ main {
   background-color: var(--primary-background);
   padding: 20px;
   border: 1px solid var(--primary-text);
-  width: 80%; /* Adjust width as needed */
-  max-width: 400px; /* Maximum width */
+  width: 80%;
+  max-width: 400px;
   border-radius: 34px;
   box-sizing: border-box;
 }
@@ -1689,12 +1689,12 @@ main {
   cursor: pointer;
 }
 
-/* The switch - the box around the slider */
+
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px; /* 3% of the viewport width */
-  height: 34px; /* 2% of the viewport height */
+  width: 60px;
+  height: 34px;
 }
 
 .switch input {
@@ -1751,7 +1751,7 @@ input:checked + .slider:before {
 
 
 
-/* Dropdown button - displays logged in user's email */
+
 .user-dropdown-button {
   background-color: #04AA6D;
   color: white;
@@ -1776,9 +1776,9 @@ input:checked + .slider:before {
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
-  width: 30vw; /* Set a fixed width */
-  box-sizing: border-box; /* Ensure padding and border are included in the width */
-  text-align: center; /* Align text to the left */
+  width: 30vw;
+  box-sizing: border-box;
+  text-align: center;
   border-radius: 2px;
   margin-right: 10px;
   margin-top: 2px;
@@ -1786,10 +1786,10 @@ input:checked + .slider:before {
 }
 
 .menu li.floatright {
-  margin-left: auto; /* Pushes item to the right */
+  margin-left: auto;
 }
 
-/* Dropdown contents */
+
 .dropdown-content {
   display: none;
   position: absolute;
@@ -1798,7 +1798,7 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-/* Buttons inside dropdown - logout */
+
 .dropdown-content a {
   color: var(--primary-text);
   padding: 12px 16px;
@@ -1818,17 +1818,17 @@ input:checked + .slider:before {
 }
 
 .container {
-  display: flex; /* Use flexbox to align sidebar and main content */
+  display: flex;
 }
 
 .main-content {
-  flex-grow: 1; /* Allow main content to grow to fill remaining space */
+  flex-grow: 1;
 }
 
 .footer {
-  clear: both; /* Ensure footer clears both floated elements */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
+  clear: both;
+  margin: 0;
+  padding: 0;
 }
 
 .main-container {
@@ -1897,9 +1897,9 @@ input:checked + .slider:before {
   padding: 10px;
 }
 
-/* Basic styling for the hamburger menu */
+
 .hamburger {
-  display: none; /* Hide by default on larger screens */
+  display: none;
   cursor: pointer;
 }
 
@@ -1912,7 +1912,7 @@ input:checked + .slider:before {
   transition: 0.4s;
 }
 
-/* Rotate animation when menu is active */
+
 .hamburger.active span:nth-child(1) {
   transform: rotate(-45deg) translate(-5px, 6px);
 }
@@ -1925,15 +1925,15 @@ input:checked + .slider:before {
   transform: rotate(45deg) translate(-5px, -6px);
 }
 
-/* Media query for smaller screens */
+
 @media screen and (max-width: 768px) {
   .hamburger {
-    display: block; /* Show hamburger menu on smaller screens */
+    display: block;
   }
 
   .menu {
-    display: none; /* Hide the regular menu items */
-    flex-direction: column; /* Stack items vertically */
+    display: none;
+    flex-direction: column;
     background-color: var(--primary-background);
     position: absolute;
     top: 80px;
@@ -1944,11 +1944,11 @@ input:checked + .slider:before {
   }
 
   .menu.active {
-    display: flex; /* Show menu items when hamburger menu is active */
+    display: flex;
   }
 
   .menu:last-child {
-    top: 120px; /* Adjust top position for the second menu */
+    top: 120px;
   }
 
   .menu li {
@@ -1965,11 +1965,11 @@ input:checked + .slider:before {
 
 .slides {
   display: flex;
-  flex-direction: column; /* Ensure images stack vertically */
+  flex-direction: column;
 }
 
 .slides img {
   width: 100%;
-  height: auto; /* Ensure images maintain aspect ratio */
+  height: auto;
   display: block;
 }

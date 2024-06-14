@@ -79,17 +79,21 @@
     <div id="accessMessage" class="message"></div>
 
     <script>
-        // Fetch and display all users
+        // Function to fetch and display all users
         async function fetchUsers() {
             try {
                 const response = await fetch('/admin/users');
                 if (response.status === 403) {
+                    // Display access message if user doesn't have permission
                     document.getElementById('accessMessage').textContent = 'You do not have permission to view this page.';
                     return;
                 }
+                // Parse response JSON data
                 const users = await response.json();
+                // Select table body where users will be displayed
                 const tableBody = document.getElementById('usersTable').querySelector('tbody');
-                tableBody.innerHTML = '';
+                tableBody.innerHTML = ''; // Clear existing table rows
+                // Iterate through each user and create a table row
                 users.forEach(user => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -100,21 +104,22 @@
                         <td>${user.role}</td>
                         <td>${user.organizations ? user.organizations : 'None'}</td>
                     `;
-                    tableBody.appendChild(row);
+                    tableBody.appendChild(row); // Append row to table body
                 });
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
         }
 
-        // Add manager to organization
+        // Function to add a manager to an organization
         async function addManager(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent default form submission behavior
             const userId = document.getElementById('userId').value;
             const organizationId = document.getElementById('organizationId').value;
             const responseMessage = document.getElementById('managerResponse');
 
             try {
+                // Send POST request to add manager
                 const response = await fetch(`/admin/organizations/${organizationId}/managers`, {
                     method: 'POST',
                     headers: {
@@ -123,34 +128,36 @@
                     body: JSON.stringify({ userId })
                 });
 
+                // Handle error if request fails
                 if (!response.ok) {
-            const errorData = await response.json();
-            let errorMessage = 'Error upgrading role: ';
+                    const errorData = await response.json();
+                    let errorMessage = 'Error upgrading role: ';
 
-            if (errorData.errors && errorData.errors.length > 0) {
-                errorMessage += errorData.errors.map(error => error.msg).join(', ');
-            } else {
-                errorMessage += 'An unknown error occurred';
-            }
+                    if (errorData.errors && errorData.errors.length > 0) {
+                        errorMessage += errorData.errors.map(error => error.msg).join(', ');
+                    } else {
+                        errorMessage += 'An unknown error occurred';
+                    }
 
-            responseMessage.textContent =  errorMessage;
-            responseMessage.style.color = 'red';
-            return;
-        }
+                    responseMessage.textContent = errorMessage; // Display error message
+                    responseMessage.style.color = 'red'; // Set color to red for error
+                    return;
+                }
 
-                responseMessage.textContent = 'Manager added successfully';
+                responseMessage.textContent = 'Manager added successfully'; // Display success message
             } catch (error) {
-                responseMessage.textContent = 'An error occurred: ' + error.message;
+                responseMessage.textContent = 'An error occurred: ' + error.message; // Display error message
             }
         }
 
-        // Upgrade user role
+        // Function to upgrade user role
         async function upgradeRole(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent default form submission behavior
             const userId = document.getElementById('upgradeUserId').value;
             const responseMessage = document.getElementById('upgradeResponse');
 
             try {
+                // Send POST request to upgrade user role
                 const response = await fetch(`/admin/users/${userId}/upgrade`, {
                     method: 'POST',
                     headers: {
@@ -158,26 +165,30 @@
                     }
                 });
 
+                // Handle error if request fails
                 if (!response.ok) {
                     const errorData = await response.json();
                     const errorMessage = errorData.errors && errorData.errors.length > 0
                         ? errorData.errors[0].msg
                         : 'An unknown error occurred';
-                    responseMessage.textContent = 'Error upgrading role: ' + errorMessage;
-                    responseMessage.style.color = 'red';
+                    responseMessage.textContent = 'Error upgrading role: ' + errorMessage; // Display error message
+                    responseMessage.style.color = 'red'; // Set color to red for error
                     return;
                 }
 
-
-                responseMessage.textContent = 'User role upgraded successfully';
+                responseMessage.textContent = 'User role upgraded successfully'; // Display success message
             } catch (error) {
-                responseMessage.textContent = 'An error occurred: ' + error.message;
+                responseMessage.textContent = 'An error occurred: ' + error.message; // Display error message
             }
         }
 
+        // Event listeners for form submissions
         document.getElementById('addManagerForm').addEventListener('submit', addManager);
         document.getElementById('upgradeForm').addEventListener('submit', upgradeRole);
+
+        // Fetch users when the window has finished loading
         window.onload = fetchUsers;
     </script>
+
 </body>
 </html>

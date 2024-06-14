@@ -49,29 +49,42 @@
     </div>
 
     <script>
+        // Function to fetch users associated with a specific branch
         async function fetchBranchUsers() {
+            // Extract organizationId and branchId from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const organizationId = urlParams.get('organizationId');
             const branchId = urlParams.get('branchId');
 
+            // Check if organizationId or branchId is missing
             if (!organizationId || !branchId) {
                 document.getElementById('message').textContent = 'Organization ID and Branch ID are required.';
                 return;
             }
 
             try {
+                // Fetch users for the specified organization and branch
                 const response = await fetch(`/userbranches/${organizationId}/branch/${branchId}/users`);
+
+                // Handle 403 Forbidden status
                 if (response.status === 403) {
                     document.getElementById('message').textContent = 'You do not have permission to view this information.';
                     return;
                 }
+
+                // Handle other HTTP errors
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
+
+                // Parse response JSON data
                 const users = await response.json();
+
+                // Select table body to populate users
                 const tableBody = document.getElementById('usersTable').querySelector('tbody');
                 tableBody.innerHTML = '';
 
+                // Iterate through users and create table rows
                 users.forEach(user => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -83,6 +96,7 @@
                     tableBody.appendChild(row);
                 });
             } catch (error) {
+                // Handle errors during fetch operation
                 console.error('Error:', error);
                 document.getElementById('message').textContent = 'An error occurred while fetching users.';
             }
@@ -91,5 +105,6 @@
         // Fetch branch users when the page loads
         window.onload = fetchBranchUsers;
     </script>
+
 </body>
 </html>

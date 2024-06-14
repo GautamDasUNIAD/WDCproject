@@ -9,11 +9,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <nav>
-        <ul>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
             <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
-            <li><a href="/branches" >Branches</a></li>
+            <li><a href="/branches">Branches</a></li>
         </ul>
         <div class="dropdown" id="organizations-dropdown-div">
             <div class="organizations-dropdown-button">Select an organization...</div>
@@ -22,14 +27,14 @@
             </div>
         </div>
         <ul>
-            <li><a href="/login" class = button2>Login</a></li>
-            <li><a href="/signup" class = button3>Signup</a></li>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
         </ul>
     </nav>
-    <h1 style = "padding:20px; text-align:center; font-size: 50px">Manage Organizations</h1>
-    <div class = "main-container">
+    <h1 style="padding:20px; text-align:center; font-size: 50px">Manage Organizations</h1>
+    <div class="main-container">
         <div class="create-organization-container">
-            <h2 style = "text-align:center; font-size: 25px;text-decoration: underline;" >Create an Organization</h2>
+            <h2 style="text-align:center; font-size: 25px; text-decoration: underline;">Create an Organization</h2>
             <form id="createOrganizationForm">
                 <label for="name">Organization Name:</label>
                 <input type="text" id="name" name="name" required>
@@ -41,7 +46,7 @@
             </form>
         </div>
         <div class="create-organization-container">
-            <h2 style = "text-align:center; font-size: 25px;text-decoration: underline;" >Existing Organizations</h2>
+            <h2 style="text-align:center; font-size: 25px; text-decoration: underline;">Existing Organizations</h2>
             <div id="organizationList"></div>
             <div id="responseMessage"></div>
         </div>
@@ -50,43 +55,49 @@
         <iframe src="managers.html" title="Post Update" width="99.75%" height="600" id="managers-iframe"></iframe>
     </div>
 
-
     <script>
+        // Add event listener for form submission
         document.getElementById('createOrganizationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent default form submission behavior
 
+            // Get form values
             const name = document.getElementById('name').value;
             const description = document.getElementById('description').value;
             const socialMediaLink = document.getElementById('social_media_link').value;
 
             const responseMessage = document.getElementById('responseMessage');
-            responseMessage.textContent = '';
+            responseMessage.textContent = ''; // Clear any previous messages
 
+            // Create a new XMLHttpRequest
             const xhr = new XMLHttpRequest();
             xhr.open('POST', '/organizations', true);
             xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 201) {
+                if (xhr.readyState === 4) { // Check if the request is complete.
+                    if (xhr.status === 201) { // Check if the organization was created successfully.
                         responseMessage.textContent = 'Organization created successfully';
-                        fetchOrganizations();
+                        fetchOrganizations(); // Refresh the list of organizations.
                     } else {
+                        // Otherwise inform user of error.
                         responseMessage.textContent = 'Error creating organization: ' + xhr.responseText;
                     }
                 }
             };
+            // Send the request with the form data as a JSON string.
             xhr.send(JSON.stringify({ name: name, description: description, social_media_link: socialMediaLink }));
         });
 
+        // Function to fetch and display the list of organizations.
         function fetchOrganizations() {
             const xhr = new XMLHttpRequest();
             xhr.open('GET', '/organizations', true);
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const organizations = JSON.parse(xhr.responseText);
+                if (xhr.readyState === 4 && xhr.status === 200) { // Check if the request is complete and successful
+                    const organizations = JSON.parse(xhr.responseText); // Parse the response JSON.
                     const organizationList = document.getElementById('organizationList');
-                    organizationList.innerHTML = '';
+                    organizationList.innerHTML = ''; // Clear the current list.
 
+                    // Loop through the organizations and create a div for each one.
                     organizations.forEach(function (org) {
                         const div = document.createElement('div');
                         div.textContent = `Name: ${org.name}, Description: ${org.description}, Social Media Link: ${org.social_media_link}`;
@@ -94,10 +105,10 @@
                     });
                 }
             };
-            xhr.send();
+            xhr.send(); // Send the request
         }
 
-        // Fetch organizations on page load
+        // Fetch organizations on page load.
         fetchOrganizations();
     </script>
     <script src="javascripts/whoami.js"></script>

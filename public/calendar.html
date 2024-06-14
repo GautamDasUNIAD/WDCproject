@@ -12,8 +12,13 @@
 </head>
 
 <body>
-    <nav>
-        <ul>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
             <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
             <li><a href="/branches">Branches</a></li>
@@ -25,8 +30,8 @@
             </div>
         </div>
         <ul>
-            <li><a href="/login" class=button2>Login</a></li>
-            <li><a href="/signup" class=button3>Signup</a></li>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
         </ul>
     </nav>
 
@@ -43,7 +48,7 @@
     <button type = "button" id = "myBtn" class="accessibility-button">
         <i class="fas fa-eye"></i>
     </button>
-    <!-- The Modal -->
+
     <div id="myModal" class="modal" style = "display:none">
         <div class="modal-content">
           <span class="close">&times;</span>
@@ -66,6 +71,7 @@
 
                 <div class="calendar" id="calendar">
                     <script>
+                        // Add event listener for when Dom Content Loads
                         document.addEventListener('DOMContentLoaded', function () {
                             const calendar = document.getElementById('calendar');
                             const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -76,16 +82,14 @@
                             let currentMonth = today.getMonth();
                             let currentYear = today.getFullYear();
 
-                            // Function to update the calendar display
+                            // Function to update the calendar display with fetched events
                             function updateCalendarDisplay(events) {
                                 const tbl = createCalendar(currentMonth, currentYear, events);
                                 calendar.innerHTML = '';
                                 calendar.appendChild(tbl);
-
-
                             }
 
-                            // Function to create the calendar HTML based on events data
+                            // Function to create the calendar HTML based on month, year, and events data
                             function createCalendar(month, year, events) {
                                 let firstDay = new Date(year, month).getDay();
                                 let daysInMonth = 32 - new Date(year, month, 32).getDate();
@@ -96,9 +100,6 @@
                                 let cell = row.insertCell();
                                 cell.colSpan = 7;
                                 cell.textContent = monthNames[month] + " " + year;
-                                // let nextMonth = document.getElementById("nextMonth");
-                                // cell.appendChild(nextMonth);
-
 
                                 let headerDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
                                 row = tbl.insertRow();
@@ -143,17 +144,23 @@
 
                             // Fetch events from the server and update the calendar
                             async function fetchEventsAndUpdateCalendar() {
-                                try {
-                                    const response = await fetch('/events/all');
-                                    const events = await response.json();
-                                    updateCalendarDisplay(events);
-                                } catch (error) {
-                                    console.error('Error fetching events:', error);
+                                const selectedOrgId = getCookie('selectedOrgId');
+                                if (!selectedOrgId) {
+                                    console.error('No selected organization ID found in cookies.'); // Log error if no org ID found
+                                    return;
                                 }
+
+                                // Fetch events for the selected organization
+                                const response = await fetch(`/events/organization/${selectedOrgId}`);
+                                const events = await response.json();
+                                updateCalendarDisplay(events);
                             }
 
+
+                            // Fetch events and update the calendar when the page loads
                             fetchEventsAndUpdateCalendar();
 
+                            // Event listener for the "previous month" button
                             document.getElementById('prevMonth').addEventListener('click', function() {
                                 if (currentMonth === 0) {
                                     currentMonth = 11;
@@ -164,6 +171,7 @@
                                 fetchEventsAndUpdateCalendar();
                             });
 
+                            // Event listener for the "next month" button
                             document.getElementById('nextMonth').addEventListener('click', function() {
                                 if (currentMonth === 11) {
                                     currentMonth = 0;
@@ -222,47 +230,59 @@
     <script src="javascripts/adjustnav.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async function() {
+        // Event Listener for when DOM content is loaded
+        document.addEventListener('DOMContentLoaded', async function () {
             const eventList = document.getElementById('eventList');
-
-            const branches = document.getElementsByClassName('branchesclass');
+            const eventsContainer = document.getElementById('eventsContainer');
+            const readMoreButton = document.getElementById('readMoreButton');
+            const branchesList = document.getElementById('branchesList');
+            const sidebar = document.querySelector('.sidebar');
             let displayedEvents = 4; // Number of initially displayed events
 
             try {
-                const response = await fetch('/events/all');
+                const selectedOrgId = getCookie('selectedOrgId');
+                if (!selectedOrgId) {
+                    console.error('No selected organization ID found in cookies.'); // Log error if no org ID found
+                    return;
+                }
+
+                // Fetch events for the selected organization
+                const response = await fetch(`/events/organization/${selectedOrgId}`);
                 const events = await response.json();
 
-                events.sort((a, b) => new Date(a.date)- new Date(b.date));
-
+                // Set to store unique branch locations
                 const uniqueLocations = new Set();
 
-
+                // Populate unique branch locations for filtering
 
                 events.forEach(event => {
                     uniqueLocations.add(event.location);
                 });
 
+                // Dynamically create checkboxes for each branch location
                 uniqueLocations.forEach(location => {
                     const newBranch = document.createElement('li');
-
                     newBranch.innerHTML = `
-                <li>
-                    <input type="checkbox" id="${location}">
-                    <label for="${location}">${location}</label>
-                </li>`;
+                        <input type="checkbox" id="${location}">
+                        <label for="${location}">${location}</label>
+                    `;
                     branchesList.appendChild(newBranch);
                 });
 
-                const clickCounts = {
-                    upvote: {},
-                    downvote: {}
-                };
+                // Function to format date from ISO string
+                function formatDate(isoDate) {
+                    const date = new Date(isoDate);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    return date.toLocaleDateString('en-US', options);
+                }
 
-                function displayEvents(startIndex, endIndex) {
-                    for (let i = startIndex; i < endIndex; i++) {
-                        const event = events[i];
+                // Function to display events in the UI
+                function displayEvents(filteredEvents) {
+                    eventsContainer.innerHTML = '';
+                    filteredEvents.slice(0, displayedEvents).forEach(event => {
                         const eventItem = document.createElement('div');
                         eventItem.classList.add('events-update');
+                        const formattedDate = formatDate(event.date);
                         eventItem.innerHTML = `
                             <div class="vote">
                                 <div class="upvote">
@@ -280,63 +300,63 @@
                             </div>
                             <div class="update-text">
                                 <h3>${event.name}</h3>
+                                <p style=" font-size: 10px;">${formattedDate}</p>
                                 <p>${event.description}</p>
+                                <p>Location: ${event.location}</p>
+                            </div>
+                            <div class="rsvp-button-container">
+                                <button class="rsvp-button" type="button" onclick="rsvpForEvent(${event.id})">RSVP</button>
                             </div>
                         `;
                         eventsContainer.appendChild(eventItem);
+                    });
 
-                        clickCounts.upvote[event.id] = 0;
-                        clickCounts.downvote[event.id] = 0;
+                    adjustSidebarHeight();
 
-                        const locationCheckbox = document.getElementById(`${event.location}`);
+                     // Show 'Read More' button if there are more events to display
 
+                    if (filteredEvents.length > displayedEvents) {
+                        readMoreButton.style.display = 'block';
+                    } else {
+                        readMoreButton.style.display = 'none';
                     }
                 }
 
+                // Function to filter events based on selected branches
+                function filterEvents() {
+                    const selectedBranches = Array.from(document.querySelectorAll('.branchesclass input[type="checkbox"]:checked')).map(checkbox => checkbox.id);
+                    const filteredEvents = selectedBranches.length ? events.filter(event => selectedBranches.includes(event.location)) : events;
+                    displayEvents(filteredEvents);
+                }
+                displayEvents(events);
 
-
-                    // You may also want to send this change to your server to update the database
-                    // Example:
-                    // fetch('/events/upvote', {
-                    //     method: 'POST',
-                    //     headers: { 'Content-Type': 'application/json' },
-                    //     body: JSON.stringify({ eventId })
-                    // });
-
-
-                // Function to increment downvote
-
-
-                    // You may also want to send this change to your server to update the database
-                    // Example:
-                    // fetch('/events/downvote', {
-                    //     method: 'POST',
-                    //     headers: { 'Content-Type': 'application/json' },
-                    //     body: JSON.stringify({ eventId })
-                    // });
-
-                // Display initial set of events
-                displayEvents(0, displayedEvents);
-
-                // Show more events when "Read More" button is clicked
-                readMoreButton.addEventListener('click', function() {
-                    displayedEvents += 3; // Increase the number of displayed events
-                    displayEvents(displayedEvents - 3, displayedEvents);
-                    if (displayedEvents >= events.length) {
-                        readMoreButton.style.display = 'none'; // Hide the button if all events are displayed
-                    }
-                    const sidebar = document.querySelector('.sidebar');
-                    sidebar.style.minHeight = eventsContainer.offsetHeight + 230 + 'px'; // Adjust 100 according to your ne
+                 // Event listener for branch filter checkboxes
+                document.querySelectorAll('.branchesclass input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', filterEvents);
                 });
 
-                // Show "Read More" button if there are more events to display
-                if (events.length > displayedEvents) {
-                    readMoreButton.style.display = 'block';
+                // Event listener for 'Read More' button to load more events
+                readMoreButton.addEventListener('click', function () {
+                    displayedEvents += 3;
+                    filterEvents();
+                });
+                // Function to adjust sidebar height based on events section height
+                function adjustSidebarHeight() {
+                    const eventsSectionHeight = document.querySelector('#eventsContainer').clientHeight;
+                    sidebar.style.height = eventsSectionHeight + 'px';
                 }
+
+                window.addEventListener('resize', adjustSidebarHeight);
+
+                // Adjust sidebar height after DOM content is loaded and whenever the events are filtered
+                document.addEventListener('DOMContentLoaded', adjustSidebarHeight);
+                window.addEventListener('load', adjustSidebarHeight);
+
 
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
+
         });
 
     </script>

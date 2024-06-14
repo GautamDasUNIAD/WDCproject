@@ -12,8 +12,13 @@
 </head>
 
 <body>
-    <nav>
-        <ul>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
             <li><a class="active" href="/">LOGO</a></li>
             <li><a href="/events">Events</a></li>
             <li><a href="/branches">Branches</a></li>
@@ -34,7 +39,7 @@
         <i class="fas fa-eye"></i>
     </button>
     <!-- The Modal -->
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal" style = "display:none">
         <div class="modal-content">
             <span class="close">&times;</span>
             <div style="display: flex; align-items: center;">
@@ -89,28 +94,24 @@
     <script src="javascripts/whoami.js"></script>
 
     <script>
+        // Function to retrieve a specific cookie by name
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
+        // Vue.js instance for managing iframe content
         new Vue({
-            el: '#app',
+            el: '#app', // Element ID to mount Vue instance
             data: {
-                currentIframe: ''
+                currentIframe: '' // Holds the current iframe source URL
             },
             methods: {
+                // Method to set the current iframe source and handle special cases
                 showIframe(iframeSrc) {
-                    if (iframeSrc === 'view-rsvps.html') {
-                        const selectedOrgId = getCookie('selectedOrgId');
-                        if (!selectedOrgId) {
-                            console.error('No selected organization ID found in cookies.');
-                            return;
-                        }
-                        iframeSrc += `?organizationId=${selectedOrgId}`;
-                    }
-                    if (iframeSrc === 'manage-users.html') {
+                    // Modify iframe source for 'view-rsvps.html' and 'manage-users.html'
+                    if (iframeSrc === 'view-rsvps.html' || iframeSrc === 'manage-users.html') {
                         const selectedOrgId = getCookie('selectedOrgId');
                         if (!selectedOrgId) {
                             console.error('No selected organization ID found in cookies.');
@@ -119,6 +120,7 @@
                         iframeSrc += `?organizationId=${selectedOrgId}`;
                     }
 
+                    // Set the current iframe source
                     this.currentIframe = iframeSrc;
                 }
             }
