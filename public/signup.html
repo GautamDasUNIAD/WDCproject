@@ -115,9 +115,8 @@
                     // Redirect to the home page or handle signup success
                     window.location.href = '/';
                 } else {
-                    // Handle failed signup
-                    const error = await response.text(); // Extract error message from response
-                    signupResponseMessage.textContent = 'Signup failed: ' + error; // Display error message
+                    const error = await response.json();
+                    signupResponseMessage.textContent = 'Signup failed: ' + error.msg;
                 }
             } catch (error) {
                 // Handle network or server errors
