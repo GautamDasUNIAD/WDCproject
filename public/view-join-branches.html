@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View and Join Branches</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            padding: 6px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="view-join-branches-container">
+        <h1>All Branches</h1>
+        <div id="message" class="message"></div>
+        <table id="branchesTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Location</th>
+                    <th>Organization ID</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Branch rows will be appended here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchBranches() {
+            try {
+                const response = await fetch('/userbranches/branches');
+                if (response.status === 401) {
+                    document.getElementById('message').textContent = 'You need to be logged in to view and join branches.';
+                    return;
+                }
+                if (!response.ok) {
+                    throw new Error('Failed to fetch branches');
+                }
+                const branches = await response.json();
+                const tableBody = document.getElementById('branchesTable').querySelector('tbody');
+                tableBody.innerHTML = '';
+
+                branches.forEach(branch => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${branch.id}</td>
+                        <td>${branch.location}</td>
+                        <td>${branch.organization_id}</td>
+                        <td><button onclick="joinBranch(${branch.id})">Join</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function joinBranch(branchId) {
+            try {
+                const response = await fetch('/userbranches/join', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ branch_id: branchId })
+                });
+
+                if (response.status === 401) {
+                    alert('You need to be logged in to join a branch.');
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error('Failed to join branch');
+                }
+
+                alert('Successfully joined the branch');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error joining the branch');
+            }
+        }
+
+        // Fetch branches when the page loads
+        window.onload = fetchBranches;
+    </script>
+</body>
+</html>

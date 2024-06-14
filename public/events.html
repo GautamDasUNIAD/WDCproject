@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a class="active" href="/">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
+        </ul>
+        <div class="dropdown" id="organizations-dropdown-div">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
+        <ul>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
+        </ul>
+    </nav>
+
+    <div class="sidebar">
+        <p><a class="active" href="/">Home </a> / <a href="/events">Events</a></p>
+        <div class="view-buttons">
+            <button type="button" class="view-button active" onclick="window.location.href='/events'">List View</button>
+            <button type="button" class="view-button" onclick="window.location.href='/calendar'">Calendar View</button>
+        </div>
+        <h3>Filter by Branch:</h3>
+        <ul class="branchesclass" id="branchesList">
+            <!-- Checkboxes will be populated dynamically -->
+        </ul>
+    </div>
+
+    <button type="button" id="myBtn" class="accessibility-button">
+        <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" style="display:none">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div style="display: flex; align-items: center;">
+                <h2 style="margin-right: 100px;">Dark Mode</h2> <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="events-section" id="eventList">
+        <h2>Key Events</h2>
+        <div id="eventsContainer"></div>
+        <div class="button-container">
+            <button type="button" id="readMoreButton" class="read-more-button">Read More</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-media-links">
+                <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Company Logo">
+            </div>
+            <div class="footer-links">
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
+
+    <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
+    <script src="javascripts/upvote.js"></script>
+    <script src="javascripts/whoami.js"></script>
+    <script src="javascripts/adjustnav.js"></script>
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        function rsvpForEvent(eventId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/userevents/rsvp', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) { // Request is complete
+                    if (xhr.status === 201) {
+                        alert(xhr.responseText);
+                    } else if (xhr.status === 401) {
+                        alert('You need to be logged in to RSVP for events.');
+                        window.location.href = '/login';
+                    } else {
+                        alert('Error RSVPing for event: ' + xhr.responseText);
+                    }
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('Network error while RSVPing for event.');
+            };
+
+            xhr.send(JSON.stringify({ eventId }));
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            const eventList = document.getElementById('eventList');
+            const eventsContainer = document.getElementById('eventsContainer');
+            const readMoreButton = document.getElementById('readMoreButton');
+            const branchesList = document.getElementById('branchesList');
+            const sidebar = document.querySelector('.sidebar');
+            let displayedEvents = 4;
+
+            try {
+                const selectedOrgId = getCookie('selectedOrgId');
+                if (!selectedOrgId) {
+                    console.error('No selected organization ID found in cookies.');
+                    return;
+                }
+
+                const response = await fetch(`/events/organization/${selectedOrgId}`);
+                const events = await response.json();
+
+
+                const uniqueLocations = new Set();
+
+                events.forEach(event => {
+                    uniqueLocations.add(event.location);
+                });
+
+                uniqueLocations.forEach(location => {
+                    const newBranch = document.createElement('li');
+                    newBranch.innerHTML = `
+                        <input type="checkbox" id="${location}">
+                        <label for="${location}">${location}</label>
+                    `;
+                    branchesList.appendChild(newBranch);
+                });
+
+                function formatDate(isoDate) {
+                    const date = new Date(isoDate);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    return date.toLocaleDateString('en-US', options);
+                }
+
+                function displayEvents(filteredEvents) {
+                    eventsContainer.innerHTML = '';
+                    filteredEvents.slice(0, displayedEvents).forEach(event => {
+                        const eventItem = document.createElement('div');
+                        eventItem.classList.add('events-update');
+                        const formattedDate = formatDate(event.date);
+                        eventItem.innerHTML = `
+                            <div class="vote">
+                                <div class="upvote">
+                                    <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementUpvote(${event.id})">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="downvote">
+                                    <span class="downvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.downvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementDownvote(${event.id})">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="update-text">
+                                <h3>${event.name}</h3>
+                                <p style=" font-size: 10px;">${formattedDate}</p>
+                                <p>${event.description}</p>
+                                <p>Location: ${event.location}</p>
+                            </div>
+                            <div class="rsvp-button-container">
+                                <button class="rsvp-button" type="button" onclick="rsvpForEvent(${event.id})">RSVP</button>
+                            </div>
+                        `;
+                        eventsContainer.appendChild(eventItem);
+                    });
+
+                    adjustSidebarHeight();
+
+                    if (filteredEvents.length > displayedEvents) {
+                        readMoreButton.style.display = 'block';
+                    } else {
+                        readMoreButton.style.display = 'none';
+                    }
+                }
+
+                function filterEvents() {
+                    const selectedBranches = Array.from(document.querySelectorAll('.branchesclass input[type="checkbox"]:checked')).map(checkbox => checkbox.id);
+                    const filteredEvents = selectedBranches.length ? events.filter(event => selectedBranches.includes(event.location)) : events;
+                    displayEvents(filteredEvents);
+                }
+
+                displayEvents(events);
+
+                document.querySelectorAll('.branchesclass input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', filterEvents);
+                });
+
+                readMoreButton.addEventListener('click', function () {
+                    displayedEvents += 3;
+                    filterEvents();
+                });
+
+                function adjustSidebarHeight() {
+                    const eventsSectionHeight = document.querySelector('#eventsContainer').clientHeight;
+                    sidebar.style.height = eventsSectionHeight + 'px';
+                }
+
+                window.addEventListener('resize', adjustSidebarHeight);
+
+                // Adjust sidebar height after DOM content is loaded and whenever the events are filtered
+                document.addEventListener('DOMContentLoaded', adjustSidebarHeight);
+                window.addEventListener('load', adjustSidebarHeight);
+
+
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>

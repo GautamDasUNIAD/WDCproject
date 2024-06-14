@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Preferences</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a class="active" href="/">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
+        </ul>
+        <div class="dropdown" id="organizations-dropdown-div">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
+        <ul>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-container">
+        <div class="preferences-section">
+            <h2 style="text-align:center; font-size: 25px;text-decoration: underline;">User Preferences</h2>
+            <form id="preferencesForm">
+                <label for="organization">Organization:</label>
+                <select id="organization" name="organization" required></select>
+
+                <label for="notificationType">Receive Email Notifications:
+                    <input type="checkbox" id="notificationType" name="notificationType">
+                </label>
+
+                <input type="submit" value="Update preferences">
+            </form>
+            <button type="button" id="leaveOrganizationBtn">Leave Organization</button>
+            <div id="responseMessage"></div>
+        </div>
+    </div>
+
+    <script src="javascripts/whoami.js"></script>
+
+    <script>
+        async function fetchUserPreferences() {
+            try {
+                const responseOrg = await fetch('/userpreferences/organizations');
+                const organizations = await responseOrg.json();
+                const orgSelect = document.getElementById('organization');
+
+                organizations.forEach(org => {
+                    const option = document.createElement('option');
+                    option.value = org.id;
+                    option.textContent = org.name;
+                    orgSelect.appendChild(option);
+                });
+
+                const responsePref = await fetch('/userpreferences/preferences');
+                const preferences = await responsePref.json();
+
+                const notificationCheckbox = document.getElementById('notificationType');
+
+                preferences.forEach(preference => {
+                    if (preference.notification_type === 'updates') {
+                        notificationCheckbox.checked = true;
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching user preferences:', error);
+            }
+        }
+
+        async function updateUserPreferences(event) {
+            event.preventDefault();
+
+            const organizationId = document.getElementById('organization').value;
+            const notificationType = 'updates';
+            const enabled = document.getElementById('notificationType').checked;
+
+            try {
+                const response = await fetch('/userpreferences/preferences', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ organizationId, notificationType, enabled })
+                });
+
+                const message = await response.text();
+                document.getElementById('responseMessage').textContent = message;
+
+                if (response.status === 401) {
+                    alert('You need to be logged in to update preferences.');
+                    window.location.href = '/login';
+                    return;
+                }
+            } catch (error) {
+                console.error('Error updating preferences:', error);
+            }
+        }
+
+        async function leaveOrganization(organizationId) {
+            try {
+                const response = await fetch('/userorganizations/leave', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ organization_id: organizationId })
+                });
+
+                if (response.status === 401) {
+                    document.getElementById('responseMessage').textContent = 'You need to be logged in to perform this action.';
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    document.getElementById('responseMessage').textContent = 'Error leaving organization: ' + errorText;
+                    return;
+                }
+
+                document.getElementById('responseMessage').textContent = 'Successfully left the organization';
+                document.getElementById('organization').value = "";
+                document.getElementById('notificationType').checked = false;
+            } catch (error) {
+                document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
+            }
+        }
+
+        document.getElementById('preferencesForm').addEventListener('submit', updateUserPreferences);
+        document.getElementById('leaveOrganizationBtn').addEventListener('click', function() {
+            const organizationId = document.getElementById('organization').value;
+            if (organizationId) {
+                leaveOrganization(organizationId);
+            } else {
+                document.getElementById('responseMessage').textContent = 'Please select an organization to leave';
+            }
+        });
+        document.addEventListener('DOMContentLoaded', fetchUserPreferences);
+    </script>
+</body>
+
+</html>

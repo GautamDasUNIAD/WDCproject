@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>events</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a class="active" href="/">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
+        </ul>
+        <div class="dropdown" id="organizations-dropdown-div">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
+        <ul>
+            <li><a href="/login" class=button2>Login</a></li>
+            <li><a href="/signup" class=button3>Signup</a></li>
+        </ul>
+    </nav>
+
+    <div class="sidebar" style="min-height: 109.5vh;">
+        <p><a class="active" href="/">Home </a> / <a href="/events">Events</a> </p>
+        <div class="view-buttons">
+            <button type="button" class="view-button" onclick="window.location.href='events.html'">List View</button>
+            <button type="button" class="view-button active" onclick="showCalendarView()">Calendar View</button>
+        </div>
+        <h3>Sort by Branch:</h3>
+            <ul class = "branchesclass" id = "branchesList"></ul>
+    </div>
+
+    <button type = "button" id = "myBtn" class="accessibility-button">
+        <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" style = "display:none">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div style="display: flex; align-items: center;">
+            <h2 style="margin-right: 100px;">Dark Mode</h2>  <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+    </div>
+
+    <div class="calendar-section">
+        <h2 style = "font-size:30px">Key Events</h2>
+        <div class="split-div">
+            <div class="calendar-div">
+                <div class="left-button">
+                    <button type = "button" id="prevMonth">&lt;</button>
+                </div>
+
+                <div class="calendar" id="calendar">
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const calendar = document.getElementById('calendar');
+                            const monthNames = ["January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"
+                            ];
+
+                            const today = new Date();
+                            let currentMonth = today.getMonth();
+                            let currentYear = today.getFullYear();
+
+                            // Function to update the calendar display
+                            function updateCalendarDisplay(events) {
+                                const tbl = createCalendar(currentMonth, currentYear, events);
+                                calendar.innerHTML = '';
+                                calendar.appendChild(tbl);
+
+
+                            }
+
+                            // Function to create the calendar HTML based on events data
+                            function createCalendar(month, year, events) {
+                                let firstDay = new Date(year, month).getDay();
+                                let daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+                                let tbl = document.createElement("table");
+                                let thead = tbl.createTHead();
+                                let row = thead.insertRow();
+                                let cell = row.insertCell();
+                                cell.colSpan = 7;
+                                cell.textContent = monthNames[month] + " " + year;
+                                // let nextMonth = document.getElementById("nextMonth");
+                                // cell.appendChild(nextMonth);
+
+
+                                let headerDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+                                row = tbl.insertRow();
+                                for (let day of headerDays) {
+                                    cell = row.insertCell();
+                                    cell.textContent = day;
+                                }
+
+                                let date = 1;
+                                for (let i = 0; i < 6; i++) {
+                                    row = tbl.insertRow();
+                                    for (let j = 0; j < 7; j++) {
+                                        if (i === 0 && j < firstDay) {
+                                            row.insertCell();
+                                        } else if (date > daysInMonth) {
+                                            break;
+                                        } else {
+                                            let cell = row.insertCell();
+                                            let event = events.find(e => new Date(e.date).getDate() === date && new Date(e.date).getMonth() === month);
+                                            cell.textContent = date; // Always display the date
+                                            if (event) {
+                                                let eventInfo = document.createElement('div');
+                                                eventInfo.textContent = event.name;
+                                                eventInfo.style.fontSize = '0.85em'; // Smaller font size for event name
+                                                eventInfo.style.color = 'red'; // Color for event name
+                                                cell.appendChild(eventInfo);
+                                                cell.title = event.description; // Tooltip to show full event description
+                                                cell.style.backgroundColor = '#ffcccb'; // Highlight event days
+                                            }
+
+                                            // Highlight today's date in pastel blue, without overriding event highlight
+                                            if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                                                cell.style.border = "2px solid #add8e6"; // Use border to highlight today's date
+                                            }
+
+                                            date++;
+                                        }
+                                    }
+                                }
+                                return tbl;
+                            }
+
+                            // Fetch events from the server and update the calendar
+                            async function fetchEventsAndUpdateCalendar() {
+                                try {
+                                    const response = await fetch('/events/all');
+                                    const events = await response.json();
+                                    updateCalendarDisplay(events);
+                                } catch (error) {
+                                    console.error('Error fetching events:', error);
+                                }
+                            }
+
+                            fetchEventsAndUpdateCalendar();
+
+                            document.getElementById('prevMonth').addEventListener('click', function() {
+                                if (currentMonth === 0) {
+                                    currentMonth = 11;
+                                    currentYear -= 1;
+                                } else {
+                                    currentMonth -= 1;
+                                }
+                                fetchEventsAndUpdateCalendar();
+                            });
+
+                            document.getElementById('nextMonth').addEventListener('click', function() {
+                                if (currentMonth === 11) {
+                                    currentMonth = 0;
+                                    currentYear += 1;
+                                } else {
+                                    currentMonth += 1;
+                                }
+                                fetchEventsAndUpdateCalendar();
+                            });
+                        });
+
+                    </script>
+
+                </div>
+                <div class = "right-button">
+                    <button type = "button" id="nextMonth">&gt;</button>
+                </div>
+            </div>
+
+            <div class="calendar-events">
+                <div class="events-section" id="eventList">
+                    <div id="eventsContainer"></div>
+                    <div class = "button-container">
+                        <button type = "button" id="readMoreButton" class="read-more-button">Read More</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <div class="social-media-links">
+                <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Company Logo">
+            </div>
+            <div class="footer-links">
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
+
+    <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
+    <script src="javascripts/upvote.js"></script>
+    <script src="javascripts/whoami.js"></script>
+    <script src="javascripts/adjustnav.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const eventList = document.getElementById('eventList');
+
+            const branches = document.getElementsByClassName('branchesclass');
+            let displayedEvents = 4; // Number of initially displayed events
+
+            try {
+                const response = await fetch('/events/all');
+                const events = await response.json();
+
+                events.sort((a, b) => new Date(a.date)- new Date(b.date));
+
+                const uniqueLocations = new Set();
+
+
+
+                events.forEach(event => {
+                    uniqueLocations.add(event.location);
+                });
+
+                uniqueLocations.forEach(location => {
+                    const newBranch = document.createElement('li');
+
+                    newBranch.innerHTML = `
+                <li>
+                    <input type="checkbox" id="${location}">
+                    <label for="${location}">${location}</label>
+                </li>`;
+                    branchesList.appendChild(newBranch);
+                });
+
+                const clickCounts = {
+                    upvote: {},
+                    downvote: {}
+                };
+
+                function displayEvents(startIndex, endIndex) {
+                    for (let i = startIndex; i < endIndex; i++) {
+                        const event = events[i];
+                        const eventItem = document.createElement('div');
+                        eventItem.classList.add('events-update');
+                        eventItem.innerHTML = `
+                            <div class="vote">
+                                <div class="upvote">
+                                    <span class="upvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.upvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementUpvote(${event.id})">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="downvote">
+                                    <span class="downvoteCount" data-event-id="${event.id}" style="margin-right: 3px;">${event.downvote}</span>
+                                    <button type="button" class="vote-button" onclick="incrementDownvote(${event.id})">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="update-text">
+                                <h3>${event.name}</h3>
+                                <p>${event.description}</p>
+                            </div>
+                        `;
+                        eventsContainer.appendChild(eventItem);
+
+                        clickCounts.upvote[event.id] = 0;
+                        clickCounts.downvote[event.id] = 0;
+
+                        const locationCheckbox = document.getElementById(`${event.location}`);
+
+                    }
+                }
+
+
+
+                    // You may also want to send this change to your server to update the database
+                    // Example:
+                    // fetch('/events/upvote', {
+                    //     method: 'POST',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify({ eventId })
+                    // });
+
+
+                // Function to increment downvote
+
+
+                    // You may also want to send this change to your server to update the database
+                    // Example:
+                    // fetch('/events/downvote', {
+                    //     method: 'POST',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify({ eventId })
+                    // });
+
+                // Display initial set of events
+                displayEvents(0, displayedEvents);
+
+                // Show more events when "Read More" button is clicked
+                readMoreButton.addEventListener('click', function() {
+                    displayedEvents += 3; // Increase the number of displayed events
+                    displayEvents(displayedEvents - 3, displayedEvents);
+                    if (displayedEvents >= events.length) {
+                        readMoreButton.style.display = 'none'; // Hide the button if all events are displayed
+                    }
+                    const sidebar = document.querySelector('.sidebar');
+                    sidebar.style.minHeight = eventsContainer.offsetHeight + 230 + 'px'; // Adjust 100 according to your ne
+                });
+
+                // Show "Read More" button if there are more events to display
+                if (events.length > displayedEvents) {
+                    readMoreButton.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        });
+
+    </script>
+
+
+
+</body>
+
+</html>

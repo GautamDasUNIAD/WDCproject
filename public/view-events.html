@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Events</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="view-events-container">
+        <h1>All Events</h1>
+        <table id="eventsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Organization ID</th>
+                    <th>Branch ID</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Event rows will be appended here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchEvents() {
+            try {
+                const response = await fetch('/events/all');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch events');
+                }
+                const events = await response.json();
+                const tableBody = document.getElementById('eventsTable').querySelector('tbody');
+                tableBody.innerHTML = '';
+
+                events.forEach(event => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${event.id}</td>
+                        <td>${event.name}</td>
+                        <td>${event.location}</td>
+                        <td>${event.description}</td>
+                        <td>${event.organization_id}</td>
+                        <td>${event.branch_id}</td>
+                        <td>${event.date}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Fetch events when the page loads
+        window.onload = fetchEvents;
+    </script>
+</body>
+</html>

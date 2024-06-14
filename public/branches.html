@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branches</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <nav id="navbar">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="menu">
+            <li><a class="active" href="/">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches">Branches</a></li>
+        </ul>
+        <div class="dropdown" id="organizations-dropdown-div">
+            <div class="organizations-dropdown-button">Select an organization...</div>
+            <div class="dropdown-content" id="organization-dropdown">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
+        <ul>
+            <li><a href="/login" class="button2">Login</a></li>
+            <li><a href="/signup" class="button3">Signup</a></li>
+        </ul>
+    </nav>
+
+    <p class="breadcrumbs"><span><a href="/">Home</a> / <a href="/branches">Branches</a></span></p>
+    <button type="button" id="myBtn" class="accessibility-button">
+        <i class="fas fa-eye"></i>
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" style="display:none">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div style="display: flex; align-items: center;">
+                <h2 style="margin-right: 100px;">Dark Mode</h2>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="map-section" id="map">
+        <div class="branches-welcome">
+            <h1>Our Locations</h1>
+            <p> Explore our diverse network of branches across the world... Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+            <p> Click each pin to learn more!</p>
+            <br>
+        </div>
+        <div class="map">
+            <img src="images/map.png" style="width: 100%;" alt="">
+            <i v-for="branch in branches" class="fa-solid fa-location-dot"
+                :style="{ left: branch.x + '%', top: branch.y + '%' }" v-on:click="changeDetails(branch.location)">{{
+                branch.name }}</i>
+        </div>
+        <h2>{{ location }}</h2>
+        <p style="padding-bottom: 50px">{{ description }}</p>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-media-links">
+                <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Company Logo">
+            </div>
+            <div class="footer-links">
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <button type="button" id="scrollToTopBtn" title="Go to top">↑ Top</button>
+
+    <script src="javascripts/scrollbutton.js"></script>
+    <script src="javascripts/homepage_slideshow.js"></script>
+    <script src="javascripts/accessibilitybutton.js"></script>
+    <script src="javascripts/highcontrast.js"></script>
+    <script src="javascripts/vue.js"></script>
+    <script src="javascripts/whoami.js"></script>
+    <script src="javascripts/adjustnav.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectedOrgId = getCookie('selectedOrgId');
+            fetch(`/branches/${selectedOrgId}/branches`)
+                .then(response => response.json())
+                .then(branchesData => {
+                    console.log('Fetched Branches:', branchesData); // Log fetched data
+                    branchesData.forEach(branch => {
+                        console.log('Adding branch:', branch); // Log each branch being added
+                        mapdiv.addBranch(branch);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching branches:', error);
+                });
+        });
+    </script>
+</body>
+
+</html>

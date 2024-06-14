@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branches</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav>
+        
+        <ul>
+            <li><a class="active" href="/home">LOGO</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/branches" >Branches</a></li>
+        </ul>
+        <form class="search-form" action="/search" method="GET">
+            <input type="text" name="q" placeholder="Search...">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+        <ul>
+            <li><a href="/login" class = button2>Login</a></li>
+            <li><a href="/signup" class = button3>Signup</a></li>
+        </ul>
+    </nav>
+    <br>
+    <h1 style="text-align: center;">Welcome Back!</h1>
+    <br>
+    <div class="login-container">
+        <form action="/home.html">
+            <label for="Email">Email:</label>
+            <input type="text" id="Email" name="Email" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+    <div class="accessibility-button" onclick="toggleAccessibility()">
+        <i class="fas fa-eye"></i>
+    </div>
+
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-media-links">
+                <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="footer-logo">
+                <img src="logo.png" alt="Company Logo">
+            </div>
+            <div class="footer-links">
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

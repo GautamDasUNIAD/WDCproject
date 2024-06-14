@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Branch Users</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="view-branch-users-container">
+        <h1>Users in Branch</h1>
+        <div id="message" class="message"></div>
+        <table id="usersTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User rows will be appended here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchBranchUsers() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const organizationId = urlParams.get('organizationId');
+            const branchId = urlParams.get('branchId');
+
+            if (!organizationId || !branchId) {
+                document.getElementById('message').textContent = 'Organization ID and Branch ID are required.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/userbranches/${organizationId}/branch/${branchId}/users`);
+                if (response.status === 403) {
+                    document.getElementById('message').textContent = 'You do not have permission to view this information.';
+                    return;
+                }
+                if (!response.ok) {
+                    throw new Error('Failed to fetch users');
+                }
+                const users = await response.json();
+                const tableBody = document.getElementById('usersTable').querySelector('tbody');
+                tableBody.innerHTML = '';
+
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.first_name}</td>
+                        <td>${user.last_name}</td>
+                        <td>${user.email}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('message').textContent = 'An error occurred while fetching users.';
+            }
+        }
+
+        // Fetch branch users when the page loads
+        window.onload = fetchBranchUsers;
+    </script>
+</body>
+</html>
