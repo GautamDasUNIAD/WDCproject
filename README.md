@@ -1,4 +1,4 @@
-![image](https://github.com/GautamDasUNIAD/WDCproject/assets/126441788/58c104cc-56ed-4ca2-ae85-9ede26f88292)# Template Repository for COMP SCI 2207/7207 Web & Database Computing (2023 Semester 1)
+# Template Repository for COMP SCI 2207/7207 Web & Database Computing (2023 Semester 1)
 
 1. Run the command npm install in the terminal to install all necessary dependencies.
 2. Create a file called .env with the following info.
