@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { param, body, query, validationResult } = require('express-validator');
 
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
@@ -42,7 +43,14 @@ function isManagerForOrg(req, res, next) {
 }
 
 // Search organizations route
-router.get('/search', isAuthenticated, (req, res) => {
+router.get('/search', isAuthenticated, [
+    query('query').trim().isLength({ min: 1 }).withMessage('Query is required')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { query } = req.query;
 
     db.query(
@@ -59,7 +67,14 @@ router.get('/search', isAuthenticated, (req, res) => {
 });
 
 // Check if user has joined organization
-router.get('/check', isAuthenticated, (req, res) => {
+router.get('/check', isAuthenticated, [
+    query('organization_id').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const userId = req.user.id;
     const { organization_id } = req.query;
 
@@ -77,7 +92,14 @@ router.get('/check', isAuthenticated, (req, res) => {
 });
 
 // Check if the user is a member of an organization
-router.get('/isMember/:organizationId', isAuthenticated, (req, res) => {
+router.get('/isMember/:organizationId', isAuthenticated, [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const userId = req.user.id;
     const { organizationId } = req.params;
 
@@ -99,13 +121,16 @@ router.get('/isMember/:organizationId', isAuthenticated, (req, res) => {
 });
 
 // Join organization route
-router.post('/join', isAuthenticated, (req, res) => {
+router.post('/join', isAuthenticated, [
+    body('organization_id').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const userId = req.user.id;
     const { organization_id } = req.body;
-
-    if (!organization_id) {
-        return res.status(400).send('Organization ID is required');
-    }
 
     db.query(
         'INSERT INTO UserOrganizations (user_id, organization_id) VALUES (?, ?)',
@@ -124,15 +149,17 @@ router.post('/join', isAuthenticated, (req, res) => {
     );
 });
 
-
 // Leave organization route
-router.post('/leave', isAuthenticated, (req, res) => {
+router.post('/leave', isAuthenticated, [
+    body('organization_id').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const userId = req.user.id;
     const { organization_id } = req.body;
-
-    if (!organization_id) {
-        return res.status(400).send('Organization ID is required');
-    }
 
     db.query(
         'DELETE FROM UserOrganizations WHERE user_id = ? AND organization_id = ?',
@@ -148,7 +175,14 @@ router.post('/leave', isAuthenticated, (req, res) => {
 });
 
 // Get all users in an organization
-router.get('/organization/:organizationId/users', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
+router.get('/organization/:organizationId/users', isAuthenticated, isManager, isManagerForOrg, [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { organizationId } = req.params;
 
     db.query(
@@ -168,7 +202,15 @@ router.get('/organization/:organizationId/users', isAuthenticated, isManager, is
 });
 
 // Remove a user from an organization
-router.delete('/organization/:organizationId/user/:userId', isAuthenticated, isManager, isManagerForOrg, (req, res) => {
+router.delete('/organization/:organizationId/user/:userId', isAuthenticated, isManager, isManagerForOrg, [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer'),
+    param('userId').isInt().withMessage('User ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { organizationId, userId } = req.params;
 
     db.query(

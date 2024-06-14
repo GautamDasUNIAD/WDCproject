@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { param, body, validationResult } = require('express-validator');
 
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
@@ -33,13 +34,20 @@ function isManagerForOrg(req, res, next) {
 }
 
 // Create branch route (restricted to managers of the organization)
-router.post('/:organizationId/branches/create', isAuthenticated, isManagerForOrg, (req, res) => {
-    const { organizationId } = req.params;
-    var { location, description, xCoordinate, yCoordinate } = req.body;
-
-    if (!location) {
-        return res.status(400).send('Location is required');
+router.post('/:organizationId/branches/create', isAuthenticated, isManagerForOrg, [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer'),
+    body('location').trim().notEmpty().withMessage('Location is required').escape(),
+    body('description').optional({ checkFalsy: true }).trim().escape(),
+    body('xCoordinate').optional({ checkFalsy: true }).isFloat().withMessage('X Coordinate must be a float'),
+    body('yCoordinate').optional({ checkFalsy: true }).isFloat().withMessage('Y Coordinate must be a float')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
+
+    const { organizationId } = req.params;
+    const { location, description, xCoordinate, yCoordinate } = req.body;
 
     db.query(
         'INSERT INTO Branches (location, description, x, y, organization_id) VALUES (?, ?, ?, ?, ?)',
@@ -55,7 +63,14 @@ router.post('/:organizationId/branches/create', isAuthenticated, isManagerForOrg
 });
 
 // Fetch branches for a specific organization
-router.get('/:organizationId/branches', (req, res) => {
+router.get('/:organizationId/branches', [
+    param('organizationId').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { organizationId } = req.params;
 
     db.query('SELECT * FROM Branches WHERE organization_id = ?', [organizationId], (err, results) => {

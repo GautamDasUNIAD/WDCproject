@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { body, validationResult } = require('express-validator');
 
 // Middleware to check if the user is an admin
 function isAdmin(req, res, next) {
@@ -22,7 +23,16 @@ router.get('/', (req, res) => {
 });
 
 // Create a new organization
-router.post('/', isAdmin, (req, res) => {
+router.post('/', isAdmin, [
+    body('name').trim().notEmpty().withMessage('Name is required').escape(),
+    body('description').trim().notEmpty().withMessage('Description is required').escape(),
+    body('social_media_link').optional({ checkFalsy: true }).isURL().withMessage('Social media link must be a valid URL')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { name, description, social_media_link } = req.body;
 
     db.query('INSERT INTO VolunteerOrganizations (name, description, social_media_link) VALUES (?, ?, ?)',

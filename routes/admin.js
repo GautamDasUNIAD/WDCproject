@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const { isAdmin } = require('./auth-middleware');  // Correct path to where isAdmin is defined
+const { isAdmin } = require('./auth-middleware'); // Correct path to where isAdmin is defined
 const { param, body, validationResult } = require('express-validator');
-
 
 // Example usage of isAdmin
 router.get('/users', isAdmin, (req, res) => {
@@ -27,17 +26,16 @@ router.get('/users', isAdmin, (req, res) => {
 
 // Add manager to organization
 router.post('/organizations/:organizationId/managers', isAdmin, [
-    // Validation and sanitization happens here
     param('organizationId').isInt().withMessage('Organization ID must be an integer'), // Validates that organizationId is an integer
-    body('userId').isInt().withMessage('User ID must be an integer')
-    // Validates that userId is an integer
+    body('userId').isInt().withMessage('User ID must be an integer') // Validates that userId is an integer
 ], (req, res) => {
     const errors = validationResult(req); // Checks for validation errors
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() }); // Returns errors if validation fails
     }
 
-    const { organizationId, userId } = req.body;
+    const { userId } = req.body;
+    const { organizationId } = req.params;
     db.query(
         'INSERT INTO OrganisationManagers (organization_id, manager_id) VALUES (?, ?)',
         [organizationId, userId],
@@ -53,8 +51,7 @@ router.post('/organizations/:organizationId/managers', isAdmin, [
 
 // Upgrade user role
 router.post('/users/:userId/upgrade', isAdmin, [
-    // Validation and sanitization happens here
-    param('userId').isInt().withMessage('User ID must be an integer')
+    param('userId').isInt().withMessage('User ID must be an integer') // Validates that userId is an integer
 ], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

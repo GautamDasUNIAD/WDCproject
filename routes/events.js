@@ -1,7 +1,7 @@
-// routes/events.js
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { param, body, validationResult } = require('express-validator');
 
 // Middleware to check if the user is a manager
 function isManager(req, res, next) {
@@ -12,24 +12,31 @@ function isManager(req, res, next) {
     }
 }
 
-function isUser(req, res, next){
-    if(req.isAuthenticated()){
+function isUser(req, res, next) {
+    if (req.isAuthenticated()) {
         return next();
-    }
-    else{
+    } else {
         res.status(403).send('You do not have permission to perform this action.');
     }
-
 }
 
-
 // Create event route
-router.post('/create', isManager, (req, res) => {
-    const { name, location, description, organization_id, branch_id, date, upvote, downvote} = req.body;
-
-    if (!name || !location || !description || !organization_id || !branch_id || !date) {
-        return res.status(400).send('All fields are required');
+router.post('/create', isManager, [
+    body('name').trim().notEmpty().withMessage('Name is required').escape(),
+    body('location').trim().notEmpty().withMessage('Location is required').escape(),
+    body('description').trim().notEmpty().withMessage('Description is required').escape(),
+    body('organization_id').isInt().withMessage('Organization ID must be an integer'),
+    body('branch_id').isInt().withMessage('Branch ID must be an integer'),
+    body('date').isISO8601().toDate().withMessage('Date must be a valid ISO 8601 date'),
+    body('upvote').optional().isInt().withMessage('Upvote must be an integer'),
+    body('downvote').optional().isInt().withMessage('Downvote must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
+
+    const { name, location, description, organization_id, branch_id, date, upvote = 0, downvote = 0 } = req.body;
 
     db.query(
         'INSERT INTO Events (name, location, description, organization_id, branch_id, date, upvote, downvote) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
@@ -56,10 +63,17 @@ router.get('/all', (req, res) => {
 });
 
 // Fetch events for a specific organization route
-router.get('/organization/:id', (req, res) => {
+router.get('/organization/:id', [
+    param('id').isInt().withMessage('Organization ID must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const organizationId = req.params.id;
 
-    db.query('SELECT * FROM Events WHERE organization_id = ? ORDER BY date Asc', [organizationId], (err, results) => {
+    db.query('SELECT * FROM Events WHERE organization_id = ? ORDER BY date ASC', [organizationId], (err, results) => {
         if (err) {
             console.error('Error fetching events for organization:', err);
             return res.status(500).send('Internal server error');
@@ -69,13 +83,18 @@ router.get('/organization/:id', (req, res) => {
 });
 
 // Update upvote/downvote route
-router.post('/:eventId/vote', isUser, (req, res) => {
+router.post('/:eventId/vote', isUser, [
+    param('eventId').isInt().withMessage('Event ID must be an integer'),
+    body('type').isIn(['upvote', 'downvote']).withMessage('Invalid vote type'),
+    body('value').isInt().withMessage('Vote value must be an integer')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const eventId = req.params.eventId;
     const { type, value } = req.body;
-
-    if (!['upvote', 'downvote'].includes(type) || !Number.isInteger(value)) {
-        return res.status(400).send('Invalid vote type or value');
-    }
 
     const column = type === 'upvote' ? 'upvote' : 'downvote';
     const query = `UPDATE Events SET ${column} = ${column} + ? WHERE id = ?`;
@@ -91,7 +110,5 @@ router.post('/:eventId/vote', isUser, (req, res) => {
         res.status(200).send(`${type.charAt(0).toUpperCase() + type.slice(1)} updated successfully`);
     });
 });
-
-
 
 module.exports = router;
