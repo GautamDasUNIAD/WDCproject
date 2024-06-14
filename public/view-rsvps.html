@@ -35,6 +35,8 @@
     </div>
 
     <script>
+        var selectedbranches = [];
+
         async function fetchBranches(organizationId) {
             try {
                 const response = await fetch(`/userevents/organization/${organizationId}/branches`);
@@ -53,8 +55,15 @@
                     input.type = 'checkbox';
                     input.id = branch.id;
                     input.onchange = () => {
+                        if (selectedbranches.findIndex(id => id === branch.id) !== -1) {
+                            const index = selectedbranches.indexOf(branch.id);
+                            selectedbranches.splice(index, 1);
+                        } else {
+                            selectedbranches.push(branch.id);
+                        }
+                        console.log(selectedbranches);
                         fetchEvents(organizationId);
-                        fetchRSVPs(0,organizationId,0);
+                        fetchRSVPs(0, organizationId, 0);
                     };
 
                     const label = document.createElement('label');
@@ -71,44 +80,46 @@
         }
 
         async function fetchEvents(organizationId) {
-            const selectedBranchId = document.querySelector('#branchList input[type="checkbox"]:checked')?.id;
-            let url = `/userevents/organization/${organizationId}/events`;
-            if (selectedBranchId) {
-                url = `/userevents/branch/${selectedBranchId}/events`;
-            }
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    console.error('Error fetching events:', response.statusText);
-                    return;
+            const eventsList = document.getElementById('eventsList');
+            eventsList.innerHTML = '';
+            for (const selectedBranchId of selectedbranches) {
+                let url = `/userevents/organization/${organizationId}/events`;
+                if (selectedBranchId) {
+                    url = `/userevents/branch/${selectedBranchId}/events`;
                 }
 
-                const events = await response.json();
-                const eventsList = document.getElementById('eventsList');
-                eventsList.innerHTML = '';
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        console.error('Error fetching events:', response.statusText);
+                        return;
+                    }
 
-                events.forEach(event => {
-                    const eventDiv = document.createElement('div');
-                    eventDiv.classList.add('events-update');
-                    eventDiv.onclick = () => {
-                        document.querySelectorAll('.events-update').forEach(div => div.classList.remove('active'));
-                        eventDiv.classList.add('active');
-                        fetchRSVPs(event.id, organizationId, selectedBranchId);
-                    };
+                    const events = await response.json();
 
-                    const updateTextDiv = document.createElement('div');
-                    updateTextDiv.classList.add('update-text');
-                    updateTextDiv.innerHTML = `
+
+                    events.forEach(event => {
+                        const eventDiv = document.createElement('div');
+                        eventDiv.classList.add('events-update');
+                        eventDiv.onclick = () => {
+                            document.querySelectorAll('.events-update').forEach(div => div.classList.remove('active'));
+                            eventDiv.classList.add('active');
+                            fetchRSVPs(event.id, organizationId, selectedBranchId);
+                        };
+
+                        const updateTextDiv = document.createElement('div');
+                        updateTextDiv.classList.add('update-text');
+                        updateTextDiv.innerHTML = `
                         <h3>${event.date} & ${event.name}</h3>
                         <p>${event.description}</p>
                     `;
 
-                    eventDiv.appendChild(updateTextDiv);
-                    eventsList.appendChild(eventDiv);
-                });
-            } catch (error) {
-                console.error('Error fetching events:', error);
+                        eventDiv.appendChild(updateTextDiv);
+                        eventsList.appendChild(eventDiv);
+                    });
+                } catch (error) {
+                    console.error('Error fetching events:', error);
+                }
             }
         }
 
@@ -152,7 +163,6 @@
             const organizationId = urlParams.get('organizationId');
             if (organizationId) {
                 fetchBranches(organizationId);
-                fetchEvents(organizationId);
             }
         });
     </script>

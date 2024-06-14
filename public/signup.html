@@ -103,8 +103,8 @@
                     // Redirect to the home page or handle signup success
                     window.location.href = '/';
                 } else {
-                    const error = await response.text();
-                    signupResponseMessage.textContent = 'Signup failed: ' + error;
+                    const error = await response.json();
+                    signupResponseMessage.textContent = 'Signup failed: ' + error.msg;
                 }
             } catch (error) {
                 signupResponseMessage.textContent = 'An error occurred: ' + error.message;
