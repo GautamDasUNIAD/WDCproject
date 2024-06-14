@@ -256,9 +256,9 @@
                     document.getElementById('responseMessage').textContent = 'Error joining organization: ' + errorText;
                     return;
                 }
-
-                document.getElementById('responseMessage').textContent = 'Successfully joined the organization';
-                showOrganizationActions(organizationId, document.getElementById('organizationName').textContent);
+                // alert('Successfully joined the organization');
+                // showOrganizationActions(organizationId, document.getElementById('organizationName').textContent);
+                window.location.href = "";
             } catch (error) {
                 document.getElementById('responseMessage').textContent = 'An error occurred: ' + error.message;
             }
