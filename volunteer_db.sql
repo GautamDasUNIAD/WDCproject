@@ -66,7 +66,7 @@ CREATE TABLE `Branches` (
 
 LOCK TABLES `Branches` WRITE;
 /*!40000 ALTER TABLE `Branches` DISABLE KEYS */;
-INSERT INTO `Branches` VALUES (1,'Adelaide',NULL,NULL,NULL,1),(2,'Auckland',NULL,NULL,NULL,1),(3,'hllo',NULL,NULL,NULL,1),(4,'New York','New York Branch Description',40.7128,-74.006,4),(5,'San Francisco','San Francisco Branch Description',37.7749,-122.419,4),(6,'Chicago','Chicago Branch Description',41.8781,-87.6298,5);
+INSERT INTO `Branches` VALUES (1,'Adelaide','Humble Beginnings',87,78,1),(2,'Auckland','Auckland Aid',97.5,82,1),(3,'New York','New York Branch Description',24,30,1),(4,'New York','New York Branch Description',24,30,4),(5,'San Francisco','San Francisco Branch Description',10,33,4),(6,'Chicago','Chicago Branch Description',20,29,5);
 /*!40000 ALTER TABLE `Branches` ENABLE KEYS */;
 UNLOCK TABLES;
 
