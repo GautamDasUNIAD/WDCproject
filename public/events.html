@@ -126,6 +126,7 @@
 
             xhr.send(JSON.stringify({ eventId }));
         }
+
         document.addEventListener('DOMContentLoaded', async function () {
             const eventList = document.getElementById('eventList');
             const eventsContainer = document.getElementById('eventsContainer');
@@ -134,17 +135,12 @@
             const sidebar = document.querySelector('.sidebar');
             let displayedEvents = 4;
 
-
-
-
-
             try {
                 const selectedOrgId = getCookie('selectedOrgId');
                 if (!selectedOrgId) {
                     console.error('No selected organization ID found in cookies.');
                     return;
                 }
-
 
                 const response = await fetch(`/events/organization/${selectedOrgId}`);
                 const events = await response.json();
@@ -195,7 +191,6 @@
                             <div class="update-text">
                                 <h3>${event.name}</h3>
                                 <p style=" font-size: 10px;">${formattedDate}</p>
-                                <p style=" font-size: 10px;">${formattedDate}</p>
                                 <p>${event.description}</p>
                                 <p>Location: ${event.location}</p>
                             </div>
@@ -243,9 +238,11 @@
                 document.addEventListener('DOMContentLoaded', adjustSidebarHeight);
                 window.addEventListener('load', adjustSidebarHeight);
 
+
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
+
         });
 
     </script>
