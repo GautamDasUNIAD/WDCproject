@@ -21,3 +21,8 @@ EACH ENTRY MUST BE ON A NEW LINE OTHERWISE IT WILL NOT WORK! ^
 7. Run the command mysql volunteer_db < volunteer_db.sql.
 8. Run the command npm start.
 
+P.S.
+Normal User Account: Username: testuser@g.com Password: testuser
+Manager Account: Username: manager@g.com Password: manager23
+Admin Account: gautam.das.cse@g.com OR gautam.das.cse@.com Password: wdcprojectamazing
+
