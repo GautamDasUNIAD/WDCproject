@@ -12,7 +12,9 @@ EMAIL_USER=voluteeringvdc@gmail.com
 EMAIL_PASS=mbtu uuro awya fvul
 SALT_ROUNDS=10
 
-3. Run the command mysql service start.
+EACH ENTRY MUST BE ON A NEW LINE OTHERWISE IT WILL NOT WORK! ^
+
+3. Run the command service mysql start.
 4. Run the command mysql.
 5. Run the command CREATE DATABASE volunteer_db.
 6. Run the command exit.
