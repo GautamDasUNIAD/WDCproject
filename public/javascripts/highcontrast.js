@@ -43,6 +43,14 @@ const sliderState = localStorage.getItem('sliderState') === 'true';
 // Apply dark mode if the preference is set
 if (isDarkMode) {
     document.body.classList.add('dark-mode');
+    // Switch to dark mode colors
+    document.documentElement.style.setProperty('--primary-background', '#393639'); // Dark Brown
+    document.documentElement.style.setProperty('--secondary-background', '#575657'); // Dark Orange
+    document.documentElement.style.setProperty('--primary-text', '#ec538d'); // Light Beige
+    document.documentElement.style.setProperty('--secondary-text', '#fad420'); // Light Orange
+    document.documentElement.style.setProperty('--primary-button', '#fad420'); // Bright Orange
+    document.documentElement.style.setProperty('--secondary-button', '#ec538d'); // Dark Orange
+    document.documentElement.style.setProperty('--accent-color', '#1699e7'); // Light Orange
 }
 
 // Apply slider state if the preference is set
